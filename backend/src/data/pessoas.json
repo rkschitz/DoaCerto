@@ -1,0 +1,238 @@
+[
+  {
+    "nome": "Ruhan",
+    "cpf": "1111111111",
+    "telefone": "47984192876",
+    "dtNascimento": "2005-04-07",
+    "sexo": "M",
+    "email": "ruhan@email.com",
+    "endereco": {
+      "cep": 89227610,
+      "rua": "Pasteur",
+      "numero": 626,
+      "complemento": "Apto 101",
+      "bairro": "Iríriu",
+      "cidade": "Joinville",
+      "estado": "Santa Catarina",
+      "pais": "Brasil"
+    }
+  },
+  {
+    "nome": "Guilherme",
+    "cpf": "22222222222",
+    "telefone": "47991790349",
+    "dtNascimento": "2005-04-07",
+    "sexo": "M",
+    "email": "guilherme@email.com",
+    "endereco": {
+      "cep": 89227610,
+      "rua": "Pasteur",
+      "numero": 626,
+      "complemento": "Apto 101",
+      "bairro": "Iríriu",
+      "cidade": "Joinville",
+      "estado": "Santa Catarina",
+      "pais": "Brasil"
+    }
+  },
+  {
+    "nome": "Renan",
+    "cpf": "33333333333",
+    "telefone": "47999333893",
+    "dtNascimento": "2004-08-15",
+    "sexo": "M",
+    "email": "renan@email.com"
+  },
+  {
+    "nome": "Duda",
+    "cpf": "44444444444",
+    "telefone": "47999999999",
+    "dtNascimento": "2005-04-07",
+    "sexo": "F",
+    "email": "duda@email.com"
+  },
+  {
+    "nome": "Lucas",
+    "cpf": "55555555555",
+    "telefone": "47988888888",
+    "dtNascimento": "2005-04-07",
+    "sexo": "M",
+    "email": "lucas@email.com"
+  },
+  {
+    "nome": "Gustavo",
+    "cpf": "66666666666",
+    "telefone": "47977777777",
+    "dtNascimento": "2005-04-07",
+    "sexo": "M",
+    "email": "gustavo@email.com"
+  },
+  {
+    "nome": "Gabriel",
+    "cpf": "77777777777",
+    "telefone": "47966666666",
+    "dtNascimento": "2005-04-07",
+    "sexo": "M",
+    "email": "gabriel@email.com"
+  },
+  {
+    "nome": "Matheus",
+    "cpf": "88888888888",
+    "telefone": "47955555555",
+    "dtNascimento": "2005-04-07",
+    "sexo": "M",
+    "email": "matheus@email.com"
+  },
+  {
+    "nome": "Felipe",
+    "cpf": "99999999999",
+    "telefone": "47944444444",
+    "dtNascimento": "2005-04-07",
+    "sexo": "M",
+    "email": "felipe@email.com"
+  },
+  {
+    "nome": "João",
+    "cpf": "10101010101",
+    "telefone": "47933333333",
+    "dtNascimento": "2005-04-07",
+    "sexo": "M",
+    "email": "joao@email.com"
+  },
+  {
+    "nome": "Maria",
+    "cpf": "20202020202",
+    "telefone": "47922222222",
+    "dtNascimento": "2005-04-07",
+    "sexo": "F",
+    "email": "maria@email.com"
+  },
+  {
+    "nome": "Ana",
+    "cpf": "30303030303",
+    "telefone": "47911111111",
+    "dtNascimento": "2005-04-07",
+    "sexo": "F",
+    "email": "ana@email.com"
+  },
+  {
+    "nome": "Pedro",
+    "cpf": "40404040404",
+    "telefone": "47900000000",
+    "dtNascimento": "2005-04-07",
+    "sexo": "M",
+    "email": "pedro@email.com"
+  },
+  {
+    "nome": "Luiza",
+    "cpf": "50505050505",
+    "telefone": "47899999999",
+    "dtNascimento": "2005-04-07",
+    "sexo": "M",
+    "email": "luiza@email.com"
+  },
+  {
+    "nome": "Rafael",
+    "cpf": "60606060606",
+    "telefone": "47888888888",
+    "dtNascimento": "2005-04-07",
+    "sexo": "M",
+    "email": "rafael@email.com"
+  },
+  {
+    "nome": "Bruno",
+    "cpf": "70707070707",
+    "telefone": "47877777777",
+    "dtNascimento": "2005-04-07",
+    "sexo": "M",
+    "email": "bruno@email.com"
+  },
+  {
+    "nome": "Carla",
+    "cpf": "80808080808",
+    "telefone": "47866666666",
+    "dtNascimento": "2005-04-07",
+    "sexo": "F",
+    "email": "carla@email.com"
+  },
+  {
+    "nome": "Fernanda",
+    "cpf": "90909090909",
+    "telefone": "47855555555",
+    "dtNascimento": "2005-04-07",
+    "sexo": "F",
+    "email": "fernanda@email.com"
+  },
+  {
+    "nome": "Juliana",
+    "cpf": "10101010101",
+    "telefone": "47844444444",
+    "dtNascimento": "2005-04-07",
+    "sexo": "F",
+    "email": "juliana@email.com"
+  },
+  {
+    "nome": "Thiago",
+    "cpf": "20202020202",
+    "telefone": "47833333333",
+    "dtNascimento": "2005-04-07",
+    "sexo": "M",
+    "email": "thiago@email.com"
+  },
+  {
+    "nome": "Mariana",
+    "cpf": "30303030303",
+    "telefone": "47822222222",
+    "dtNascimento": "2005-04-07",
+    "sexo": "F",
+    "email": "mariana@email.com"
+  },
+  {
+    "nome": "Eduardo",
+    "cpf": "40404040404",
+    "telefone": "47811111111",
+    "dtNascimento": "2005-04-07",
+    "sexo": "M",
+    "email": "eduardo@email.com"
+  },
+  {
+    "nome": "Larissa",
+    "cpf": "50505050505",
+    "telefone": "47800000000",
+    "dtNascimento": "2005-04-07",
+    "sexo": "F",
+    "email": "larissa@email.com"
+  },
+  {
+    "nome": "André",
+    "cpf": "60606060606",
+    "telefone": "47799999999",
+    "dtNascimento": "2005-04-07",
+    "sexo": "M",
+    "email": "andre@email.com"
+  },
+  {
+    "nome": "Tatiane",
+    "cpf": "70707070707",
+    "telefone": "47788888888",
+    "dtNascimento": "2005-04-07",
+    "sexo": "F",
+    "email": "tatiane@email.com"
+  },
+  {
+    "nome": "Roberto",
+    "cpf": "80808080808",
+    "telefone": "47777777777",
+    "dtNascimento": "2005-04-07",
+    "sexo": "M",
+    "email": "roberto@email.com"
+  },
+  {
+    "nome": "Patrícia",
+    "cpf": "90909090909",
+    "telefone": "47766666666",
+    "dtNascimento": "2005-04-07",
+    "sexo": "F",
+    "email": "patricia@email.com"
+  }
+]

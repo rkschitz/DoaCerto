@@ -1,0 +1,29 @@
+[
+    {
+        "idPessoa": 2,
+        "idSituacaoHabitacional": 1,
+        "tempoResidencia": "2 meses",
+        "rendaFamiliar": 2000,
+        "idSituacaoProfissional": 1,
+        "cadastroCras": false,
+        "outroLocal": null,
+        "enfermoNaCasa": false,
+        "situacaoEnfermo": null,
+        "idOrganizacao": 2,
+        "responsavelVisita": 1,
+        "observacao": "observações",
+        "dtEntregaCesta": "2023-10-01",
+        "dependentes": [
+            {
+                "idPessoa": 3,
+                "idade": 10,
+                "idGrauParentesco": 1
+            },
+            {
+                "idPessoa": 4,
+                "idade": 5,
+                "idGrauParentesco": 2
+            }
+        ]
+    }
+]

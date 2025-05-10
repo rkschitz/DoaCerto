@@ -1,0 +1,125 @@
+import { useEffect, useState } from "react";
+import { buscarTodasPessoas, criar, deletarPessoa } from "../../api/pessoa";
+import formatarDataBR from "../../utils/formatarDataBR";
+import ModalPessoa from "./ModalPessoa";
+import styles from "./pessoa.module.css";
+
+export default function Pessoa() {
+  const [pessoas, setPessoas] = useState([]);
+  const [abrirModalPessoa, setAbrirModalPessoa] = useState(false);
+  const [pessoaSelecionada, setPessoaSelecionada] = useState(null);
+
+  const listarPessoas = async () => {
+    try {
+      const response = await buscarTodasPessoas();
+      const lista = response.data ?? response;
+      setPessoas(Array.isArray(lista) ? lista : []);
+    } catch (err) {
+      console.error("Erro ao buscar pessoas:", err);
+    }
+  };
+
+  const handleDelete = async (idPessoa) => {
+    try {
+      const response = await deletarPessoa(idPessoa);
+      if (response.status === 200) {
+        setPessoas(pessoas.filter((pessoa) => pessoa.idPessoa !== idPessoa));
+        alert("Pessoa excluída com sucesso");
+      } else {
+        throw new Error(response.data.mensagem);
+      }
+    } catch (err) {
+      console.error("Erro ao excluir pessoa:", err);
+    }
+  };
+
+  useEffect(() => {
+    listarPessoas();
+  }, []);
+
+  const cpfMask = (value) => {
+    if (!value) return "";
+    return value
+      .replace(/\D/g, "")
+      .replace(/(\d{3})(\d)/, "$1.$2")
+      .replace(/(\d{3})(\d)/, "$1.$2")
+      .replace(/(\d{3})(\d{1,2})/, "$1-$2")
+      .replace(/(-\d{2})\d+?$/, "$1");
+  };
+
+  const foneMask = (value) => {
+    if (!value) return "";
+    return value
+      .replace(/\D/g, "")
+      .replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3")
+      .replace(/(-\d{4})\d+?$/, "$1");
+  };
+
+  return (
+    <div className={styles.containerPessoa}>
+      <div className={styles.header}>
+        <h1>Gerenciar Pessoas</h1>
+        <button
+          className={styles.addButton}
+          onClick={() => setAbrirModalPessoa(true)}
+        >
+          Adicionar Pessoa
+        </button>
+      </div>
+
+      <div className={styles.cardsGrid}>
+        {pessoas.map((pessoa) => (
+          <div key={pessoa.idPessoa} className={styles.card}>
+            <h2 className={styles.nome}>{pessoa.nome}</h2>
+            <div className={styles.cardAcoes}>
+              <button
+                className={styles.excluirButton}
+                onClick={() => handleDelete(pessoa.idPessoa)}
+              >
+                Excluir
+              </button>
+              <button
+                className={styles.editarButton}
+                onClick={() => {
+                  setPessoaSelecionada(pessoa);
+                  setAbrirModalPessoa(true);
+                }}
+              >
+                Editar
+              </button>
+            </div>
+            <div className={styles.info}>
+              <p>
+                <strong>CPF:</strong> {cpfMask(pessoa.cpf)}
+              </p>
+              <p>
+                <strong>Telefone:</strong> {foneMask(pessoa.telefone)}
+              </p>
+              <p>
+                <strong>Email:</strong> {pessoa.email}
+              </p>
+              <p>
+                <strong>Data de Nascimento:</strong>{" "}
+                {formatarDataBR(pessoa.dtNascimento)}
+              </p>
+              <p>
+                <strong>Sexo:</strong>{" "}
+                {pessoa.sexo === "M" ? "Masculino" : "Feminino"}
+              </p>
+              <p> Rua: {pessoa.endereco?.rua} Número: {pessoa.endereco?.numero} Complemento: {pessoa.endereco?.complemento} </p><br />
+                <p> Bairro: {pessoa.endereco?.bairro} Estado: {pessoa.endereco?.estado} Pais: {pessoa.endereco?.pais} </p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <ModalPessoa
+        show={abrirModalPessoa}
+        setShow={setAbrirModalPessoa}
+        pessoaSelecionada={pessoaSelecionada}
+        onPessoaCriada={listarPessoas}
+        onPessoaAtualizada={listarPessoas}
+      />
+    </div >
+  );
+}

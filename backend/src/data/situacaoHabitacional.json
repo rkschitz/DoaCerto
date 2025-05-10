@@ -1,0 +1,14 @@
+[
+    { "situacaoHabitacional": "Casa própria quitada" },
+    { "situacaoHabitacional": "Casa financiada" },
+    { "situacaoHabitacional": "Casa própria herdada" },
+    { "situacaoHabitacional": "Casa alugada" },
+    { "situacaoHabitacional": "Casa cedida" },
+    { "situacaoHabitacional": "Casa compartilhada" },
+    { "situacaoHabitacional": "República estudantil" },
+    { "situacaoHabitacional": "Ocupação irregular (invasão)" },
+    { "situacaoHabitacional": "Barracos ou construções improvisadas" },
+    { "situacaoHabitacional": "Abrigo público" },
+    { "situacaoHabitacional": "Casa de acolhimento" },
+    { "situacaoHabitacional": "Asilos" }
+]

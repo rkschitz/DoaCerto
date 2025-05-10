@@ -1,0 +1,245 @@
+const organizacaoModel = require("../model/organizacao");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const pessoaModel = require("../model/pessoa");
+const enderecoController = require("./endereco");
+const enderecoModel = require('../model/endereco');
+const ruaModel = require('../model/rua');
+const bairroModel = require('../model/bairro');
+const cidadeModel = require('../model/cidade');
+const estadoModel = require('../model/estado');
+const paisModel = require('../model/pais');
+const alimentoModel = require('../model/alimento')
+const { QueryTypes } = require("sequelize");
+const { sequelize } = require('../config/database')
+
+const SECRET_KEY = "doacerto";
+const SALT_VALUE = 10;
+
+class OrganizacaoController {
+    async criar(organizacao, cnpj, telefone, email, idPessoa, endereco) {
+        const senhaCriptografada = await bcrypt.hash(String(cnpj), SALT_VALUE);
+
+        const enderecoValue = await enderecoController.criar(endereco);
+
+        try {
+            const organizacaoValue = await organizacaoModel.create({
+                organizacao,
+                cnpj,
+                telefone,
+                email,
+                senha: senhaCriptografada,
+                idSecretaria: idPessoa,
+                ieSituacao: 'A',
+                role: 'O',
+                idEndereco: !enderecoValue.mensagem ? enderecoValue.dataValues.idEndereco : null
+            });
+            return organizacaoValue;
+        } catch (e) {
+            return { mensagem: e.message };
+        }
+    }
+
+    async editar(idOrganizacao, organizacao, cnpj, telefone, email, senha, ieSituacao, idPessoa, endereco) {
+        const organizacaoAtual = await organizacaoModel.findByPk(idOrganizacao)
+        if (!organizacaoAtual) {
+            throw new Error("Organizacao não encontrada.");
+        }
+
+        const existente = await organizacaoModel.findOne({ where: { cnpj } });
+        if (existente && existente.dataValues.idOrganizacao !== Number(idOrganizacao)) {
+            throw new Error("CNPJ já cadastrado.");
+        }
+
+        const updates = { cnpj };
+        if (organizacao != null) updates.organizacao = organizacao;
+        if (telefone != null) updates.telefone = telefone;
+        if (email != null) updates.email = email;
+        if (ieSituacao != null) updates.ieSituacao = ieSituacao;
+        if (idPessoa != null) updates.idSecretaria = idPessoa;
+        if (senha != null) updates.senha = senha;
+
+        const senhaCriptografada = await bcrypt.hash(String(senha), SALT_VALUE);
+        if (senha != null) updates.senha = senhaCriptografada;
+
+        await organizacaoAtual.update(updates);
+
+        if (endereco) {
+            if (organizacaoAtual.idEndereco) {
+                const enderecoAtualizado = await enderecoController.atualizarRuaDoEndereco(organizacaoAtual.idEndereco, endereco);
+                if (enderecoAtualizado.mensagem) {
+                    throw new Error(enderecoAtualizado.mensagem);
+                }
+            } else {
+                const novoEndereco = await enderecoController.criar(endereco);
+                if (novoEndereco.mensagem) {
+                    throw new Error(novoEndereco.mensagem);
+                }
+                await organizacaoAtual.update({ idEndereco: novoEndereco.idEndereco });
+            }
+        }
+
+        return organizacaoAtual;
+    }
+
+    async deletar(idOrganizacao) {
+        try {
+            const organizacaoValue = await organizacaoModel.destroy({
+                where: { idOrganizacao }
+            });
+            return organizacaoValue;
+        } catch (e) {
+            return { mensagem: e.message };
+        }
+    }
+
+    async buscarPorId(idOrganizacao) {
+        const organizacaoValue = await organizacaoModel.findOne({
+            where: { idOrganizacao }
+        });
+        return organizacaoValue;
+    }
+
+    async buscarOrganizacoes() {
+        const organizacaoValue = await organizacaoModel.findAll({
+            include: [{
+                model: pessoaModel,
+                as: 'secretaria',
+                attributes: ['idPessoa', 'nome']
+            },
+            {
+                model: enderecoModel,
+                as: 'endereco',
+                required: false,
+                attributes: ['numero', 'complemento'],
+                include: {
+                    model: ruaModel,
+                    required: false,
+                    attributes: ['rua', 'CEP'],
+                    include: {
+                        model: bairroModel,
+                        required: false,
+                        attributes: ['bairro'],
+                        include: {
+                            model: cidadeModel,
+                            required: false,
+                            attributes: ['cidade'],
+                            include: {
+                                model: estadoModel,
+                                required: false,
+                                attributes: ['estado'],
+                                include: {
+                                    model: paisModel,
+                                    required: false,
+                                    attributes: ['pais'],
+                                }
+                            }
+                        }
+                    }
+                }
+            }]
+        });
+        return organizacaoValue.map(p => {
+            const e = p.endereco;
+            const r = e?.rua;
+            const b = r?.bairro;
+            const c = b?.cidade;
+            const est = c?.estado;
+            const pais = est?.pai;
+
+            return {
+                idOrganizacao: p.idOrganizacao,
+                organizacao: p.organizacao,
+                cnpj: p.cnpj,
+                telefone: p.telefone,
+                email: p.email,
+                dtCadastro: p.dtCadastro,
+                ieSituacao: p.ieSituacao,
+                idSecretaria: p.idSecretaria,
+                idEndereco: p.idEndereco,
+                endereco: e ? {
+                    cep: r?.CEP,
+                    rua: r?.rua,
+                    numero: e?.numero,
+                    complemento: e?.complemento,
+                    bairro: b?.bairro,
+                    cidade: c?.cidade,
+                    estado: est?.estado,
+                    pais: pais?.pais
+                } : null,
+            }
+        })
+    }
+
+    async buscarOrganizacoesAtivas() {
+        const organizacaoValue = await organizacaoModel.findAll({
+            where: { ieSituacao: 'A' }
+        });
+        return organizacaoValue;
+    }
+
+
+    async login(email, senha) {
+        if (!email || !senha) {
+            return { mensagem: "Email e senha são obrigatórios" };
+        }
+
+        const organizacaoValue = await organizacaoModel.findOne({
+            where: { email }
+        });
+
+
+        if (!organizacaoValue) {
+            return { mensagem: "Organizacao não encontrada" };
+        }
+
+        const senhaCorreta = await bcrypt.compare(senha, organizacaoValue.senha);
+
+        if (!senhaCorreta) {
+            return { mensagem: "Senha incorreta" };
+        }
+
+        const token = jwt.sign({ idOrganizacao: organizacaoValue.idOrganizacao, role: organizacaoValue.role }, SECRET_KEY, { expiresIn: "1h" });
+
+        return { token };
+
+    }
+
+    async listarAlimentosEmEstoque(idOrganizacao) {
+        const alimentosValue = await sequelize.query(`
+        SELECT c.alimento,
+               b.idAlimento,
+               d.idUnidadeMedida,
+               d.dsUnidadeMedida,
+               SUM(CASE WHEN a.ieMovimentacao = 'E' THEN b.quantidade ELSE 0 END) AS total_entradas,
+               SUM(CASE WHEN a.ieMovimentacao = 'S' THEN b.quantidade ELSE 0 END) AS total_saidas,
+               SUM(CASE WHEN a.ieMovimentacao = 'E' THEN b.quantidade ELSE 0 END) -
+               SUM(CASE WHEN a.ieMovimentacao = 'S' THEN b.quantidade ELSE 0 END) AS saldo
+          FROM movimentacao a
+          JOIN movimentacao_alimento b ON b.idMovimentacao = a.idMovimentacao
+          JOIN alimento c ON c.idAlimento = b.idAlimento
+          JOIN unidade_medida d ON d.idUnidadeMedida = b.idUnidadeMedida
+         WHERE (:idOrganizacao = 1 or a.idOrganizacao = :idOrganizacao)
+      GROUP BY b.idAlimento, b.idUnidadeMedida, c.alimento, d.dsUnidadeMedida
+        HAVING SUM(CASE WHEN a.ieMovimentacao = 'E' THEN b.quantidade ELSE 0 END) -
+               SUM(CASE WHEN a.ieMovimentacao = 'S' THEN b.quantidade ELSE 0 END) > 0;`,
+            {
+                replacements: { idOrganizacao },
+                type: QueryTypes.SELECT
+            })
+
+        return alimentosValue;
+    }
+
+    async listarAlimentosParaMovimentacao(idOrganizacao, ieMovimentacao) {
+        if (ieMovimentacao === 'E') {
+            const alimentos = await alimentoModel.findAll();
+            return alimentos;
+        } else {
+            const organizacaoValue = this.listarAlimentosEmEstoque(idOrganizacao);
+            return organizacaoValue
+        }
+    }
+}
+
+module.exports = new OrganizacaoController()

@@ -1,0 +1,19 @@
+[
+    {
+        "organizacao": "Igreja",
+        "cnpj": "123456789999",
+        "telefone": "47984192876",
+        "email": "ruhankaio900@gmail.com",
+        "idSecretaria": 2,
+        "endereco": {
+            "cep": 89227610,
+            "rua": "Pasteur",
+            "numero": 626,
+            "complemento": "Apto 101",
+            "bairro": "Iríriu",
+            "cidade": "Joinville",
+            "estado": "Santa Catarina",
+            "pais": "Brasil"
+        }
+    }
+]

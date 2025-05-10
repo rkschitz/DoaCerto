@@ -1,0 +1,16 @@
+[
+    {
+        "titulo": "Primeira campanha",
+        "descricao": "Essa é a primeira campanha",
+        "dtInicio": "2023-10-01",
+        "dtFinal": "2023-10-31",
+        "idOrganizacao": 1
+    },
+    {
+        "titulo": "Primeira campanha da igreja",
+        "descricao": "Essa é a primeira campanha da igreja",
+        "dtInicio": "2023-10-01",
+        "dtFinal": "2023-10-31",
+        "idOrganizacao": 2
+    }
+]

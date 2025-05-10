@@ -1,0 +1,32 @@
+[
+    { "alimento": "Arroz", "tipoAlimento": "Cereais, pães e tubérculos" },
+    { "alimento": "Pão integral", "tipoAlimento": "Cereais, pães e tubérculos" },
+    { "alimento": "Batata-doce", "tipoAlimento": "Cereais, pães e tubérculos" },
+  
+    { "alimento": "Alface", "tipoAlimento": "Hortaliças, como verduras e legumes" },
+    { "alimento": "Tomate", "tipoAlimento": "Hortaliças, como verduras e legumes" },
+    { "alimento": "Brócolis", "tipoAlimento": "Hortaliças, como verduras e legumes" },
+  
+    { "alimento": "Banana", "tipoAlimento": "Frutas" },
+    { "alimento": "Maçã", "tipoAlimento": "Frutas" },
+    { "alimento": "Laranja", "tipoAlimento": "Frutas" },
+  
+    { "alimento": "Feijão preto", "tipoAlimento": "Leguminosas, como feijão" },
+    { "alimento": "Lentilha", "tipoAlimento": "Leguminosas, como feijão" },
+    { "alimento": "Grão-de-bico", "tipoAlimento": "Leguminosas, como feijão" },
+  
+    { "alimento": "Frango", "tipoAlimento": "Carnes e ovos" },
+    { "alimento": "Ovo", "tipoAlimento": "Carnes e ovos" },
+    { "alimento": "Peixe", "tipoAlimento": "Carnes e ovos" },
+  
+    { "alimento": "Leite", "tipoAlimento": "Leite e derivados" },
+    { "alimento": "Queijo", "tipoAlimento": "Leite e derivados" },
+    { "alimento": "Iogurte", "tipoAlimento": "Leite e derivados" },
+  
+    { "alimento": "Azeite de oliva", "tipoAlimento": "Óleos e gorduras" },
+    { "alimento": "Manteiga", "tipoAlimento": "Óleos e gorduras" },
+  
+    { "alimento": "Açúcar", "tipoAlimento": "Açúcares e doces" },
+    { "alimento": "Chocolate", "tipoAlimento": "Açúcares e doces" }
+  ]
+  

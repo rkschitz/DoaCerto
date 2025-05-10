@@ -1,0 +1,122 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f0f0f0;
+}
+
+.pageCentral{
+    margin: 0;
+    background: #f0f0f0;
+    border-radius: 0 0 8px 8px;
+    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+}
+
+.backgroundHeader {
+    width: 80%;
+    height: 20vh;
+    margin: 4% 4% 0 5%;
+    background: linear-gradient(90deg, rgba(182, 112, 240, 1) 35%, #f0f0f0 100%);
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+
+.backgroundHeader h1 {
+    color: #f0f0f0;
+    font-size: 2rem;
+    line-height: 1.5;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-left: 4%;
+}
+
+.form{
+    width: 90%;
+    height: 22vh;
+    background: #f0f0f0;
+    box-shadow: 1px 0px 20px 1px rgba(0, 0, 0, 0.1);
+    margin: 0 4% 0 2%;
+}
+
+.formContainer {
+    background: #f0f0f0;
+    padding: 2rem;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.formGrid {
+    display: flex;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    flex-direction: column;
+    align-items: center;
+}
+
+.formGroup input {
+    width: 40%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    background-color: #f0f0f0;
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.formGroup label {
+    color: #666;
+}
+
+.formGroup input {
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    width: 90vh;
+}
+
+.timeGroup {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.timeInput {
+    width: 100px;
+}
+
+.submitContainer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 2rem;
+}
+
+.submitBtn {
+    padding: 0.8rem 2rem;
+    background-color: rgb(165, 74, 240);
+    color: #f0f0f0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.submitBtn:hover{
+    transition: 0.6s;
+    background-color: rgb(146, 24, 245);
+}
