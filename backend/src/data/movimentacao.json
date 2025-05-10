@@ -1,6 +1,6 @@
 [
   {
-    "ieMovimentacao": "E",
+    "ieMovimentacao": "Entrada",
     "idOrganizacao": 1,
     "alimentos": [
       {
@@ -16,7 +16,7 @@
     ]
   },
   {
-    "ieMovimentacao": "E",
+    "ieMovimentacao": "Entrada",
     "idOrganizacao": 1,
     "alimentos": [
       {
@@ -32,7 +32,7 @@
     ]
   },
   {
-    "ieMovimentacao": "S",
+    "ieMovimentacao": "Saída",
     "idOrganizacao": 1,
     "alimentos": [
       {
