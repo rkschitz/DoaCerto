@@ -1,32 +1,25 @@
 import { useEffect, useState } from "react";
 import { buscarMovimentacoes, excluirMovimentacao } from "../../api/movimentacao";
 import formatarDataBRCHora from "../../utils/formatarDataBRCHora";
-import { Button } from "react-bootstrap";
 import MovimentacaoModal from "./ModalMovimentacao";
 import { toast } from "react-toastify";
-import { buscarMovimentacoes } from "../../api/movimentacao"; 
-import formatarDataBRCHora from "../../utils/formatarDataBRCHora"; 
-import { useTable, useSortBy, usePagination } from 'react-table'; 
-import { Button } from "react-bootstrap"; 
-import MovimentacaoModal from "./ModalMovimentacao"; 
-import styles from "./movimentacao.module.css"; 
+import { useTable, useSortBy, usePagination } from 'react-table';
+import { Button } from "react-bootstrap";
+import styles from "./movimentacao.module.css";
 import React from "react";
 
-// Componente principal da página de movimentações
 export default function Movimentacao() {
-  // Estados para armazenar dados e controle do modal
   const [movimentacoes, setMovimentacoes] = useState([]);
   const [show, setShow] = useState(false);
   const [movimentacaoSelecionada, setMovimentacaoSelecionada] = useState(null);
 
-  // Função assíncrona que busca as movimentações da API
   async function listarMovimentacoes() {
     try {
       const response = await buscarMovimentacoes();
       console.log(response.data);
-      setMovimentacoes(response.data); // Atualiza o estado com os dados recebidos
+      setMovimentacoes(response.data);
     } catch (e) {
-      console.error(e); // Exibe erros no console
+      console.error(e);
     }
   }
 
@@ -49,16 +42,16 @@ export default function Movimentacao() {
     listarMovimentacoes();
   }, []);
 
-  const columns = React.useMemo( // useMemo otimiza a criação de colunas
+  const columns = React.useMemo(
     () => [
       {
-        Header: "Tipo", 
-        accessor: "ieMovimentacao", 
+        Header: "Tipo",
+        accessor: "ieMovimentacao",
       },
       {
         Header: "Data",
         accessor: "dtMovimentacao",
-        Cell: ({ value }) => formatarDataBRCHora(value), 
+        Cell: ({ value }) => formatarDataBRCHora(value),
       },
       {
         Header: "Campanha",
@@ -150,11 +143,11 @@ export default function Movimentacao() {
         </thead>
         <tbody {...getTableBodyProps()}>
           {page.map(row => {
-            prepareRow(row); // Prepara os dados da linha
+            prepareRow(row);
             return (
               <tr {...row.getRowProps()}>
                 {row.cells.map(cell => (
-                  <td {...cell.getCellProps()}>{cell.render('Cell')}</td> // Renderiza cada célula
+                  <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
                 ))}
               </tr>
             );
@@ -162,43 +155,40 @@ export default function Movimentacao() {
         </tbody>
       </table>
 
-      {/* Paginação */}
       <div className={styles.pagination}>
         <button
           className={styles.paginationButton}
           onClick={() => gotoPage(0)}
           disabled={!canPreviousPage}
         >
-          {'<<'} {/* Primeira página */}
+          {'<<'}
         </button>
         <button
           className={styles.paginationButton}
           onClick={() => previousPage()}
           disabled={!canPreviousPage}
         >
-          {'<'} {/* Página anterior */}
+          {'<'}
         </button>
         <button
           className={styles.paginationButton}
           onClick={() => nextPage()}
           disabled={!canNextPage}
         >
-          {'>'} {/* Próxima página */}
+          {'>'}
         </button>
         <button
           className={styles.paginationButton}
           onClick={() => gotoPage(pageCount - 1)}
           disabled={!canNextPage}
         >
-          {'>>'} {/* Última página */}
+          {'>>'}
         </button>
 
-        {/* Exibe página atual e total */}
         <span>
           Página {pageIndex + 1} de {pageCount}
         </span>
 
-        {/* Seleciona quantidade de itens por página */}
         <select
           value={pageSize}
           onChange={e => setPageSize(Number(e.target.value))}
@@ -211,7 +201,6 @@ export default function Movimentacao() {
         </select>
       </div>
 
-      {/* Modal de criação/edição */}
       <MovimentacaoModal
         show={show}
         setShow={setShow}
