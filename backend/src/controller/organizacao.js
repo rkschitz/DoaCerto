@@ -1,17 +1,18 @@
 const organizacaoModel = require("../model/organizacao");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const pessoaModel = require("../model/pessoa");
+const PessoaModel = require("../model/pessoa");
 const enderecoController = require("./endereco");
-const enderecoModel = require('../model/endereco');
-const ruaModel = require('../model/rua');
-const bairroModel = require('../model/bairro');
-const cidadeModel = require('../model/cidade');
-const estadoModel = require('../model/estado');
-const paisModel = require('../model/pais');
-const alimentoModel = require('../model/alimento')
+const EnderecoModel = require('../model/endereco');
+const RuaModel = require('../model/rua');
+const BairroModel = require('../model/bairro');
+const CidadeModel = require('../model/cidade');
+const EstadoModel = require('../model/estado');
+const PaisModel = require('../model/pais');
+const AlimentoModel = require('../model/alimento')
 const { QueryTypes } = require("sequelize");
 const { sequelize } = require('../config/database')
+const { includeEnderecoCompleto, formatarPessoa } = require("../utils/formatadores");
 
 const SECRET_KEY = "doacerto";
 const SALT_VALUE = 10;
@@ -103,41 +104,12 @@ class OrganizacaoController {
     async buscarOrganizacoes() {
         const organizacaoValue = await organizacaoModel.findAll({
             include: [{
-                model: pessoaModel,
+                model: PessoaModel,
                 as: 'secretaria',
                 attributes: ['idPessoa', 'nome']
             },
-            {
-                model: enderecoModel,
-                as: 'endereco',
-                required: false,
-                attributes: ['numero', 'complemento'],
-                include: {
-                    model: ruaModel,
-                    required: false,
-                    attributes: ['rua', 'CEP'],
-                    include: {
-                        model: bairroModel,
-                        required: false,
-                        attributes: ['bairro'],
-                        include: {
-                            model: cidadeModel,
-                            required: false,
-                            attributes: ['cidade'],
-                            include: {
-                                model: estadoModel,
-                                required: false,
-                                attributes: ['estado'],
-                                include: {
-                                    model: paisModel,
-                                    required: false,
-                                    attributes: ['pais'],
-                                }
-                            }
-                        }
-                    }
-                }
-            }]
+                includeEnderecoCompleto,
+            ]
         });
         return organizacaoValue.map(p => {
             const e = p.endereco;
@@ -233,7 +205,7 @@ class OrganizacaoController {
 
     async listarAlimentosParaMovimentacao(idOrganizacao, ieMovimentacao) {
         if (ieMovimentacao === 'E') {
-            const alimentos = await alimentoModel.findAll();
+            const alimentos = await AlimentoModel.findAll();
             return alimentos;
         } else {
             const organizacaoValue = this.listarAlimentosEmEstoque(idOrganizacao);

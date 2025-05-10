@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { buscarMovimentacoes } from "../../api/movimentacao";
+import { buscarMovimentacoes, excluirMovimentacao } from "../../api/movimentacao";
 import formatarDataBRCHora from "../../utils/formatarDataBRCHora";
 import { Button } from "react-bootstrap";
 import MovimentacaoModal from "./ModalMovimentacao";
+import { toast } from "react-toastify";
 
 export default function Movimentacao() {
   const [movimentacoes, setMovimentacoes] = useState([]);
@@ -16,6 +17,21 @@ export default function Movimentacao() {
       setMovimentacoes(response.data);
     } catch (e) {
       console.log(e);
+    }
+  }
+
+  async function excluirMovimentacaoSelecionada(movimentacao) {
+    try {
+      if (!window.confirm('Deseja realmente excluir a movimentação?')) {
+        return;
+      }
+      const response = await excluirMovimentacao(movimentacao.idMovimentacao);
+      if (response.status === 200) {
+        toast(response.data.message);
+        listarMovimentacoes();
+      }
+    } catch (e) {
+      toast.error(e.message);
     }
   }
 
@@ -34,6 +50,7 @@ export default function Movimentacao() {
       {movimentacoes.map((movimentacao, index) => (
         <div className="card-movimentacao" key={index}>
           <Button onClick={(e) => { setMovimentacaoSelecionada(movimentacao); setShow(true) }} >Editar movimentacao</Button>
+          <Button onClick={(e) => { excluirMovimentacaoSelecionada(movimentacao); }} >Excluir movimentacao</Button>
           {movimentacao.ieMovimentacao === 'E' ? 'Entrada' : 'Saida'}
           <p>Data da movimentação: {formatarDataBRCHora(movimentacao.dtMovimentacao)}</p>
           <p>Campanha {movimentacao?.tituloCampanha}</p>
@@ -53,6 +70,7 @@ export default function Movimentacao() {
         movimentacaoSelecionada={movimentacaoSelecionada}
         onCancel={(e) => setMovimentacaoSelecionada({})}
         onMovimentacaoAtualizada={(e) => listarMovimentacoes()}
+        onMovimentacaoCriada={(e) => listarMovimentacoes()}
       />
     </div>
   );

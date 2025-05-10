@@ -2,7 +2,7 @@ import { FloatingLabel, Form } from "react-bootstrap";
 import { useState } from "react";
 import LocalizadorDonatario from "../../Localizadores/LocalizadorDonatario/LocalizadorDonatario";
 
-export default function SelectDonatario({ label, onChange, value }) {
+export default function SelectDonatario({ label, onChange, value, disabled }) {
 
     const [openLocalizadorDonatario, setOpenLocalizadorDonatario] = useState(false);
     const [donatario, setDonatario] = useState();
@@ -14,6 +14,7 @@ export default function SelectDonatario({ label, onChange, value }) {
                     type="text"
                     placeholder="Nome"
                     value={donatario?.nome ? donatario?.nome : value ? value : ""}
+                    disabled={disabled}
                     onClick={() => {
                         setOpenLocalizadorDonatario(true);
                     }}

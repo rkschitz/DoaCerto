@@ -1,10 +1,6 @@
-const DonatarioModel = require('../model/donatario');
-const DependenteModel = require('../model/dependente');
 const DonatarioController = require('../controller/donatario')
 class DonatarioApi {
     async criar(req, res) {
-
-        console.log(req.body)
 
         const { idPessoa,
             idSituacaoHabitacional,

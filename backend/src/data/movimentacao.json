@@ -2,7 +2,6 @@
   {
     "ieMovimentacao": "E",
     "idOrganizacao": 1,
-    "idCampanha": 1,
     "alimentos": [
       {
         "idAlimento": 1,
@@ -19,7 +18,6 @@
   {
     "ieMovimentacao": "E",
     "idOrganizacao": 1,
-    "idCampanha": 2,
     "alimentos": [
       {
         "idAlimento": 1,

@@ -22,8 +22,8 @@ export default function PessoaLocalizador({ onSelect, show, setShow }) {
             nome: item.nome,
             cpf: item.cpf,
             dtNascimento: formatarDataBR(item.dtNascimento),
+            sexo: item.sexo, 
             idade: calcularIdade(item.dtNascimento),
-            sexo: item.sexo,
             email: item.email,
             telefone: item.telefone,
         }));

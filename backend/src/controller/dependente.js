@@ -1,8 +1,8 @@
-const dependenteModel = require('../model/dependente');
+const DependenteModel = require('../model/dependente');
 class DependenteController {
     async criar(idPessoa, idProvedor, idGrauParentesco) {
         try {
-            const dependenteValue = await dependenteModel.create({
+            const dependenteValue = await DependenteModel.create({
                 idPessoa,
                 idProvedor,
                 idGrauParentesco
@@ -15,7 +15,7 @@ class DependenteController {
 
     async editar(idDependente, idGrauParentesco) {
         try {
-            const dependenteValue = await dependenteModel.update({
+            const dependenteValue = await DependenteModel.update({
                 idGrauParentesco
             }, {
                 where: { idDependente }
@@ -28,7 +28,7 @@ class DependenteController {
 
     async buscarDependentesPorDonatario(idDonatario) {
         try {
-            const dependenteValue = await dependenteModel.findAll({
+            const dependenteValue = await DependenteModel.findAll({
                 where: { idProvedor: idDonatario }
             })
             return dependenteValue;
@@ -39,7 +39,7 @@ class DependenteController {
 
     async excluir(idDependente) {
         try {
-            const dependenteValue = await dependenteModel.destroy({
+            const dependenteValue = await DependenteModel.destroy({
                 where: { idDependente }
             })
             return dependenteValue;

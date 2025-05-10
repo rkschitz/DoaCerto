@@ -1,28 +1,28 @@
 const database = require("../config/database.js");
 
-class Dependente{
-    constructor(){
+class Dependente {
+    constructor() {
         this.model = database.db.define("dependente", {
-            idDependente:{
+            idDependente: {
                 type: database.db.Sequelize.INTEGER,
                 primaryKey: true,
                 autoIncrement: true,
             },
-            idPessoa:{
+            idPessoa: {
                 type: database.db.Sequelize.INTEGER,
                 references: {
                     model: 'pessoa',
                     key: 'idPessoa'
                 },
             },
-            idProvedor:{
+            idProvedor: {
                 type: database.db.Sequelize.INTEGER,
                 references: {
                     model: 'donatario',
                     key: 'idDonatario'
                 },
             },
-            idGrauParentesco:{
+            idGrauParentesco: {
                 type: database.db.Sequelize.INTEGER,
                 references: {
                     model: 'grau_parentesco',
@@ -30,7 +30,7 @@ class Dependente{
                 },
             },
 
-        },{
+        }, {
             freezeTableName: true
         });
     }
