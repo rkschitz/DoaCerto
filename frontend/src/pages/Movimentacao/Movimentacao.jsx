@@ -72,8 +72,8 @@ export default function Movimentacao() {
           <Button
             variant="primary"
             onClick={() => {
-              setMovimentacaoSelecionada(row.original); // Define a movimentação para edição
-              setShow(true); // Exibe o modal
+              setMovimentacaoSelecionada(row.original);
+              setShow(true);
             }}
           >
             Editar
@@ -84,56 +84,53 @@ export default function Movimentacao() {
     []
   );
 
-  // Configuração da tabela com react-table
   const {
-    getTableProps, // Props da <table>
-    getTableBodyProps, // Props do <tbody>
-    headerGroups, // Grupos de cabeçalho para renderização do <thead>
-    page, // Linhas da página atual (importante para paginação)
-    prepareRow, // Prepara a linha para renderização
-    state: { pageIndex, pageSize }, // Estado da tabela (índice da página e tamanho)
-    canPreviousPage, canNextPage, // Booleans de controle de navegação
-    pageCount, // Número total de páginas
-    gotoPage, nextPage, previousPage, setPageSize, // Funções de navegação e ajuste de tamanho de página
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    page,
+    prepareRow,
+    state: { pageIndex, pageSize },
+    canPreviousPage, canNextPage,
+    pageCount,
+    gotoPage, nextPage, previousPage, setPageSize,
   } = useTable(
     {
       columns,
       data: movimentacoes,
-      initialState: { pageIndex: 0 }, // Começa na primeira página
+      initialState: { pageIndex: 0 },
     },
-    useSortBy, // Habilita ordenação
-    usePagination // Habilita paginação
+    useSortBy,
+    usePagination
   );
 
   return (
     <div className={styles.containerMovimentacao}>
-      {/* Cabeçalho da página */}
       <div className={styles.header}>
         <h1>Gerenciar Movimentações</h1>
         <button
           className={styles.addButton}
           onClick={() => {
-            setShow(true); // Abre modal para nova movimentação
-            setMovimentacaoSelecionada(null); // Limpa seleção anterior
+            setShow(true); 
+            setMovimentacaoSelecionada(null);
           }}
         >
           Nova Movimentação
         </button>
       </div>
 
-      {/* Tabela */}
       <table {...getTableProps()} className="table table-striped table-bordered">
         <thead>
           {headerGroups.map(headerGroup => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map(column => (
                 <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                  {column.render('Header')} {/* Título da coluna */}
+                  {column.render('Header')}
                   <span>
                     {column.isSorted
                       ? column.isSortedDesc
-                        ? ' 🔽' // Ordenação decrescente
-                        : ' 🔼' // Ordenação crescente
+                        ? ' 🔽'
+                        : ' 🔼'
                       : ''}
                   </span>
                 </th>
