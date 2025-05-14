@@ -1,0 +1,14 @@
+[
+    {
+        "meta": 10000,
+        "idCampanha": 1,
+        "idAlimento": 1,
+        "idUnidadeMedida": 1
+    },
+    {
+        "meta": 20000,
+        "idCampanha": 1,
+        "idAlimento": 2,
+        "idUnidadeMedida": 1
+    }
+]

@@ -49,7 +49,6 @@ export default function MovimentacaoModal({
     };
 
     const salvar = async () => {
-        console.log(movimentacao)
         if (movimentacao?.alimentos.length === 0) {
             toast.error('Adicione pelo menos um alimento')
             return;

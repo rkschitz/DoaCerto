@@ -19,17 +19,18 @@ class CampanhaApi {
         }
     }
 
-    async listarAtivas(req, res) {
-
-        const { idOrganizacao } = req.session;
+    async listarTodas(req, res) {
+        const { idOrganizacao, ativos } = req.query;
 
         try {
-            const campanhas = await CampanhaController.listarAtivas(idOrganizacao);
+            const campanhas = await CampanhaController.listarTodas(idOrganizacao, ativos);
             res.status(200).json(campanhas);
         } catch (err) {
             res.status(500).json({ message: err.message });
         }
     }
+
+
 }
 
 module.exports = new CampanhaApi();

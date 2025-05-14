@@ -173,6 +173,56 @@ class MovimentacaoController {
     };
   }
 
+  // async buscarMovimentacoesPorCampanha(idCampanha){
+  //   const movimentacoes = await MovimentacaoModel.findAll({
+  //     where: { idCampanha },
+  //     order: [['createdAt', 'DESC']],
+  //     include: [
+  //       {
+  //         model: MovimentacaoAlimentoModel,
+  //         as: "alimentos",
+  //         attributes: ["quantidade", "idMovimentacaoAlimento"],
+  //         include: [{
+  //           model: AlimentoModel,
+  //           as: "alimento",
+  //           attributes: ['idAlimento', 'alimento']
+  //         }, {
+  //           model: UnidadeMedidaModel,
+  //           as: "unidade_medida",
+  //           attributes: ['idUnidadeMedida', 'dsUnidadeMedida']
+  //         }]
+  //       }
+  //     ],
+  //   });
+
+  //   return movimentacoes;
+  // }
+
+  async buscarQuantidadeEntradaPorMeta(idCampanha, idAlimento, idUnidadeMedida, idOrganizacao) {
+
+    console.log("idCampanha", idCampanha, "idAlimento", idAlimento, "idUnidadeMedida", idUnidadeMedida, "idOrganizacao", idOrganizacao)
+
+    const movimentacoes = await MovimentacaoModel.findAll({
+      where: { idCampanha, 'ieMovimentacao': 'E', idOrganizacao },
+      order: [['createdAt', 'DESC']],
+      include:
+      {
+        model: MovimentacaoAlimentoModel,
+        as: "alimentos",
+        attributes: ["quantidade", "idMovimentacaoAlimento", "idAlimento", "idUnidadeMedida"],
+        where: { idAlimento, idUnidadeMedida },
+        required: true
+      },
+    });
+
+    const totalQuantidade = movimentacoes.reduce((soma, mov) => {
+      const somaAlimentos = mov?.alimentos.reduce((acc, alimento) => acc + Number(alimento.quantidade), 0);
+      return soma + somaAlimentos;
+    }, 0);
+
+    return totalQuantidade;
+  }
+
 }
 
 module.exports = new MovimentacaoController();

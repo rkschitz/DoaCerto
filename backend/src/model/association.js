@@ -17,6 +17,7 @@ const Estado = require("./estado");
 const Pais = require("./pais");
 const Endereco = require("./endereco");
 const Campanha = require("./campanha");
+const Meta = require("./meta");
 
 // 🥦 Relacionamento entre TipoAlimento e Alimento
 TipoAlimento.hasMany(Alimento, { foreignKey: "idTipoAlimento" });
@@ -143,3 +144,12 @@ Donatario.hasMany(Movimentacao, { foreignKey: 'idDonatario' });
 
 Movimentacao.belongsTo(Pessoa, { foreignKey: 'idDoador', as: 'doador' })
 Pessoa.hasMany(Movimentacao, { foreignKey: 'idPessoa', as: 'doadores' });
+
+Meta.belongsTo(Campanha, { foreignKey: 'idCampanha', as: 'campanha' });
+Campanha.hasMany(Meta, { foreignKey: 'idCampanha', as: 'metas' });
+
+Meta.belongsTo(Alimento, { foreignKey: 'idAlimento', as: 'alimento' });
+Alimento.hasMany(Meta, { foreignKey: 'idAlimento', as: 'metas' });
+
+Meta.belongsTo(UnidadeMedida, { foreignKey: 'idUnidadeMedida', as: 'unidade_medida' });
+UnidadeMedida.hasMany(Meta, { foreignKey: 'idUnidadeMedida', as: 'metas' });

@@ -1,6 +1,6 @@
 [
   {
-    "ieMovimentacao": "Entrada",
+    "ieMovimentacao": "E",
     "idOrganizacao": 1,
     "alimentos": [
       {
@@ -16,13 +16,14 @@
     ]
   },
   {
-    "ieMovimentacao": "Entrada",
+    "ieMovimentacao": "E",
     "idOrganizacao": 1,
+    "idCampanha": 1,
     "alimentos": [
       {
         "idAlimento": 1,
-        "idUnidadeMedida": 2,
-        "quantidade": 5
+        "idUnidadeMedida": 1,
+        "quantidade": 5000
       },
       {
         "idAlimento": 2,
@@ -32,7 +33,7 @@
     ]
   },
   {
-    "ieMovimentacao": "Saída",
+    "ieMovimentacao": "S",
     "idOrganizacao": 1,
     "alimentos": [
       {

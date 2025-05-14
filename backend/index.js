@@ -31,6 +31,7 @@ const DependenteController = require("./src/controller/dependente");
 const UnidadeMedidaController = require("./src/controller/unidadeMedida");
 const MovimentacaoController = require("./src/controller/movimentacao");
 const CampanhaController = require("./src/controller/campanha");
+const MetaController = require("./src/controller/meta")
 
 require("./src/model/association");
 const app = express();
@@ -63,7 +64,7 @@ const Dependente = require("./src/model/dependente");
 
 const createTables = async () => {
   try {
-    await database.db.sync({ force: true, logging: console.log });
+    await database.db.sync({ force: false, logging: console.log });
 
     const cypherSenha = await bcrypt.hash("admin", 10);
 
@@ -127,6 +128,11 @@ const createTables = async () => {
     const campanhaPath = path.join(__dirname, "src/data/campanha.json");
     const campanhaJson = JSON.parse(
       fs.readFileSync(campanhaPath, "utf-8")
+    )
+
+    const metaPath = path.join(__dirname, "src/data/metas.json");
+    const metaJson = JSON.parse(
+      fs.readFileSync(metaPath, "utf-8")
     )
 
     // Cadastrar tipos de alimentos sem repetir
@@ -255,6 +261,12 @@ const createTables = async () => {
     }
 
     console.log("Movimentações criadas");
+
+    for (const meta of metaJson) {
+      await MetaController.criar(meta.meta, meta.idCampanha, meta.idAlimento, meta.idUnidadeMedida);
+    }
+
+    console.log('Metas criadas')
 
   } catch (error) {
     console.error(`Erro ao inicializar o banco de dados: ${error}`);
