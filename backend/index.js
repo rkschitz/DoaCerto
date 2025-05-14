@@ -64,7 +64,7 @@ const Dependente = require("./src/model/dependente");
 
 const createTables = async () => {
   try {
-    await database.db.sync({ force: false, logging: console.log });
+    await database.db.sync({ force: true, logging: console.log });
 
     const cypherSenha = await bcrypt.hash("admin", 10);
 
@@ -243,7 +243,8 @@ const createTables = async () => {
         campanha.descricao,
         campanha.dtInicio,
         campanha.dtFinal,
-        campanha.idOrganizacao
+        campanha.idOrganizacao,
+        campanha.metas
       );
     }
 
@@ -261,12 +262,6 @@ const createTables = async () => {
     }
 
     console.log("Movimentações criadas");
-
-    for (const meta of metaJson) {
-      await MetaController.criar(meta.meta, meta.idCampanha, meta.idAlimento, meta.idUnidadeMedida);
-    }
-
-    console.log('Metas criadas')
 
   } catch (error) {
     console.error(`Erro ao inicializar o banco de dados: ${error}`);
