@@ -1,12 +1,12 @@
 const { literal } = require("sequelize");
 const DonatarioModel = require('../model/donatario');
 const DependenteController = require('../controller/dependente');
-const pessoaModel = require('../model/pessoa');
-const organizacaoModel = require('../model/organizacao');
-const situacaoHabitacional = require('../model/situacaoHabitacional');
-const situacaoProfissional = require('../model/situacaoProfissional');
+const PessoaModel = require('../model/pessoa');
+const OrganizacaoModel = require('../model/organizacao');
+const SituacaoHabitacionalModel = require('../model/situacaoHabitacional');
+const SituacaoProfissionalModel = require('../model/situacaoProfissional');
 const dependente = require('../model/dependente');
-const grauParentescoModel = require('../model/grauParentesco');
+const GrauParentescoModel = require('../model/grauParentesco');
 const DependenteModel = require('../model/dependente');
 const { Op } = require('sequelize');
 const { includeEnderecoCompleto, formatarPessoa } = require("../utils/formatadores");
@@ -50,7 +50,6 @@ class DonatarioController {
 
             if (Array.isArray(dependentes) && dependentes.length > 0) {
                 for (const dependente of dependentes) {
-                    console.log(dependente)
                     try {
                         await DependenteController.criar(
                             dependente.idPessoa,
@@ -88,13 +87,11 @@ class DonatarioController {
         dependentes = []
     ) {
         try {
-            // 1. Busca dados atuais
             const donatarioAtual = await DonatarioModel.findOne({ where: { idDonatario } });
             if (!donatarioAtual) {
                 return { mensagem: "Donatário não encontrado." };
             }
 
-            // 2. Faz o update usando os valores novos ou os antigos se não forem informados
             const donatarioValue = await DonatarioModel.update({
                 idPessoa: idPessoa ?? donatarioAtual.idPessoa,
                 idSituacaoHabitacional: idSituacaoHabitacional ?? donatarioAtual.idSituacaoHabitacional,
@@ -196,49 +193,49 @@ class DonatarioController {
             where: { ieSituacao: 'A' },
             include: [
                 {
-                    model: pessoaModel,
+                    model: PessoaModel,
                     as: 'pessoa',
                     where: Object.keys(wherePessoa).length ? wherePessoa : undefined,
                     attributes: ['idPessoa', 'nome', 'cpf', 'dtNascimento', 'sexo', 'telefone'],
                     include: includeEnderecoCompleto
                 },
                 {
-                    model: pessoaModel,
+                    model: PessoaModel,
                     as: 'responsavel',
                     attributes: ['idPessoa', 'nome', 'cpf']
                 },
                 {
-                    model: organizacaoModel,
+                    model: OrganizacaoModel,
                     as: 'organizacao',
                     attributes: ['idOrganizacao', 'organizacao'],
                     include: {
-                        model: pessoaModel,
+                        model: PessoaModel,
                         as: 'secretaria',
                         attributes: ['idPessoa', 'nome', 'cpf']
                     }
                 },
                 {
-                    model: situacaoHabitacional,
+                    model: SituacaoHabitacionalModel,
                     as: 'situacaoHabitacional',
                     attributes: ['idSituacaoHabitacional', 'situacaoHabitacional']
                 },
                 {
-                    model: situacaoProfissional,
+                    model: SituacaoProfissionalModel,
                     as: 'situacaoProfissional',
                     attributes: ['idSituacaoProfissional', 'situacaoProfissional']
                 },
                 {
-                    model: dependente,
+                    model: DependenteModel,
                     as: 'dependentes',
                     attributes: ['idDependente'],
                     include: [
                         {
-                            model: pessoaModel,
+                            model: PessoaModel,
                             as: 'pessoa',
                             attributes: ['idPessoa', 'nome', 'cpf', 'dtNascimento']
                         },
                         {
-                            model: grauParentescoModel,
+                            model: GrauParentescoModel,
                             as: 'grauParentesco',
                             attributes: ['idGrauParentesco', 'grauParentesco']
                         }
@@ -251,6 +248,14 @@ class DonatarioController {
             const json = d.toJSON();
             return {
                 ...json,
+                dependentes: json.dependentes.map(d => ({
+                    grauParentesco: d.grauParentesco.grauParentesco,
+                    idGrauParentesco: d.grauParentesco.idGrauParentesco,
+                    idDependente: d.idDependente,
+                    idPessoa: d.pessoa.idPessoa,
+                    nome: d.pessoa.nome,
+                    dtNascimento: d.pessoa.dtNascimento
+                })),
                 pessoa: formatarPessoa(json.pessoa)
             };
         })

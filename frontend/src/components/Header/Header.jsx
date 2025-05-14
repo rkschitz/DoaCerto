@@ -14,15 +14,12 @@ const Header = () => {
       <img src={Logo} alt="Logo" className={styles.logo} />
       <nav className={styles.navLinks}>
         <a onClick={() => navigate("/")} className={location.pathname === "/" ? styles.activeLink : ""}>Home </a>
-        {/* <a onClick={() => navigate("/campanhas")} className={location.pathname === "/campanhas" ? styles.activeLink : ""}>Campanhas</a>
-        <a onClick={() => navigate("/sobre")} className={location.pathname === "/sobre" ? styles.activeLink : ""}>Sobre</a>
-        {role == 'A' && <a onClick={() => navigate("/persons")} className={location.pathname === "/persons" ? styles.activeLink : ""}>Gerenciar pessoas</a>}
-        {role == 'A' && <a onClick={() => navigate("/organizations")} className={location.pathname === "/organizations" ? styles.activeLink : ""}>Gerenciar organizações</a>} */}
         {role === 'A' && <a onClick={() => navigate("/donatarios")} className={location.pathname === "/donatarios" ? styles.activeLink : ""}>Gerenciar Donatarios</a>}
-        {(role === 'A' || role === 'O') && <a onClick={() => navigate("/pessoa")} className={location.pathname === "/pessoa" ? styles.activeLink : ""}>Gerenciar Pessoas</a>}    
+        {(role === 'A' || role === 'O') && <a onClick={() => navigate("/pessoa")} className={location.pathname === "/pessoa" ? styles.activeLink : ""}>Gerenciar Pessoas</a>}
         {role === 'A' && <a onClick={() => navigate("/organizacoes")} className={location.pathname === "/organizacoes" ? styles.activeLink : ""}>Gerenciar Organizações</a>}
-        {(role === 'A' || role === 'O') && <a onClick={() => navigate("/movimentacoes")} className={location.pathname === "/movimentacoes" ? styles.activeLink : ""}>Movimentações</a>}        
-        </nav>
+        {(role === 'A' || role === 'O') && <a onClick={() => navigate("/movimentacoes")} className={location.pathname === "/movimentacoes" ? styles.activeLink : ""}>Movimentações</a>}
+        {(role === 'A' || role === 'O') && <a onClick={() => navigate("/campanhas")} className={location.pathname === "/campanhas" ? styles.activeLink : ""}>Campanhas</a>}
+      </nav>
       <div className={styles.authButtons}>
         <div className={styles.dropdown}>
           <button className={styles.loginBtn}>Registrar-se</button>
@@ -44,7 +41,7 @@ const Header = () => {
         {!token ? <button className={styles.loginBtn} onClick={() => navigate("/login")}>
           Login
         </button>
-          : 
+          :
           <button className={styles.logoutBtn} onClick={logout}>Logout</button>}
       </div>
     </header>

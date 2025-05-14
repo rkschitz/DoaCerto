@@ -2,7 +2,7 @@ import { FloatingLabel, Form } from "react-bootstrap";
 import PessoaLocalizador from "../../Localizadores/LocalizadorPessoa/LocalizadorPessoa";
 import { useState } from "react";
 
-export default function SelectPessoa({ label, onChange, value }) {
+export default function SelectPessoa({ label, onChange, value, disabled }) {
 
     const [openLocalizadorPessoa, setOpenLocalizadorPessoa] = useState(false);
     const [pessoa, setPessoa] = useState();
@@ -17,6 +17,7 @@ export default function SelectPessoa({ label, onChange, value }) {
                     onClick={() => {
                         setOpenLocalizadorPessoa(true);
                     }}
+                    disabled={disabled}
                 />
             </FloatingLabel>
             <PessoaLocalizador

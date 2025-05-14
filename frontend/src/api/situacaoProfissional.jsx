@@ -1,6 +1,6 @@
 import api from './api';
 
-export const buscarTodos = async () => {
+export const buscarTodosSituacaoProfissional = async () => {
     const response = await api.get('/api/v1/situacaoProfissional')
     return response;
 };

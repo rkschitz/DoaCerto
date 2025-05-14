@@ -14,3 +14,8 @@ export const editarMovimentacao = async (movimentacao) => {
     const response = await api.put(`/api/v1/movimentacao/${movimentacao.idMovimentacao}`, movimentacao);
     return response;
 }
+
+export const excluirMovimentacao = async (idMovimentacao) => {
+    const response = await api.delete(`/api/v1/movimentacao/${idMovimentacao}`);
+    return response;
+}

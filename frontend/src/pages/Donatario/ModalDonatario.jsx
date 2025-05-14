@@ -13,6 +13,9 @@ import calcularIdade from "../../utils/calcularIdade";
 
 const defaultState = {
     idPessoa: null,
+    cras: null,
+    cadastroCras: null,
+    outroLocal: null,
     dependentes: []
 }
 
@@ -23,12 +26,11 @@ export default function ModalDonatario({
     onSubmit,
     onCancel
 }) {
-    // const [selectedDonatario, setSelectedDonatario] = useState(defaultState);
     const [donatario, setDonatario] = useState(defaultState)
-    const [dependentes, setDependentes] = useState([]);
     const [isEditMode, setIsEditMode] = useState(false);
 
     useEffect(() => {
+        console.log(donatarioSelecionado)
         if (donatarioSelecionado?.idDonatario) {
             setDonatario(donatarioSelecionado);
             setIsEditMode(true);
@@ -79,14 +81,13 @@ export default function ModalDonatario({
 
     function handleReset() {
         setDonatario(defaultState);
-        setDependentes([]);
         onCancel?.();
         setShow(false);
     }
 
     const adicionarDependente = () => {
         const dependentesAtuais = donatario.dependentes || [];
-        const novosDependentes = [...dependentesAtuais, { idPessoa: "", idade: "", idGrauParentesco: "" }];
+        const novosDependentes = [...dependentesAtuais, { idPessoa: "", idGrauParentesco: "", dtNascimento: "" }];
         setDonatario({ ...donatario, dependentes: novosDependentes });
     };
 
@@ -186,15 +187,14 @@ export default function ModalDonatario({
                         <FloatingLabel controlId="inputEndereco" label="Endereço">
                             <Form.Control
                                 type="text"
-                                value={
-                                    'Rua ' + donatario.pessoa?.endereco?.rua + ' ' +
+                                value={donatario.pessoa?.endereco?.rua ? 'Rua ' + donatario.pessoa?.endereco?.rua + ' ' +
                                     donatario.pessoa?.endereco?.numero + ' ' +
                                     donatario.pessoa?.endereco?.bairro + ' ' +
                                     donatario.pessoa?.endereco?.complemento
                                     || 'Rua ' + donatario.endereco?.rua + ' ' +
                                     donatario.endereco?.numero + ' ' +
                                     donatario.endereco?.bairro + ' ' +
-                                    donatario.endereco?.complemento || ""
+                                    donatario.endereco?.complemento : null
                                 }
                                 disabled
                             />
@@ -215,6 +215,35 @@ export default function ModalDonatario({
                         />
                     </Col>
                 </Row>
+                <Row>
+                    <RadioGroup
+                        title="Cadastro CRAS?"
+                        options={[{ label: "Sim", value: "1" }, { label: "Não", value: "0" }, { label: "Outro local", value: "2" }]}
+                        selectedValue={donatario.cras}
+                        onChange={(e) =>
+                            setDonatario({
+                                ...donatario,
+                                cras: e.target.value,
+                            })
+                        }
+                    />
+                </Row>
+                {(donatario.cras != 0 || !donatario.cras) &&
+                    < Row className="mb-3">
+                        < FloatingLabel controlId="inputCadastroCrasOUOutroLocal" label={donatario.cras === "1" ? 'Cadastro cras' : 'Outro local'}>
+                            <Form.Control
+                                type="text"
+                                value={donatario.cras === "1" ? donatario.cadastroCras : donatario.outroLocal || ""}
+                                onChange={(e) =>
+                                    setDonatario({
+                                        ...donatario,
+                                        [donatario.cras === "1" ? 'cadastroCras' : 'outroLocal']: e.target.value,
+                                    })
+                                }
+                            />
+                        </FloatingLabel>
+                    </Row>
+                }
 
                 <Row>
                     <Col md={8} className="mb-3">
@@ -323,21 +352,24 @@ export default function ModalDonatario({
                     Adicionar Morador
                 </button>
 
-                {donatario.dependentes.map((item, index) => (
+                {donatario?.dependentes.map((item, index) => (
                     <Row key={index} className="mb-3">
                         <Form.Group className="col">
                             <SelectPessoa
                                 label={'Pessoa'}
-                                onChange={(dependente) => { atualizarDependente(index, 'idPessoa', dependente.idPessoa) }}
-                                value={item.pessoa?.nome}
+                                onChange={(dependente) => {
+                                    atualizarDependente(index, 'idPessoa', dependente.idPessoa)
+                                    atualizarDependente(index, 'dtNascimento', dependente.dtNascimento)
+                                }}
+
+                                value={item?.nome}
                             />
                         </Form.Group>
                         <Form.Group className="col">
                             <FloatingLabel controlId="idadeDependente" label="Idade">
                                 <Form.Control
                                     type="number"
-                                    value={calcularIdade(item.pessoa?.dtNascimento)}
-                                    onChange={(e) => atualizarDependente(index, 'idade', e.target.value)}
+                                    value={calcularIdade(item.dtNascimento)}
                                     disabled
                                 />
                             </FloatingLabel>
@@ -345,34 +377,13 @@ export default function ModalDonatario({
                         <Form.Group className="col">
                             <SelectGrauParentesco
                                 onChange={(grauParentesco) => {
-                                    atualizarDependente(index, 'idGrauParentesco', grauParentesco)
+                                    atualizarDependente(index, 'idGrauParentesco', grauParentesco);
                                 }}
-                                value={item.grauParentesco?.idGrauParentesco}
+                                value={item.idGrauParentesco}
                                 placeholder="Selecione o grau de parentesco"
                             />
                         </Form.Group>
-
                     </Row>
-                    // <div key={index}>
-                    //     <strong>Nome:</strong> {dependente?.nome || ""}{" "}
-                    //     <strong>Idade:</strong> {dependente?.idade || ""}
-                    //     <SelectGrauParentesco
-                    //         onChange={(grauParentesco) => {
-                    //             const updated = [...dependentes];
-                    //             updated[index].idGrauParentesco = grauParentesco;
-                    //             setDependentes(updated);
-                    //         }}
-                    //         value={dependente.idGrauParentesco || ""}
-                    //         placeholder="Selecione o grau de parentesco"
-                    //     />
-                    //     <button
-                    //         type="button"
-                    //         className="btn btn-danger"
-                    //         onClick={() => setDependentes(dependentes.filter((_, i) => i !== index))}
-                    //     >
-                    //         Remover
-                    //     </button>
-                    // </div>
                 ))}
             </Form>
         </CustomModal >

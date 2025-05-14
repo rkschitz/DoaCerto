@@ -6,7 +6,6 @@ const bairroModel = require('../model/bairro');
 const cidadeModel = require('../model/cidade');
 const estadoModel = require('../model/estado');
 const paisModel = require('../model/pais');
-const DonatarioController = require('../controller/donatario')
 
 const { Op } = require('sequelize');
 

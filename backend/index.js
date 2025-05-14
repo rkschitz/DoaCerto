@@ -20,6 +20,8 @@ const GrauParentescoRouter = require("./src/routes/grauParentesco");
 const MovimentacaoRouter = require("./src/routes/movimentacao")
 const CampanhaRouter = require("./src/routes/campanha");
 const UnidadeMedidaRouter = require("./src/routes/unidadeMedida")
+const SituacaoHabitacionalRouter = require("./src/routes/situacaoHabitacional");
+const SituacaoProfissionalRouter = require("./src/routes/situacaoProfissional");
 
 const PessoaController = require("./src/controller/pessoa");
 const OrganizacaoController = require("./src/controller/organizacao");
@@ -29,6 +31,7 @@ const DependenteController = require("./src/controller/dependente");
 const UnidadeMedidaController = require("./src/controller/unidadeMedida");
 const MovimentacaoController = require("./src/controller/movimentacao");
 const CampanhaController = require("./src/controller/campanha");
+const MetaController = require("./src/controller/meta")
 
 require("./src/model/association");
 const app = express();
@@ -55,6 +58,8 @@ app.use("/api/v1/grauParentesco", GrauParentescoRouter);
 app.use("/api/v1/movimentacao", MovimentacaoRouter)
 app.use("/api/v1/campanha", CampanhaRouter)
 app.use("/api/v1/unidade_medida", UnidadeMedidaRouter)
+app.use("/api/v1/situacaoHabitacional", SituacaoHabitacionalRouter);
+app.use("/api/v1/situacaoProfissional", SituacaoProfissionalRouter);
 const Dependente = require("./src/model/dependente");
 
 const createTables = async () => {
@@ -123,6 +128,11 @@ const createTables = async () => {
     const campanhaPath = path.join(__dirname, "src/data/campanha.json");
     const campanhaJson = JSON.parse(
       fs.readFileSync(campanhaPath, "utf-8")
+    )
+
+    const metaPath = path.join(__dirname, "src/data/metas.json");
+    const metaJson = JSON.parse(
+      fs.readFileSync(metaPath, "utf-8")
     )
 
     // Cadastrar tipos de alimentos sem repetir
@@ -233,7 +243,8 @@ const createTables = async () => {
         campanha.descricao,
         campanha.dtInicio,
         campanha.dtFinal,
-        campanha.idOrganizacao
+        campanha.idOrganizacao,
+        campanha.metas
       );
     }
 

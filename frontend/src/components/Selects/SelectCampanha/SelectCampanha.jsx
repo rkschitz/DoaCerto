@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react"
 import Select from "../Select/Select"
-import { buscarCampanhasAtivas } from "../../../api/campanha"
+import { buscarCampanhas } from "../../../api/campanha"
+import { useContext } from "react"
+import { AuthContext } from "../../../auth/Context"
+
 export default function SelectCampanha({ onChange, value, disabled }) {
 
     const [opcoes, setOpcoes] = useState([])
+    const { id, token, role } = useContext(AuthContext);
 
     const buscarOpcoes = async () => {
-        const response = await buscarCampanhasAtivas();
+        const response = await buscarCampanhas(id, true);
         if (response.status === 200) {
             setOpcoes(response.data.map(item => ({ value: item.idCampanha, descricao: item.titulo })))
         } else {

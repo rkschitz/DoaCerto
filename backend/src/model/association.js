@@ -17,6 +17,7 @@ const Estado = require("./estado");
 const Pais = require("./pais");
 const Endereco = require("./endereco");
 const Campanha = require("./campanha");
+const Meta = require("./meta");
 
 // 🥦 Relacionamento entre TipoAlimento e Alimento
 TipoAlimento.hasMany(Alimento, { foreignKey: "idTipoAlimento" });
@@ -94,43 +95,22 @@ Dependente.belongsTo(GrauParentesco, {
 });
 
 // GrauParentesco possui muitos Dependentes (1:N)
-GrauParentesco.hasMany(Dependente, {
-  as: "dependentes",
-  foreignKey: "idGrauParentesco",
-});
+GrauParentesco.hasMany(Dependente, { as: "dependentes", foreignKey: "idGrauParentesco", });
 
-MovimentacaoAlimento.belongsTo(Movimentacao, {
-  foreignKey: "idMovimentacao",
-  as: "movimentacao",
-});
+MovimentacaoAlimento.belongsTo(Movimentacao, { foreignKey: "idMovimentacao", as: "movimentacao", onDelete: 'CASCADE' });
 
 // MovimentacaoAlimento belongs to Alimento
-MovimentacaoAlimento.belongsTo(Alimento, {
-  foreignKey: "idAlimento",
-  as: "alimento",
-});
+MovimentacaoAlimento.belongsTo(Alimento, { foreignKey: "idAlimento", as: "alimento", });
 
 // MovimentacaoAlimento belongs to UnidadeMedida
-MovimentacaoAlimento.belongsTo(UnidadeMedida, {
-  foreignKey: "idUnidadeMedida",
-  as: "unidade_medida",
-});
+MovimentacaoAlimento.belongsTo(UnidadeMedida, { foreignKey: "idUnidadeMedida", as: "unidade_medida", });
 
 // Opcional: reverse relations, caso precise acessar os MovimentacaoAlimento a partir dos outros modelos
-Movimentacao.hasMany(MovimentacaoAlimento, {
-  foreignKey: "idMovimentacao",
-  as: "alimentos",
-});
+Movimentacao.hasMany(MovimentacaoAlimento, { foreignKey: "idMovimentacao", as: "alimentos", });
 
-Alimento.hasMany(MovimentacaoAlimento, {
-  foreignKey: "idAlimento",
-  as: "alimentos",
-});
+Alimento.hasMany(MovimentacaoAlimento, { foreignKey: "idAlimento", as: "alimentos", });
 
-UnidadeMedida.hasMany(MovimentacaoAlimento, {
-  foreignKey: "idUnidadeMedida",
-  as: "movimentacao_alimento",
-});
+UnidadeMedida.hasMany(MovimentacaoAlimento, { foreignKey: "idUnidadeMedida", as: "movimentacao_alimento", });
 
 Rua.belongsTo(Bairro, { foreignKey: "idBairro" });
 Bairro.hasMany(Rua, { foreignKey: "idBairro" });
@@ -163,4 +143,13 @@ Movimentacao.belongsTo(Donatario, { foreignKey: 'idDonatario' });
 Donatario.hasMany(Movimentacao, { foreignKey: 'idDonatario' });
 
 Movimentacao.belongsTo(Pessoa, { foreignKey: 'idDoador', as: 'doador' })
-Pessoa.hasMany(Movimentacao, { foreignKey: 'idPessoa', as: 'doadores'});
+Pessoa.hasMany(Movimentacao, { foreignKey: 'idPessoa', as: 'doadores' });
+
+Meta.belongsTo(Campanha, { foreignKey: 'idCampanha', as: 'campanha' });
+Campanha.hasMany(Meta, { foreignKey: 'idCampanha', as: 'metas' });
+
+Meta.belongsTo(Alimento, { foreignKey: 'idAlimento', as: 'alimento' });
+Alimento.hasMany(Meta, { foreignKey: 'idAlimento', as: 'metas' });
+
+Meta.belongsTo(UnidadeMedida, { foreignKey: 'idUnidadeMedida', as: 'unidade_medida' });
+UnidadeMedida.hasMany(Meta, { foreignKey: 'idUnidadeMedida', as: 'metas' });

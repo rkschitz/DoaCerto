@@ -28,8 +28,10 @@ export default function MovimentacaoModal({
     onMovimentacaoAtualizada
 }) {
     const [movimentacao, setMovimentacao] = useState(defaultState);
+    const [isSubmitDisabled, setIsSubmitDisabled] = useState(false);
 
     useEffect(() => {
+        console.log(movimentacaoSelecionada)
         if (show) {
             if (movimentacaoSelecionada) {
                 console.log(movimentacaoSelecionada)
@@ -47,11 +49,13 @@ export default function MovimentacaoModal({
     };
 
     const salvar = async () => {
+        if (movimentacao?.alimentos.length === 0) {
+            toast.error('Adicione pelo menos um alimento')
+            return;
+        }
         if (movimentacaoSelecionada) {
             try {
-                console.log(movimentacao)
                 const response = await editarMovimentacao(movimentacao);
-                console.log(response)
                 if (response.status === 200) {
                     toast(response.data.message)
                     onMovimentacaoAtualizada?.(response.data);
@@ -64,6 +68,7 @@ export default function MovimentacaoModal({
                 const response = await criarMovimentacao(movimentacao);
                 if (response.status === 200) {
                     toast('Movimentação registrada com sucesso')
+                    onMovimentacaoCriada?.(response.data);
                 }
             } catch (e) {
                 toast.error(e.message)
@@ -72,7 +77,26 @@ export default function MovimentacaoModal({
     }
 
     const submitText = movimentacaoSelecionada ? "Salvar" : "Cadastrar";
-    const isSubmitDisabled = !movimentacao.ieMovimentacao
+
+
+    useEffect(() => {
+        let disable = false;
+
+        if (movimentacao.alimentos.length === 0) {
+            disable = true;
+        } else {
+            for (const item of movimentacao.alimentos) {
+                const algumVazio = !item.idAlimento || !item.idUnidadeMedida || !item.quantidade;
+
+                if (algumVazio) {
+                    disable = true;
+                    break;
+                }
+            }
+        }
+
+        setIsSubmitDisabled(disable);
+    }, [movimentacao]);
 
     const adicionarAlimento = () => {
         const alimentosAtuais = movimentacao.alimentos || [];
@@ -85,6 +109,12 @@ export default function MovimentacaoModal({
         novosAlimentos[index][campo] = valor;
         setMovimentacao({ ...movimentacao, alimentos: novosAlimentos });
     };
+
+    const removerAlimento = (index) => {
+        const novosAlimentos = [...movimentacao.alimentos];
+        novosAlimentos.splice(index, 1);
+        setMovimentacao({ ...movimentacao, alimentos: novosAlimentos });
+    }
 
     return (
         <CustomModal
@@ -114,12 +144,14 @@ export default function MovimentacaoModal({
             <Row className="mb-3">
                 <SelectPessoa label='Doador' onChange={(doador) => setMovimentacao({ ...movimentacao, idDoador: doador.idPessoa })}
                     value={movimentacao.nomeDoador}
+                    disabled={!movimentacao.ieMovimentacao || movimentacao.ieMovimentacao === 'S'}
                 />
             </Row>
             <Row className="mb-3">
                 <SelectDonatario
                     onChange={(donatario) => setMovimentacao({ ...movimentacao, idDonatario: donatario.idDonatario })}
                     value={movimentacao.nomeDonatorio}
+                    disabled={!movimentacao.ieMovimentacao || movimentacao.ieMovimentacao === 'E'}
                 />
             </Row>
             <h5>Moradores na casa</h5>
@@ -146,6 +178,7 @@ export default function MovimentacaoModal({
                             onChange={(e) => atualizarAlimento(index, "quantidade", e.target.value)}
                         />
                     </Form.Group>
+                    <Button onClick={(e) => removerAlimento(index)}>Remover Alimento</Button>
                 </Row>
             ))}
             <Button onClick={adicionarAlimento}

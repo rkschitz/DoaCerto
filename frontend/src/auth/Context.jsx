@@ -23,7 +23,7 @@ const getRole = (token) => {
 const getId = (token) => {
   try {
     const decoded = jwtDecode(token);
-    return decoded.id
+    return decoded.idOrganizacao
   } catch (error) {
     return false;
   }

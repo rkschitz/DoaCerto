@@ -305,11 +305,11 @@ export default function Donatario() {
                       <tbody>
                         {donatario.dependentes.map((dep, i) => (
                           <tr key={i}>
-                            <td>{dep?.pessoa?.nome}</td>
+                            <td>{dep?.nome}</td>
                             <td>
-                              {calcularIdade(dep?.pessoa?.dtNascimento)}
+                              {calcularIdade(dep?.dtNascimento)}
                             </td>
-                            <td>{dep?.grauParentesco?.grauParentesco}</td>
+                            <td>{dep?.grauParentesco}</td>
                           </tr>
                         ))}
                       </tbody>

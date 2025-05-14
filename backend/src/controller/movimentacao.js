@@ -1,7 +1,7 @@
 const MovimentacaoModel = require("../model/movimentacao");
-const movimentacaoAlimentoModel = require("../model/movimentacaoAlimento");
-const alimentoModel = require('../model/alimento')
-const unidadeMedidaModel = require('../model/unidadeMedida')
+const MovimentacaoAlimentoModel = require("../model/movimentacaoAlimento");
+const AlimentoModel = require('../model/alimento')
+const UnidadeMedidaModel = require('../model/unidadeMedida')
 const CampanhaModel = require('../model/campanha')
 const PessoaModel = require('../model/pessoa')
 const DonatarioModel = require('../model/donatario')
@@ -24,23 +24,19 @@ class MovimentacaoController {
         idCampanha
       });
 
-      console.log('chegou aqui criou movimentação', response)
-
       if (response.dataValues) {
         for (const alimento of alimentos) {
-          const alimentos = await movimentacaoAlimentoModel.create({
+          const alimentos = await MovimentacaoAlimentoModel.create({
             idMovimentacao: response.dataValues.idMovimentacao,
             idAlimento: alimento.idAlimento,
             idUnidadeMedida: alimento.idUnidadeMedida,
             quantidade: alimento.quantidade,
           });
-          console.log('chegou aqui criou alimento')
           return alimentos;
         }
       }
       return response;
     } catch (e) {
-      console.log(e)
       return { mensagem: e };
     }
   }
@@ -55,15 +51,15 @@ class MovimentacaoController {
       order: [['createdAt', 'DESC']],
       include: [
         {
-          model: movimentacaoAlimentoModel,
+          model: MovimentacaoAlimentoModel,
           as: "alimentos",
           attributes: ["quantidade", "idMovimentacaoAlimento"],
           include: [{
-            model: alimentoModel,
+            model: AlimentoModel,
             as: "alimento",
             attributes: ['idAlimento', 'alimento']
           }, {
-            model: unidadeMedidaModel,
+            model: UnidadeMedidaModel,
             as: "unidade_medida",
             attributes: ['idUnidadeMedida', 'dsUnidadeMedida']
           }]
@@ -117,66 +113,114 @@ class MovimentacaoController {
     return response;
   }
 
-  async editar(idMovimentacao, idOrganizacao, idCampanha, idDoador, idDonatario, alimentos = []) {
-    try {
+  async excluir(idMovimentacao) {
+    const movimentacao = await MovimentacaoModel.findOne({ where: { idMovimentacao } });
 
-      const oldMovimentacao = await MovimentacaoModel.findOne({ idMovimentacao });
-
-      if (!oldMovimentacao) {
-        return {
-          message: 'Movimentação não encontrada',
-          success: false,
-        };
-      }
-
-      const movimentacaoAlterar = {
-        idCampanha: idCampanha || oldMovimentacao.idCampanha,
-        idDoador: idDoador || oldMovimentacao.idDoador,
-        idDonatario: idDonatario || oldMovimentacao.idDonatario,
-        idOrganizacao: idOrganizacao || oldMovimentacao.idOrganizacao,
-      }
-
-      const movimentacao = await MovimentacaoModel.update(movimentacaoAlterar, {
-        where: { idMovimentacao }
-      });
-
-      let alimentosAtualizados = [];
-      if (alimentos.length > 0) {
-        await movimentacaoAlimentoModel.destroy({
-          where: { idMovimentacao }
-        });
-
-        for (const alimento of alimentos) {
-          const alimentoCriado = await movimentacaoAlimentoModel.create({
-            idMovimentacao,
-            idAlimento: alimento.idAlimento,
-            idUnidadeMedida: alimento.idUnidadeMedida,
-            quantidade: alimento.quantidade,
-          });
-          alimentosAtualizados.push(alimentoCriado);
-        }
-      } else {
-        alimentosAtualizados = await movimentacaoAlimentoModel.findAll({
-          where: { idMovimentacao }
-        });
-      }
-
+    if (!movimentacao) {
       return {
-        message: 'Movimentação atualizada com sucesso',
-        success: true,
-        data: {
-          movimentacao,
-          alimentos: alimentosAtualizados
-        }
-      };
-    } catch (e) {
-      console.log(e)
-      return {
-        message: 'Erro ao atualizar movimentação',
+        message: 'Movimentação não encontrada',
         success: false,
-        error: e.message
       };
     }
+
+    await MovimentacaoModel.destroy({ where: { idMovimentacao } });
+
+    return { message: 'Movimentação excluída com sucesso' };
+  }
+
+  async editar(idMovimentacao, idCampanha, idDoador, idDonatario, alimentos = []) {
+
+    const oldMovimentacao = await MovimentacaoModel.findOne({ idMovimentacao });
+
+    if (!oldMovimentacao) {
+      return {
+        message: 'Movimentação não encontrada',
+        success: false,
+      };
+    }
+
+    const movimentacaoAlterar = {
+      idCampanha: idCampanha || oldMovimentacao.idCampanha,
+      idDoador: idDoador || oldMovimentacao.idDoador,
+      idDonatario: idDonatario || oldMovimentacao.idDonatario
+    }
+
+    const movimentacao = await MovimentacaoModel.update(movimentacaoAlterar, {
+      where: { idMovimentacao }
+    });
+
+    let alimentosAtualizados = [];
+    await MovimentacaoAlimentoModel.destroy({
+      where: { idMovimentacao }
+    });
+
+    for (const alimento of alimentos) {
+      const alimentoCriado = await MovimentacaoAlimentoModel.create({
+        idMovimentacao,
+        idAlimento: alimento.idAlimento,
+        idUnidadeMedida: alimento.idUnidadeMedida,
+        quantidade: alimento.quantidade,
+      });
+      alimentosAtualizados.push(alimentoCriado);
+    }
+
+    return {
+      message: 'Movimentação atualizada com sucesso',
+      data: {
+        movimentacao,
+        alimentos: alimentosAtualizados
+      }
+    };
+  }
+
+  // async buscarMovimentacoesPorCampanha(idCampanha){
+  //   const movimentacoes = await MovimentacaoModel.findAll({
+  //     where: { idCampanha },
+  //     order: [['createdAt', 'DESC']],
+  //     include: [
+  //       {
+  //         model: MovimentacaoAlimentoModel,
+  //         as: "alimentos",
+  //         attributes: ["quantidade", "idMovimentacaoAlimento"],
+  //         include: [{
+  //           model: AlimentoModel,
+  //           as: "alimento",
+  //           attributes: ['idAlimento', 'alimento']
+  //         }, {
+  //           model: UnidadeMedidaModel,
+  //           as: "unidade_medida",
+  //           attributes: ['idUnidadeMedida', 'dsUnidadeMedida']
+  //         }]
+  //       }
+  //     ],
+  //   });
+
+  //   return movimentacoes;
+  // }
+
+  async buscarQuantidadeEntradaPorMeta(idCampanha, idAlimento, idUnidadeMedida, idOrganizacao) {
+
+    console.log("idCampanha", idCampanha, "idAlimento", idAlimento, "idUnidadeMedida", idUnidadeMedida, "idOrganizacao", idOrganizacao)
+
+    const movimentacoes = await MovimentacaoModel.findAll({
+      where: { idCampanha, 'ieMovimentacao': 'E', idOrganizacao },
+      order: [['createdAt', 'DESC']],
+      include:
+      {
+        model: MovimentacaoAlimentoModel,
+        as: "alimentos",
+        attributes: ["quantidade", "idMovimentacaoAlimento", "idAlimento", "idUnidadeMedida"],
+        where: { idAlimento, idUnidadeMedida },
+        required: true
+      },
+    });
+
+    const totalQuantidade = movimentacoes.reduce((soma, mov) => {
+      const somaAlimentos = mov?.alimentos.reduce((acc, alimento) => acc + Number(alimento.quantidade), 0);
+      return soma + somaAlimentos;
+    }, 0);
+
+    return totalQuantidade;
   }
 
 }

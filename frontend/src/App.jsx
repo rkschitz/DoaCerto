@@ -16,6 +16,7 @@ import Register from "./pages/registro/RegisterPerson.jsx";
 import Organizacao from "./pages/Organizacao/Organizacao.jsx";
 import Movimentacao from "./pages/Movimentacao/Movimentacao.jsx";
 import Campanha from "./pages/Campanha/Campanha.jsx";
+import Home from "./pages/Home/Home.jsx";
 
 const App = () => {
   const [role, setRole] = useState(null);
@@ -30,22 +31,14 @@ const App = () => {
     <AuthProvider>
       <Routes>
         <Route element={<Layout />}>
-          {role === "A" && <Route path="/donatarios" element={<Donatario />} />}
-          {role === "A" && (
-            <Route path="/organizacoes" element={<Organizacao />} />
-          )}
-          {(role === "A" || role === "O") && (
-            <Route path="/pessoa" element={<Pessoa />} />
-          )}
-          {(role === "A" || role === "O") && (
-            <Route path="/movimentacoes" element={<Movimentacao />} />
-          )}
-          {(role === "A" || role === "O") && (
-            <Route path="/campanhas" element={<Campanha />} />
-          )}
-
-          <Route path="/" element={<div>Ola mundo</div>} />
+          {role === "A" && (<Route path="/organizacoes" element={<Organizacao />} />)}
+          {role && <Route path="/donatarios" element={<Donatario />} />}
+          {role && <Route path="/pessoa" element={<Pessoa />} />}
+          {role && <Route path="/movimentacoes" element={<Movimentacao />} />}
+          {role && <Route path="/campanhas" element={<Campanha />} />}
+          {role && <Route path="/" element={<div>Ola mundo</div>} />}
         </Route>
+        <Route path="/campanhas_ativas" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Routes>

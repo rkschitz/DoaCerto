@@ -1,48 +1,14 @@
 [
-    {
-      "dsUnidadeMedida": "Quilograma"
-    },
-    {      "dsUnidadeMedida": "Grama"
-    },
-    {
-      "dsUnidadeMedida": "Miligrama"
-    },
-    {      "dsUnidadeMedida": "Litro"
-    },
-    {
-      "dsUnidadeMedida": "Mililitro"
-    },
-    {
-      "dsUnidadeMedida": "Unidade"
-    },
-    {
-      "dsUnidadeMedida": "Dúzia"
-    },
-    {      "dsUnidadeMedida": "Metro"
-    },
-    {
-      "dsUnidadeMedida": "Centímetro"
-    },
-    {
-      "dsUnidadeMedida": "Metro quadrado"
-    },
-    {
-      "dsUnidadeMedida": "Metro cúbico"
-    },
-    {
-      "dsUnidadeMedida": "Caixa"
-    },
-    {
-      "dsUnidadeMedida": "Pacote"
-    },
-    {
-      "dsUnidadeMedida": "Saco"
-    },
-    {
-      "dsUnidadeMedida": "Lata"
-    },
-    {
-      "dsUnidadeMedida": "Garrafa"
-    }
-  ]
-  
+  { "dsUnidadeMedida": "Quilograma" },
+  { "dsUnidadeMedida": "Grama" },
+  { "dsUnidadeMedida": "Miligrama" },
+  { "dsUnidadeMedida": "Litro" },
+  { "dsUnidadeMedida": "Mililitro" },
+  { "dsUnidadeMedida": "Unidade" },
+  { "dsUnidadeMedida": "Dúzia" },
+  { "dsUnidadeMedida": "Caixa" },
+  { "dsUnidadeMedida": "Pacote" },
+  { "dsUnidadeMedida": "Saco" },
+  { "dsUnidadeMedida": "Lata" },
+  { "dsUnidadeMedida": "Garrafa" }
+]
