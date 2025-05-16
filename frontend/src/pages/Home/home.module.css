@@ -1,0 +1,151 @@
+
+
+/*  COLOCAR ESSA COR DE FUNDO PARA O CARD*/
+/*.{
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(to bottom, #d1b6f1 0%, #ffffff 40%);
+  min-height: 100vh;
+  color: #333;
+  padding: 0;
+  margin: 0;
+}*/
+
+header {
+    background-color: aqua;
+}
+
+.infosTop {
+  /*background-color: #9e8ec8;*/
+  background: linear-gradient(to bottom right, #9e8ec8, #d1b6f1);
+  display: flex;
+  justify-content: center;
+  padding: 8rem 6rem;
+}
+
+.sobre {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  width: 100%;
+}
+
+.textos {
+  max-width: 60%;
+}
+
+.textos h1 {
+  color: #ffffff;
+  font-size: 2.8rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+
+.textos h6 {
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  margin-bottom: 2rem;
+  color: #ffffff;
+}
+
+.textos button {
+  background-color: white;
+  color: #9083b8;
+  padding: 0.75rem 2rem;
+  border: none;
+  border-radius: 25px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-bottom: 2rem;
+}
+
+.textos button:hover {
+  background-color: #f8f8f8;
+  box-shadow: 0px 2px 20px 0px rgba(189, 189, 189, 0.4);
+}
+
+.image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo {
+  width: 30vh;
+}
+
+.center{
+    background-color: wheat;
+}
+
+.center h1{
+    color: #6e59a5;
+
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  padding: 20px;
+}
+
+.campanha {
+  background: linear-gradient(180deg, #f3e9ff, #e6dfff);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0px 4px 12px rgba(100, 100, 111, 0.2);
+  width: 100%;
+  max-width: 23%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: #3d2a5c;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.campanha h2 {
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+  color: #4b2fa0;
+}
+
+.campanha p {
+  font-size: 0.95rem;
+  margin-bottom: 6px;
+}
+
+.unidade {
+  font-weight: bold;
+}
+
+.metasInfo {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.botaoDoar {
+  margin-top: 20px;
+  padding: 12px;
+  background: linear-gradient(to right, #a88df0, #caaeff);
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 10px;
+  cursor: pointer;
+  border: none;
+}
+
+.contato {
+  font-size: 0.85rem;
+  color: #555;
+  margin-top: 10px;
+}
+
+ 
