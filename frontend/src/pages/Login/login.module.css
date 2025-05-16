@@ -3,6 +3,11 @@
     padding: 0;
     box-sizing: border-box;
     font-family: Arial, sans-serif;
+    
+}
+
+html{
+    background-color: #f0f0f0;
 }
 
 body {
