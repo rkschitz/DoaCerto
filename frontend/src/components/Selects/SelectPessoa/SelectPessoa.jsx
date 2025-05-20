@@ -17,7 +17,7 @@ export default function SelectPessoa({ label, onChange, value, disabled }) {
                     onClick={() => {
                         setOpenLocalizadorPessoa(true);
                     }}
-                    disabled={disabled}
+                disabled={disabled}
                 />
             </FloatingLabel>
             <PessoaLocalizador

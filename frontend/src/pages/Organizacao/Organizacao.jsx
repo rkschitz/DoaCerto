@@ -26,6 +26,8 @@ export default function Organizacao() {
                 show={abrirModal}
                 organizacaoSelecionada={organizacaoSelecionada}
                 setShow={setAbrirModal}
+                onOrganizacaoCriada={listarOrganizacoes}
+                onOrganizacaoAtualizada={listarOrganizacoes}
             />
             <div className="lista">
                 {organizacoes.map((organizacao) => (
@@ -38,10 +40,10 @@ export default function Organizacao() {
                         <p>CNPJ: {organizacao.cnpj}</p>
                         <p>Telefone: {organizacao.telefone}</p>
                         <p>Email: {organizacao.email}</p>
-                        <p>IE: {organizacao.ieSituacao}</p>
-                        <p>Secretária: {organizacao.secretaria?.nome}</p>
-                        <p> Rua: {organizacao.endereco?.rua} Número: {organizacao.endereco?.numero} Complemento: {organizacao.endereco?.complemento} </p><br />
-                        <p> Bairro: {organizacao.endereco?.bairro} Estado: {organizacao.endereco?.estado} Pais: {organizacao.endereco?.pais} </p>
+                        <p>Situação: {organizacao.ieSituacao}</p>
+                        <p>Secretária: {organizacao.nomeSecretaria}</p>
+                        <p>Rua: {organizacao.endereco?.rua} Número: {organizacao.endereco?.numero} Complemento: {organizacao.endereco?.complemento} </p><br />
+                        <p>Bairro: {organizacao.endereco?.bairro} Estado: {organizacao.endereco?.estado} Pais: {organizacao.endereco?.pais} </p>
                     </div>
                 ))}
             </div>

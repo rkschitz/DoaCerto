@@ -1,4 +1,5 @@
 [
+    {"alimento": "Cesta básica", "tipoAlimento":"Tudo"},
     { "alimento": "Arroz", "tipoAlimento": "Cereais, pães e tubérculos" },
     { "alimento": "Pão integral", "tipoAlimento": "Cereais, pães e tubérculos" },
     { "alimento": "Batata-doce", "tipoAlimento": "Cereais, pães e tubérculos" },

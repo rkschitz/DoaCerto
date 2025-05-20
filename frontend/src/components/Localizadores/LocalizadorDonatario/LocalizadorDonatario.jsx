@@ -1,6 +1,6 @@
 import { Row, Form, FloatingLabel, Col, Button } from "react-bootstrap";
 import Localizador from "../Localizador/Localizador";
-import { buscarDonatariosAtivos } from "../../../api/donatario";
+import { buscarDonatarios } from "../../../api/donatario";
 import { useState, useEffect } from "react";
 import PessoaModal from "../../../pages/Pessoa/ModalPessoa";
 import formatarDataBR from "../../../utils/formatarDataBR";
@@ -15,8 +15,8 @@ export default function LocalizadorDonatario({ onSelect, show, setShow }) {
 
     const colunasLista = ["Id", "Nome", "CPF", "Data de nascimento", "Sexo"];
 
-    async function atualizarLista(nome, cpf) {
-        const response = await buscarDonatariosAtivos(nome, cpf);
+    async function atualizarLista({ nome, cpf }) {
+        const response = await buscarDonatarios({ nome, cpf, situacaoCadastral: 'A' });
         const responseDonatario = response.data.map((item) => ({
             idPessoa: item.idPessoa,
             nome: item.pessoa.nome,
@@ -26,7 +26,7 @@ export default function LocalizadorDonatario({ onSelect, show, setShow }) {
             sexo: item.pessoa.sexo,
             email: item.pessoa.email,
             telefone: item.pessoa.telefone,
-            idDonatario:item.idDonatario,
+            idDonatario: item.idDonatario,
         }));
         setPessoas(responseDonatario);
     }

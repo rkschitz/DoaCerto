@@ -24,7 +24,7 @@ class Donatario {
                 }
             },
             tempoResidencia: {
-                type: database.db.Sequelize.INTEGER,
+                type: database.db.Sequelize.STRING,
             },
             rendaFamiliar: {
                 type: database.db.Sequelize.DECIMAL(10, 2),
@@ -45,10 +45,10 @@ class Donatario {
             enfermoNaCasa: {
                 type: database.db.Sequelize.STRING
             },
-            situacaoEnfermo:{
+            situacaoEnfermo: {
                 type: database.db.Sequelize.STRING
             },
-            dataCadastro:{
+            dataCadastro: {
                 type: database.db.Sequelize.DATE,
                 defaultValue: database.db.Sequelize.NOW
             },
@@ -59,29 +59,40 @@ class Donatario {
                     key: 'idOrganizacao'
                 }
             },
-            responsavelVisita:{
+            responsavelVisita: {
                 type: database.db.Sequelize.INTEGER,
                 references: {
                     model: 'pessoa',
-                    as:'responsavelVisita',
+                    as: 'responsavelVisita',
                     key: 'idPessoa'
                 }
             },
-            ieSituacao:{
-                type: database.db.Sequelize.STRING,
-                defaultValue: 'A' // A Ativo I Inativo
+            dataVisita: {
+                type: database.db.Sequelize.DATE,
             },
-            situacaoCadastral:{
+            secretariaCadastro: {
+                type: database.db.Sequelize.INTEGER,
+                references: {
+                    model: 'pessoa',
+                    as: 'secretariaCadastro',
+                    key: 'idPessoa'
+                }
+            },
+            // ieSituacao: {
+            //     type: database.db.Sequelize.STRING,
+            //     defaultValue: 'A' // A Ativo I Inativo
+            // },
+            situacaoCadastral: {
                 type: database.db.Sequelize.STRING,
                 defaultValue: 'P' // Pendente Aprovado Reprovado
             },
-            observacao:{
+            observacao: {
                 type: database.db.Sequelize.STRING,
             },
-            dtEntregaCesta:{
-                type: database.db.Sequelize.DATE,
-            },
-            nacionalidade:{
+            // dtEntregaCesta: {
+            //     type: database.db.Sequelize.DATE,
+            // },
+            nacionalidade: {
                 type: database.db.Sequelize.STRING,
             }
         }, {

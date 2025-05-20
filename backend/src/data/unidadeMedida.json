@@ -1,4 +1,5 @@
 [
+  { "dsUnidadeMedida": "Unidade"},  
   { "dsUnidadeMedida": "Quilograma" },
   { "dsUnidadeMedida": "Grama" },
   { "dsUnidadeMedida": "Miligrama" },

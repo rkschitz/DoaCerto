@@ -3,25 +3,25 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const PessoaModel = require("../model/pessoa");
 const enderecoController = require("./endereco");
-const EnderecoModel = require('../model/endereco');
-const RuaModel = require('../model/rua');
-const BairroModel = require('../model/bairro');
-const CidadeModel = require('../model/cidade');
-const EstadoModel = require('../model/estado');
-const PaisModel = require('../model/pais');
 const AlimentoModel = require('../model/alimento')
 const { QueryTypes } = require("sequelize");
 const { sequelize } = require('../config/database')
-const { includeEnderecoCompleto, formatarPessoa } = require("../utils/formatadores");
+const { includeEnderecoCompleto } = require("../utils/formatadores");
+const { Op } = require("sequelize");
 
 const SECRET_KEY = "doacerto";
 const SALT_VALUE = 10;
 
 class OrganizacaoController {
-    async criar(organizacao, cnpj, telefone, email, idPessoa, endereco) {
+    async criar(organizacao, cnpj, telefone, email, secretaria, endereco) {
         const senhaCriptografada = await bcrypt.hash(String(cnpj), SALT_VALUE);
 
         const enderecoValue = await enderecoController.criar(endereco);
+
+        const emailExistente = await organizacaoModel.findOne({ where: { email } });
+        if (emailExistente) {
+            return { mensagem: "Email já cadastrado", sucesso: false };
+        }
 
         try {
             const organizacaoValue = await organizacaoModel.create({
@@ -30,18 +30,18 @@ class OrganizacaoController {
                 telefone,
                 email,
                 senha: senhaCriptografada,
-                idSecretaria: idPessoa,
+                idSecretaria: secretaria,
                 ieSituacao: 'A',
                 role: 'O',
                 idEndereco: !enderecoValue.mensagem ? enderecoValue.dataValues.idEndereco : null
             });
-            return organizacaoValue;
+            return { organizacaoValue, mensagem: "Organizacao criada com sucesso", sucesso: true };
         } catch (e) {
-            return { mensagem: e.message };
+            return { mensagem: e.message, sucesso: false };
         }
     }
 
-    async editar(idOrganizacao, organizacao, cnpj, telefone, email, senha, ieSituacao, idPessoa, endereco) {
+    async editar(idOrganizacao, organizacao, cnpj, telefone, email, senha, ieSituacao, secretaria, endereco) {
         const organizacaoAtual = await organizacaoModel.findByPk(idOrganizacao)
         if (!organizacaoAtual) {
             throw new Error("Organizacao não encontrada.");
@@ -57,7 +57,7 @@ class OrganizacaoController {
         if (telefone != null) updates.telefone = telefone;
         if (email != null) updates.email = email;
         if (ieSituacao != null) updates.ieSituacao = ieSituacao;
-        if (idPessoa != null) updates.idSecretaria = idPessoa;
+        if (secretaria != null) updates.idSecretaria = secretaria;
         if (senha != null) updates.senha = senha;
 
         const senhaCriptografada = await bcrypt.hash(String(senha), SALT_VALUE);
@@ -111,14 +111,16 @@ class OrganizacaoController {
                 includeEnderecoCompleto,
             ]
         });
-        return organizacaoValue.map(p => {
+
+        console.log(organizacaoValue)
+
+        const response = organizacaoValue.map(p => {
             const e = p.endereco;
             const r = e?.rua;
             const b = r?.bairro;
             const c = b?.cidade;
             const est = c?.estado;
             const pais = est?.pai;
-
             return {
                 idOrganizacao: p.idOrganizacao,
                 organizacao: p.organizacao,
@@ -128,6 +130,7 @@ class OrganizacaoController {
                 dtCadastro: p.dtCadastro,
                 ieSituacao: p.ieSituacao,
                 idSecretaria: p.idSecretaria,
+                nomeSecretaria: p.secretaria?.nome,
                 idEndereco: p.idEndereco,
                 endereco: e ? {
                     cep: r?.CEP,
@@ -141,6 +144,10 @@ class OrganizacaoController {
                 } : null,
             }
         })
+
+        console.log(response)
+
+        return response;
     }
 
     async buscarOrganizacoesAtivas() {
@@ -211,6 +218,30 @@ class OrganizacaoController {
             const organizacaoValue = this.listarAlimentosEmEstoque(idOrganizacao);
             return organizacaoValue
         }
+    }
+
+    async validarDado(filtros = {}) {
+        const { email, cnpj } = filtros;
+
+        let whereClause = {};
+
+        if (email) {
+            whereClause.email = email;
+        }
+
+        if (cnpj) {
+            whereClause.cnpj = cnpj;
+        }
+
+        const organizacaoValue = await organizacaoModel.findOne({
+            where: whereClause
+        });
+
+        if (organizacaoValue) {
+            return { mensagem: "indiponível", disponivel: false };
+        }
+
+        return { mensagem: "Disponível", disponivel: true };
     }
 }
 

@@ -7,7 +7,7 @@ export default function Home() {
     const carregou = useRef(false);
 
     async function buscar() {
-        const response = await buscarCampanhas(null, true);
+        const response = await buscarCampanhas({ativos: true});
         setCampanhas(response.data);
     }
 

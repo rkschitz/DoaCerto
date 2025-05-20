@@ -1,8 +1,8 @@
 import api from './api';
 
-export const buscarCampanhas = async (idOrganizacao, ativos) => {
+export const buscarCampanhas = async (param) => {
     const response = await api.get('/api/v1/campanha', {
-        params: { idOrganizacao: idOrganizacao, ativos: ativos }
+        params: param
     })
     return response;
 }

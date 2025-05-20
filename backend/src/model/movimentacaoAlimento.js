@@ -1,42 +1,45 @@
 const database = require("../config/database");
 
-class MovimentacaoAlimento{
-    constructor(){
-        this.model = database.db.define("movimentacao_alimento",{
-            idMovimentacaoAlimento:{
+class MovimentacaoAlimento {
+    constructor() {
+        this.model = database.db.define("movimentacao_alimento", {
+            idMovimentacaoAlimento: {
                 type: database.db.Sequelize.INTEGER,
                 primaryKey: true,
                 autoIncrement: true
             },
-            idMovimentacao:{
+            idMovimentacao: {
                 type: database.db.Sequelize.INTEGER,
                 allowNull: false,
-                references:{
+                references: {
                     model: "movimentacao",
                     key: "idMovimentacao"
                 }
             },
-            idAlimento:{
+            idAlimento: {
                 type: database.db.Sequelize.INTEGER,
                 allowNull: false,
-                references:{
+                references: {
                     model: "alimento",
                     key: "idAlimento"
                 }
             },
-            idUnidadeMedida:{
+            idUnidadeMedida: {
                 type: database.db.Sequelize.INTEGER,
                 allowNull: false,
-                references:{
+                references: {
                     model: "unidade_medida",
                     key: "idUnidadeMedida"
                 }
             },
-            quantidade:{
+            quantidade: {
                 type: database.db.Sequelize.DECIMAL(10, 2),
-                allowNull:false
+                allowNull: false
+            },
+            dataValidade: {
+                type: database.db.Sequelize.DATE,
             }
-        },{
+        }, {
             freezeTableName: true
         })
     }
