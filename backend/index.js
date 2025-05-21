@@ -64,7 +64,7 @@ const Dependente = require("./src/model/dependente");
 
 const createTables = async () => {
   try {
-    await database.db.sync({ force: true, logging: console.log });
+    await database.db.sync({ force: false, logging: console.log });
 
     const cypherSenha = await bcrypt.hash("admin", 10);
 
@@ -214,7 +214,6 @@ const createTables = async () => {
         donatario.idOrganizacao,
         donatario.responsavelVisita,
         donatario.observacao,
-        donatario.dtEntragaCesta,
         donatario.dependentes
       );
     }
@@ -257,7 +256,8 @@ const createTables = async () => {
         movimentacao.idDoador,
         movimentacao.idDonatario,
         movimentacao.idCampanha,
-        movimentacao.alimentos
+        movimentacao.alimentos,
+        movimentacao.dataMovimentacao,
       );
     }
 

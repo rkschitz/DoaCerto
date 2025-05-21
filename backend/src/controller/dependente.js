@@ -13,10 +13,11 @@ class DependenteController {
         }
     }
 
-    async editar(idDependente, idGrauParentesco) {
+    async editar(idDependente, idGrauParentesco, idPessoa) {
         try {
             const dependenteValue = await DependenteModel.update({
-                idGrauParentesco
+                idGrauParentesco,
+                idPessoa
             }, {
                 where: { idDependente }
             })
@@ -41,6 +42,17 @@ class DependenteController {
         try {
             const dependenteValue = await DependenteModel.destroy({
                 where: { idDependente }
+            })
+            return dependenteValue;
+        } catch (e) {
+            return { mensagem: e.message };
+        }
+    }
+
+    async excluirPorDonatario(idDonatario) {
+        try {
+            const dependenteValue = await DependenteModel.destroy({
+                where: { idProvedor: idDonatario }
             })
             return dependenteValue;
         } catch (e) {

@@ -42,6 +42,10 @@ class Movimentacao {
                     model: "campanha",
                     key: "idCampanha"
                 }
+            },
+            dataMovimentacao: {
+                type: database.db.Sequelize.DATE,
+                allowNull: false
             }
         }, {
             freezeTableName: true

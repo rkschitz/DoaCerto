@@ -8,10 +8,10 @@ export default function Home() {
   const [campanhas, setCampanhas] = useState([]);
   const carregou = useRef(false);
 
-  async function buscar() {
-    const response = await buscarCampanhas(null, true);
-    setCampanhas(response.data);
-  }
+    async function buscar() {
+        const response = await buscarCampanhas({ativos: true});
+        setCampanhas(response.data);
+    }
 
   useEffect(() => {
     if (!carregou.current) {

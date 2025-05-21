@@ -37,14 +37,11 @@ Donatario.belongsTo(Pessoa, { foreignKey: "idPessoa" });
 Pessoa.hasMany(Donatario, { foreignKey: "idPessoa" });
 
 // 👥 Relacionamento entre Donatario e Pessoa (Responsável pela Visita)
-Donatario.belongsTo(Pessoa, {
-  as: "responsavel",
-  foreignKey: "responsavelVisita",
-});
-Pessoa.hasMany(Donatario, {
-  as: "visitasResponsaveis",
-  foreignKey: "responsavelVisita",
-});
+Donatario.belongsTo(Pessoa, { as: "responsavel", foreignKey: "responsavelVisita", });
+Pessoa.hasMany(Donatario, { as: "visitasResponsaveis", foreignKey: "responsavelVisita", });
+
+Donatario.belongsTo(Pessoa, { as: "secretariaCastro", foreignKey: "idPessoa" });
+Pessoa.hasMany(Donatario, { as: "secretarias", foreignKey: "idPessoa" });
 
 // 🏢 Relacionamento entre Donatario e Organizacao
 Donatario.belongsTo(Organizacao, {

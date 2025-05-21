@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import { Row, Form, FloatingLabel, Col } from "react-bootstrap";
 import CustomModal from "../../components/Modal/Modal";
-import { criarOrganizacao, editarOrganizacao } from "../../api/organizacao";
-import PessoaLocalizador from "../../components/Localizadores/LocalizadorPessoa/LocalizadorPessoa";
-import SelectAlimento from "../../components/Selects/SelectAlimento/SelectAlimento";
+import { criarOrganizacao, editarOrganizacao, validarDadoOrganizacao } from "../../api/organizacao";
+import InputMask from "react-input-mask";
+import InputTelefone from "../../components/Inputs/InputTelefone/InputTelefone";
+import InputEmail from "../../components/Inputs/InputEmail/InputEmail";
+import SelectPessoa from "../../components/Selects/SelectPessoa/SelectPessoa";
+import { toast } from "react-toastify";
 
 const defaultState = {
     organizacao: "",
@@ -31,7 +34,7 @@ export default function OrganizacaoModal({
     onOrganizacaoAtualizada,
 }) {
     const [organizacao, setOrganizacao] = useState(defaultState);
-    const [openLocalizadorPessoa, setOpenLocalizadorPessoa] = useState(false);
+    const [emailDisponivel, setEmailDisponivel] = useState(true);
 
     useEffect(() => {
         if (show) {
@@ -61,6 +64,15 @@ export default function OrganizacaoModal({
 
     }, [show, organizacaoSelecionada]);
 
+    async function validarDado(param) {
+        const response = await validarDadoOrganizacao(param);
+        if (response.data.disponivel) {
+            setEmailDisponivel(true)
+        } else {
+            setEmailDisponivel(false)
+        }
+    }
+
     const buscarEndereco = async (CEP) => {
         try {
             const response = await fetch(`https://viacep.com.br/ws/${CEP}/json/`).then((res) => res.json());
@@ -81,7 +93,7 @@ export default function OrganizacaoModal({
                 })
             }
         } catch (e) {
-            console.log(e)
+            return toast('Erro ao buscar endereço');
         }
     }
 
@@ -89,23 +101,33 @@ export default function OrganizacaoModal({
         setShow(false);
         setOrganizacao(defaultState);
         onCancel?.();
+        setEmailDisponivel(true)
     };
 
     const salvar = async () => {
+        setOrganizacao({ ...organizacao, cnpj: organizacao.cnpj.replace(/\D/g, "") });
         try {
             let response;
             if (organizacaoSelecionada?.idOrganizacao) {
-                console.log(organizacao)
-                response = await editarOrganizacao(organizacao
-                );
-                onOrganizacaoAtualizada?.(response.data);
+                response = await editarOrganizacao(organizacao);
+                if (response.data.sucesso) {
+                    toast(response.data);
+                    onOrganizacaoAtualizada?.(response.data.data);
+                } else {
+                    toast.error(response.data.mensagem)
+                }
             } else {
                 response = await criarOrganizacao(organizacao);
-                onOrganizacaoCriada?.(response.data);
+                if (response.data.sucesso) {
+                    toast(response.data.mensagem);
+                    onOrganizacaoCriada?.(response.data.data);
+                } else {
+                    toast.error(response.data.mensagem);
+                }
             }
             handleClose();
         } catch (err) {
-            console.error("Erro ao salvar organização:", err);
+            toast.error("Erro ao salvar organização:", err);
         }
     };
 
@@ -113,9 +135,12 @@ export default function OrganizacaoModal({
     const isSubmitDisabled =
         !organizacao.organizacao ||
         !organizacao.cnpj ||
-        !organizacao.telefone;
-    // !organizacao.email ||
-    // !organizacao.secretaria?.nome;
+        !organizacao.telefone ||
+        !organizacao.email ||
+        !organizacao.secretaria ||
+        !organizacao.endereco.cep ||
+        !organizacao.endereco.numero ||
+        !emailDisponivel;
 
     return (
         <CustomModal
@@ -144,45 +169,44 @@ export default function OrganizacaoModal({
             </Row>
             <Row className="mb-3">
                 <FloatingLabel controlId="floatingInputCnpj" label="CNPJ">
-                    <Form.Control
-                        type="text"
-                        placeholder="CNPJ"
+                    <InputMask mask="99.999.999/9999-99"
                         value={organizacao.cnpj}
                         onChange={(e) => setOrganizacao({ ...organizacao, cnpj: e.target.value })}
-                    />
+                    >
+                        {({ inputProps }) => (
+                            <Form.Control
+                                {...inputProps}
+                                type="text"
+                                placeholder="CNPJ"
+                            />
+                        )}
+                    </InputMask>
                 </FloatingLabel>
             </Row>
             <Row className="mb-3">
-                <FloatingLabel controlId="floatingInputTelefone" label="Telefone">
-                    <Form.Control
-                        type="text"
-                        placeholder="Telefone"
-                        value={organizacao.telefone}
-                        onChange={(e) => setOrganizacao({ ...organizacao, telefone: e.target.value })}
-                    />
-                </FloatingLabel>
+                <InputTelefone
+                    value={organizacao.telefone}
+                    onChange={(value) => setOrganizacao({ ...organizacao, telefone: value })}
+                />
             </Row>
             <Row className="mb-3">
-                <FloatingLabel controlId="floatingInputEmail" label="Email">
-                    <Form.Control
-                        type="email"
-                        placeholder="Email"
-                        value={organizacao.email}
-                        onChange={(e) => setOrganizacao({ ...organizacao, email: e.target.value })}
-                    />
-                </FloatingLabel>
+                <InputEmail
+                    value={organizacao.email}
+                    onChange={(value) => { setOrganizacao({ ...organizacao, email: value }); setEmailDisponivel(true); }}
+                    onBlur={() => {
+                        if (organizacao.email) {
+                            validarDado({ email: organizacao.email });
+                        }
+                    }}
+                />
+                {emailDisponivel === false && <span className="text-danger">Email não disponivel</span>}
             </Row>
             <Row className="mb-3">
-                <FloatingLabel controlId="floatingInput" label="Secretaria">
-                    <Form.Control
-                        type="text"
-                        placeholder="Secretaria"
-                        value={organizacao.secretaria?.nome}
-                        onClick={() => {
-                            setOpenLocalizadorPessoa(true);
-                        }}
-                    />
-                </FloatingLabel>
+                <SelectPessoa
+                    value={organizacao.secretaria}
+                    onChange={(value) => setOrganizacao({ ...organizacao, secretaria: value.idPessoa })}
+                    label="Secretaria"
+                />
             </Row>
             <Row className="mb-3">
                 <FloatingLabel controlId="floatingInputCep" label="CEP">
@@ -265,17 +289,6 @@ export default function OrganizacaoModal({
                             placeholder="Estado"
                             value={organizacao.endereco?.estado}
                             onChange={(e) => setOrganizacao({ ...organizacao, endereco: { ...organizacao.endereco, estado: e.target.value } })}
-                            disabled
-                        />
-                    </FloatingLabel>
-                </Col>
-                <Col md={6}>
-                    <FloatingLabel controlId="floatingInputPais" label="País">
-                        <Form.Control
-                            type="text"
-                            placeholder="País"
-                            value={organizacao.endereco?.pais}
-                            onChange={(e) => setOrganizacao({ ...organizacao, endereco: { ...organizacao.endereco, pais: e.target.value } })}
                             disabled
                         />
                     </FloatingLabel>

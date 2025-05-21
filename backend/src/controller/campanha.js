@@ -40,22 +40,24 @@ class CampanhaController {
 
     }
 
-    async listarTodas(idOrganizacao, ativos) {
+    async listarTodas(filtros = {}) {
+        const { idOrganizacao, ativos } = filtros;
+
         if (idOrganizacao && !ativos) {
             throw new Error('Parâmetro inválido');
         }
 
-        let parametros = { ieSituacao: null };
-        if (idOrganizacao === 1 || idOrganizacao === undefined) {
-            delete parametros.idOrganizacao
+        let whereClause = {
+            ieSituacao: ativos === 'true' ? 'A' : 'I',
+            idOrganizacao: idOrganizacao
+        };
+
+        if (idOrganizacao === '1' || idOrganizacao === undefined) {
+            delete whereClause.idOrganizacao
         }
 
-        ativos === 'true' ? parametros.ieSituacao = 'A' : parametros.ieSituacao = 'I';
-
-
-
         const response = await CampanhaModel.findAll({
-            where: parametros,
+            where: whereClause,
             order: [['titulo', 'ASC']],
             include: [
                 {

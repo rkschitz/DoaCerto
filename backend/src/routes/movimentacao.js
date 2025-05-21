@@ -5,6 +5,7 @@ const authMiddleware = require('../middleware/auth');
 
 router.get('/', authMiddleware(['A', 'O']), MovimentacaoApi.listarMovimentacoes);
 router.post('/', authMiddleware(['A', 'O']), MovimentacaoApi.criar)
+router.delete('/excluir_alimento/:idMovimentacaoAlimento', authMiddleware(['A', 'O']), MovimentacaoApi.excluirMovimentacaoAlimento)
 router.put('/:idMovimentacao', authMiddleware(['A', 'O']), MovimentacaoApi.editar)
 router.delete('/:idMovimentacao', authMiddleware(['A', 'O']), MovimentacaoApi.excluir)
 

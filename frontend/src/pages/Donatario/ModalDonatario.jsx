@@ -10,12 +10,15 @@ import SelectPessoa from "../../components/Selects/SelectPessoa/SelectPessoa";
 import formatarDataBR from "../../utils/formatarDataBR";
 import { criarDonatario, editarDonatario } from "../../api/donatario";
 import calcularIdade from "../../utils/calcularIdade";
+import { toast } from "react-toastify";
+import { Button } from "react-bootstrap";
 
 const defaultState = {
     idPessoa: null,
     cras: null,
     cadastroCras: null,
     outroLocal: null,
+    endereco: { enderecoCompleto: null },
     dependentes: []
 }
 
@@ -30,7 +33,6 @@ export default function ModalDonatario({
     const [isEditMode, setIsEditMode] = useState(false);
 
     useEffect(() => {
-        console.log(donatarioSelecionado)
         if (donatarioSelecionado?.idDonatario) {
             setDonatario(donatarioSelecionado);
             setIsEditMode(true);
@@ -49,40 +51,32 @@ export default function ModalDonatario({
             try {
                 const response = await criarDonatario(donatarioFinal);
                 if (response.status === 200) {
-                    alert("Donatário cadastrado com sucesso!");
+                    toast("Donatário cadastrado com sucesso!");
                 } else {
-                    alert("Erro ao cadastrar donatário.");
+                    toast.error("Erro ao cadastrar donatário.");
                 }
             } catch (error) {
-                console.error("Erro ao cadastrar donatário:", error);
-                alert("Erro ao cadastrar donatário.");
+                toast("Erro ao cadastrar donatário." + error);
             }
         } else {
             try {
                 const response = await editarDonatario(donatarioFinal);
                 if (response.status === 200) {
-                    alert("Donatário editado com sucesso!");
+                    toast("Donatário editado com sucesso!");
                 } else {
-                    alert("Erro ao editar donatário.");
+                    toast.error("Erro ao editar donatário.");
                 }
-                console.log(response);
             } catch (e) {
-                console.error("Erro ao editar donatário:", e);
-                alert("Erro ao editar donatário.");
+                toast.error("Erro ao editar donatário." + e);
             }
         }
-        onSubmit?.();
-        setShow(false);
+        handleReset()
     };
-
-    useEffect(() => {
-        console.log(donatario)
-    }, [donatario])
 
     function handleReset() {
         setDonatario(defaultState);
-        onCancel?.();
         setShow(false);
+        onCancel?.();
     }
 
     const adicionarDependente = () => {
@@ -96,6 +90,12 @@ export default function ModalDonatario({
         novosDependentes[index][campo] = valor;
         setDonatario({ ...donatario, dependentes: novosDependentes });
     };
+
+    const removerDependente = (index) => {
+        const novosDependentes = [...donatario.dependentes];
+        novosDependentes.splice(index, 1);
+        setDonatario({ ...donatario, dependentes: novosDependentes });
+    }
 
     return (
         <CustomModal
@@ -150,6 +150,7 @@ export default function ModalDonatario({
                                 type="text"
                                 value={donatario.pessoa?.endereco?.cidade || donatario.endereco?.cidade || ""}
                                 disabled
+                                placeholder="cidade"
                             />
                         </FloatingLabel>
                     </Col>
@@ -187,15 +188,8 @@ export default function ModalDonatario({
                         <FloatingLabel controlId="inputEndereco" label="Endereço">
                             <Form.Control
                                 type="text"
-                                value={donatario.pessoa?.endereco?.rua ? 'Rua ' + donatario.pessoa?.endereco?.rua + ' ' +
-                                    donatario.pessoa?.endereco?.numero + ' ' +
-                                    donatario.pessoa?.endereco?.bairro + ' ' +
-                                    donatario.pessoa?.endereco?.complemento
-                                    || 'Rua ' + donatario.endereco?.rua + ' ' +
-                                    donatario.endereco?.numero + ' ' +
-                                    donatario.endereco?.bairro + ' ' +
-                                    donatario.endereco?.complemento : null
-                                }
+                                value={donatario.pessoa?.endereco?.enderecoCompleto || donatario.endereco?.enderecoCompleto || null}
+                                placeholder="Endereço"
                                 disabled
                             />
                         </FloatingLabel>
@@ -342,6 +336,11 @@ export default function ModalDonatario({
                         </FloatingLabel>
                     </Col>
                 </Row>
+                <Row>
+                    <Col md={14} className="mb-3">
+                        <SelectPessoa onChange={(secretaria) => setDonatario({ ...donatario, secretariaCadastro: secretaria.idPessoa })} />
+                    </Col>
+                </Row>
 
                 <h5>Moradores na casa</h5>
                 <button
@@ -361,7 +360,6 @@ export default function ModalDonatario({
                                     atualizarDependente(index, 'idPessoa', dependente.idPessoa)
                                     atualizarDependente(index, 'dtNascimento', dependente.dtNascimento)
                                 }}
-
                                 value={item?.nome}
                             />
                         </Form.Group>
@@ -383,6 +381,7 @@ export default function ModalDonatario({
                                 placeholder="Selecione o grau de parentesco"
                             />
                         </Form.Group>
+                        <Button onClick={(e) => removerDependente(index)}>Remover Dependente</Button>
                     </Row>
                 ))}
             </Form>

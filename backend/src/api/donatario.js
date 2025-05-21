@@ -14,11 +14,12 @@ class DonatarioApi {
             dataCadastro,
             responsavelVisita,
             observacao,
-            dtEntregaCesta,
             dependentes,
-            nacionalidade } = req.body;
+            nacionalidade,
+            secretariaCadastro } = req.body;
 
         const { idOrganizacao } = req.session
+
         try {
 
             const donatarioValue = await DonatarioController.criar(
@@ -35,12 +36,16 @@ class DonatarioApi {
                 idOrganizacao,
                 responsavelVisita,
                 observacao,
-                dtEntregaCesta,
                 dependentes,
-                nacionalidade
+                nacionalidade,
+                secretariaCadastro
             )
 
-            return res.status(200).send(donatarioValue);
+            if (!donatarioValue.sucesso) {
+                return res.status(200).send(donatarioValue.mensagem)
+            } else {
+                return res.status(200).send(donatarioValue);
+            }
         } catch (e) {
             return res.status(400).send({ error: e.message });
         }
@@ -61,9 +66,9 @@ class DonatarioApi {
             situacaoEnfermo,
             dataCadastro,
             responsavelVisita,
-            situacao,
+            dataVisita,
+            situacaoCadastral,
             observacao,
-            dtEntregaCesta,
             dependentes } = req.body;
 
         try {
@@ -80,13 +85,17 @@ class DonatarioApi {
                 situacaoEnfermo,
                 dataCadastro,
                 responsavelVisita,
-                situacao,
+                dataVisita,
+                situacaoCadastral,
                 observacao,
-                dtEntregaCesta,
                 dependentes
             )
 
-            return res.status(200).send(donatarioValue);
+            if (!donatarioValue.sucesso) {
+                return res.status(200).send(donatarioValue.mensagem)
+            } else {
+                return res.status(200).send(donatarioValue);
+            }
         } catch (e) {
             return res.status(400).send({ error: e.message });
         }
@@ -102,10 +111,10 @@ class DonatarioApi {
         }
     }
 
-    async buscarAtivos(req, res) {
-        const { nome, cpf } = req.query
+    async buscarTodos(req, res) {
+        const { nome, cpf, situacaoCadastral } = req.query
         try {
-            const response = await DonatarioController.buscarAtivos({ nome, cpf });
+            const response = await DonatarioController.buscarTodos(nome, cpf, situacaoCadastral);
             return res.status(200).send(response)
         } catch (e) {
             return res.status(400).send({ error: e.message })

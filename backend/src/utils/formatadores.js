@@ -30,12 +30,12 @@ function formatarPessoa(p) {
             bairro: b?.bairro,
             cidade: c?.cidade,
             estado: est?.estado,
-            pais: pais?.pais
+            pais: pais?.pais,
+            enderecoCompleto: e.rua ? `${r?.rua}, ${e?.numero} ${e?.complemento ? `, ${e?.complemento}` : ''} - ${b?.bairro}, ${c?.cidade} - ${est?.estado}`: null,
         } : null
     };
 }
 
-// Variável (pode ser um include, por exemplo)
 const includeEnderecoCompleto = {
     model: enderecoModel,
     as: 'endereco',

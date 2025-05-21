@@ -14,7 +14,7 @@ const Header = () => {
       <img src={Logo} alt="Logo" className={styles.logo} />
       <nav className={styles.navLinks}>
         <a onClick={() => navigate("/")} className={location.pathname === "/" ? styles.activeLink : ""}>Home </a>
-        {role === 'A' && <a onClick={() => navigate("/donatarios")} className={location.pathname === "/donatarios" ? styles.activeLink : ""}>Gerenciar Donatarios</a>}
+        {role && <a onClick={() => navigate("/donatarios")} className={location.pathname === "/donatarios" ? styles.activeLink : ""}>Gerenciar Donatarios</a>}
         {(role === 'A' || role === 'O') && <a onClick={() => navigate("/pessoa")} className={location.pathname === "/pessoa" ? styles.activeLink : ""}>Gerenciar Pessoas</a>}
         {role === 'A' && <a onClick={() => navigate("/organizacoes")} className={location.pathname === "/organizacoes" ? styles.activeLink : ""}>Gerenciar Organizações</a>}
         {(role === 'A' || role === 'O') && <a onClick={() => navigate("/movimentacoes")} className={location.pathname === "/movimentacoes" ? styles.activeLink : ""}>Movimentações</a>}

@@ -4,7 +4,7 @@ const router = express.Router();
 const authMiddleware = require('../middleware/auth');
 
 router.post('/', authMiddleware(['A', 'O']), DonatarioApi.criar);
-router.get('/', authMiddleware(['A', 'O']), DonatarioApi.buscarAtivos);
+router.get('/', authMiddleware(['A', 'O']), DonatarioApi.buscarTodos);
 router.put('/:idDonatario', authMiddleware(['A', 'O']), DonatarioApi.editar);
 router.delete('/:idDonatario', authMiddleware(['A', 'O']), DonatarioApi.excluir);
 // router.get('/', authMiddleware(['A','O']), DonatarioApi.buscarDonatarios);

@@ -10,9 +10,9 @@
         "enfermoNaCasa": false,
         "situacaoEnfermo": null,
         "idOrganizacao": 2,
-        "responsavelVisita": 1,
-        "observacao": "observações",
-        "dtEntregaCesta": "2023-10-01",
+        "responsavelVisita": null,
+        "observacao": null,
+        "secretariaCadastro": 1,
         "dependentes": [
             {
                 "idPessoa": 3,

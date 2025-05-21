@@ -25,7 +25,14 @@ export const criarOrganizacao = async (organizacao) => {
 
 export const buscarAlimentosMovimentacao = async (ieMovimentacao) => {
     const response = await api.get('/api/v1/organizacao/alimentos_movimentacao', {
-        params:{ ieMovimentacao}
+        params: { ieMovimentacao }
+    })
+    return response;
+}
+
+export const validarDadoOrganizacao = async (dado) => {
+    const response = await api.get('/api/v1/organizacao/validar_dados', {
+        params: dado
     })
     return response;
 }
