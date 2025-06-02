@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import OrganizacaoModal from "./ModalOrganizacao";
 import { buscarOrganizacoes } from "../../api/organizacao";
+import styles from './Organizacao.module.css';
+
 export default function Organizacao() {
 
     const [organizacoes, setOrganizacoes] = useState([]);
@@ -17,7 +19,7 @@ export default function Organizacao() {
     }, []);
 
     return (
-        <div className="conteudo">
+        <div className={styles.conteudo}>
             <button onClick={() => {
                 setAbrirModal(true);
                 setOrganizacaoSelecionada(null);
@@ -27,9 +29,9 @@ export default function Organizacao() {
                 organizacaoSelecionada={organizacaoSelecionada}
                 setShow={setAbrirModal}
             />
-            <div className="lista">
+            <div className={styles.lista}>
                 {organizacoes.map((organizacao) => (
-                    <div key={organizacao.idOrganizacao} className="card">
+                    <div key={organizacao.idOrganizacao} className={styles.card}>
                         <h2>{organizacao.organizacao}</h2>
                         <button onClick={() => {
                             setOrganizacaoSelecionada(organizacao);
@@ -41,7 +43,10 @@ export default function Organizacao() {
                         <p>IE: {organizacao.ieSituacao}</p>
                         <p>Secretária: {organizacao.secretaria?.nome}</p>
                         <p> Rua: {organizacao.endereco?.rua} Número: {organizacao.endereco?.numero} Complemento: {organizacao.endereco?.complemento} </p><br />
-                        <p> Bairro: {organizacao.endereco?.bairro} Estado: {organizacao.endereco?.estado} Pais: {organizacao.endereco?.pais} </p>
+                        <p><strong>Bairro:</strong> {organizacao.endereco?.bairro}</p>
+                        <p><strong>Estado:</strong> {organizacao.endereco?.estado}</p>
+                        <p><strong>País:</strong> {organizacao.endereco?.pais}</p>
+
                     </div>
                 ))}
             </div>
