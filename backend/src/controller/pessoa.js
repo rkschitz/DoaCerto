@@ -75,10 +75,13 @@ function formatarPessoa(p) {
 
 class PessoaController {
     async criar(nome, cpf, telefone, email, dtNascimento, sexo, endereco) {
-        const enderecoValue = await enderecoController.criar(endereco);
+        var enderecoValue;
+        if (endereco) {
+            enderecoValue = await enderecoController.criar(endereco);
+        }
 
         const cpfExistente = await PessoaModel.findOne({ where: { cpf } });
-        if (cpfExistente && cpfExistente.dataValues.idPessoa !== Number(idPessoa)) {
+        if (cpfExistente) {
             throw new Error("CPF já cadastrado.");
         }
 
@@ -119,8 +122,6 @@ class PessoaController {
         if (cpfExistente && cpfExistente.dataValues.idPessoa !== Number(idPessoa)) {
             throw new Error("CPF já cadastrado.");
         }
-
-        console.log(cpfExistente)
 
         const emailExistente = await PessoaModel.findOne({ where: { email } });
         if (emailExistente && emailExistente.dataValues.idPessoa !== Number(idPessoa)) {
