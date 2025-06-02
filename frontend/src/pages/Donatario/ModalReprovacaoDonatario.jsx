@@ -11,17 +11,15 @@ const defaultState = {
     observacao: null
 }
 
-export default function ModalReprovacaoDonatario({ show, setShow, donatarioSelecionado, onDonatarioAprovado }) {
+export default function ModalReprovacaoDonatario({ show, setShow, donatarioSelecionado, onSubmit, onCancel }) {
 
     const [donatario, setDonatario] = useState(defaultState);
 
     async function handleSubmit() {
         try {
             const response = await editarDonatario(donatario);
-            if (response.data.sucesso) {
-                toast(response.data.mensagem);
-                onDonatarioAprovado?.(response.data);
-            }
+            toast(response.data.mensagem);
+            onSubmit?.(response.data);
         } catch (e) {
             toast.error(e.response.data.error);
         }
@@ -29,6 +27,8 @@ export default function ModalReprovacaoDonatario({ show, setShow, donatarioSelec
 
     const reset = () => {
         setDonatario(defaultState)
+        setShow(false);
+        onCancel?.()
     }
 
     useEffect(() => {
@@ -46,8 +46,8 @@ export default function ModalReprovacaoDonatario({ show, setShow, donatarioSelec
             setShow={setShow}
             title={'Motivo da reprovação do donatário'}
             submitText='Salvar'
-            submit={handleSubmit}
-            reset={reset}
+            handleSubmit={handleSubmit}
+            handleClose={reset}
             submitDisable={submitDisable}
         >
             <Row className="mb-3">

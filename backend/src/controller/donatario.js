@@ -9,6 +9,7 @@ const GrauParentescoModel = require('../model/grauParentesco');
 const DependenteModel = require('../model/dependente');
 const { Op } = require('sequelize');
 const { includeEnderecoCompleto, formatarPessoa } = require("../utils/formatadores");
+const NacionalidadeModel = require("../model/nacionalidade");
 
 class DonatarioController {
     async criar(idPessoa,
@@ -25,45 +26,44 @@ class DonatarioController {
         responsavelVisita,
         observacao,
         dependentes = [],
-        nacionalidade,
+        idNacionalidade,
         secretariaCadastro) {
-        try {
-            const donatarioValue =
-                await DonatarioModel.create({
-                    idPessoa,
-                    idSituacaoHabitacional,
-                    tempoResidencia,
-                    rendaFamiliar,
-                    idSituacaoProfissional,
-                    cadastroCras,
-                    outroLocal,
-                    enfermoNaCasa,
-                    situacaoEnfermo,
-                    dataCadastro,
-                    idOrganizacao,
-                    responsavelVisita,
-                    observacao,
-                    nacionalidade,
-                    secretariaCadastro
-                })
 
-            if (Array.isArray(dependentes) && dependentes.length > 0) {
-                for (const dependente of dependentes) {
-                    try {
-                        await DependenteController.criar(
-                            dependente.idPessoa,
-                            donatarioValue.dataValues.idDonatario,
-                            dependente.idGrauParentesco
-                        )
-                    } catch (e) {
-                        return { mensagem: e.message }
-                    }
+        const donatarioValue =
+            await DonatarioModel.create({
+                idPessoa,
+                idSituacaoHabitacional,
+                tempoResidencia,
+                rendaFamiliar,
+                idSituacaoProfissional,
+                cadastroCras,
+                outroLocal,
+                enfermoNaCasa,
+                situacaoEnfermo,
+                dataCadastro,
+                idOrganizacao,
+                responsavelVisita,
+                observacao,
+                idNacionalidade,
+                secretariaCadastro
+            })
+
+        console.log('aquiiii', donatarioValue)
+
+        if (Array.isArray(dependentes) && dependentes.length > 0) {
+            for (const dependente of dependentes) {
+                try {
+                    await DependenteController.criar(
+                        dependente.idPessoa,
+                        donatarioValue.dataValues.idDonatario,
+                        dependente.idGrauParentesco
+                    )
+                } catch (e) {
+                    throw new Error(e)
                 }
             }
-            return { donatarioValue, sucesso: true, mensagem: "Donatário criado com sucesso." };
-        } catch (e) {
-            return { mensagem: e.message };
         }
+        return { data: donatarioValue, message: "Donatário criado com sucesso." };
     }
 
     async editar(
@@ -79,94 +79,94 @@ class DonatarioController {
         situacaoEnfermo,
         dataCadastro,
         responsavelVisita,
+        observacao,
+        dependentes = [],
+        idNacionalidade,
         dataVisita,
         situacaoCadastral,
-        observacao,
-        dependentes = []
     ) {
-        try {
-            const donatarioAtual = await DonatarioModel.findOne({ where: { idDonatario } });
-            if (!donatarioAtual) {
-                return { mensagem: "Donatário não encontrado." };
-            }
 
-            const donatarioValue = await DonatarioModel.update({
-                idPessoa: idPessoa ?? donatarioAtual.idPessoa,
-                idSituacaoHabitacional: idSituacaoHabitacional ?? donatarioAtual.idSituacaoHabitacional,
-                tempoResidencia: tempoResidencia ?? donatarioAtual.tempoResidencia,
-                rendaFamiliar: rendaFamiliar ?? donatarioAtual.rendaFamiliar,
-                idSituacaoProfissional: idSituacaoProfissional ?? donatarioAtual.idSituacaoProfissional,
-                cadastroCras: cadastroCras ?? donatarioAtual.cadastroCras,
-                outroLocal: outroLocal ?? donatarioAtual.outroLocal,
-                enfermoNaCasa: enfermoNaCasa ?? donatarioAtual.enfermoNaCasa,
-                situacaoEnfermo: situacaoEnfermo ?? donatarioAtual.situacaoEnfermo,
-                dataCadastro: dataCadastro ?? donatarioAtual.dataCadastro,
-                responsavelVisita: responsavelVisita ?? donatarioAtual.responsavelVisita,
-                dataVisita: dataVisita ?? donatarioAtual.dataVisita,
-                situacaoCadastral: situacaoCadastral ?? donatarioAtual.situacaoCadastral,
-                observacao: observacao ?? donatarioAtual.observacao,
-            }, {
-                where: { idDonatario }
-            });
 
-            const dependentesAtuais = await DependenteModel.findAll({
-                where: { idProvedor: idDonatario }
-            });
+        const donatarioAtual = await DonatarioModel.findOne({ where: { idDonatario } });
+        if (!donatarioAtual) {
+            throw new Error("Donatário não encontrado.");
+        }
 
-            console.log('DependendentesAtuais:', dependentesAtuais)
-            for (const a of dependentesAtuais) {
-                console.log('Dependente Atual:', a.dataValues)
-            }
-            for (const b of dependentes) {
-                console.log('Dependente Novo:', b)
-            }
+        const donatarioValue = await DonatarioModel.update({
+            idPessoa: idPessoa ?? donatarioAtual.idPessoa,
+            idSituacaoHabitacional: idSituacaoHabitacional ?? donatarioAtual.idSituacaoHabitacional,
+            tempoResidencia: tempoResidencia ?? donatarioAtual.tempoResidencia,
+            rendaFamiliar: rendaFamiliar ?? donatarioAtual.rendaFamiliar,
+            idSituacaoProfissional: idSituacaoProfissional ?? donatarioAtual.idSituacaoProfissional,
+            cadastroCras: cadastroCras ?? donatarioAtual.cadastroCras,
+            outroLocal: outroLocal ?? donatarioAtual.outroLocal,
+            enfermoNaCasa: enfermoNaCasa ?? donatarioAtual.enfermoNaCasa,
+            situacaoEnfermo: situacaoEnfermo ?? donatarioAtual.situacaoEnfermo,
+            dataCadastro: dataCadastro ?? donatarioAtual.dataCadastro,
+            responsavelVisita: responsavelVisita ?? donatarioAtual.responsavelVisita,
+            dataVisita: dataVisita ?? donatarioAtual.dataVisita,
+            situacaoCadastral: situacaoCadastral ?? donatarioAtual.situacaoCadastral,
+            observacao: observacao ?? donatarioAtual.observacao,
+            idNacionalidade: idNacionalidade ?? donatarioAtual.idNacionalidade
+        }, {
+            where: { idDonatario }
+        });
 
-            // 1. Atualizar ou criar
-            const novosIds = [];
+        const dependentesAtuais = await DependenteModel.findAll({
+            where: { idProvedor: idDonatario }
+        });
 
-            for (const dependente of dependentes) {
-                if (dependente.idDependente) {
+        const novosIds = [];
+
+        for (const dependente of dependentes) {
+            if (dependente.idDependente) {
+                try {
                     await DependenteController.editar(
                         dependente.idDependente,
                         dependente.idGrauParentesco,
                         dependente.idPessoa
                     );
                     novosIds.push(dependente.idDependente);
-                } else {
+                } catch (e) {
+                    throw new Error(e)
+                }
+            } else {
+                try {
                     const novo = await DependenteController.criar(
                         dependente.idPessoa,
                         idDonatario,
                         dependente.idGrauParentesco
                     );
                     novosIds.push(novo.idDependente);
+                } catch (e) {
+                    throw new Error(e)
                 }
             }
-
-            const dependentesAtualIds = dependentesAtuais.map(d => d.idDependente);
-            const idsParaExcluir = dependentesAtualIds.filter(id => !novosIds.includes(id));
-
-            for (const id of idsParaExcluir) {
-                await DependenteController.excluir(id);
-            }
-
-            return { donatarioValue, sucesso: true, mensagem: "Donatário atualizado com sucesso." };
-        } catch (e) {
-            return { mensagem: e.message };
         }
+
+        const dependentesAtualIds = dependentesAtuais.map(d => d.idDependente);
+        const idsParaExcluir = dependentesAtualIds.filter(id => !novosIds.includes(id));
+
+        for (const id of idsParaExcluir) {
+            try {
+                await DependenteController.excluir(id);
+            } catch (e) {
+                throw new Error(e)
+            }
+        }
+
+        return { data: donatarioValue, message: "Donatário atualizado com sucesso." };
     }
 
     async excluir(idDonatario) {
-        try {
-            const donatarioValue = await DonatarioModel.destroy({
-                where: { idDonatario }
-            });
-            if (!donatarioValue) {
-                return { mensagem: "Donatário não encontrado." };
-            }
-            return { mensagem: "Donatário excluído com sucesso." };
-        } catch (e) {
-            return { mensagem: e.message };
+        const donatarioValue = await DonatarioModel.destroy({
+            where: { idDonatario }
+        });
+        if (!donatarioValue) {
+            throw new Error("Donatário não encontrado.");
         }
+
+        return { message: "Donatário excluído com sucesso." };
     }
 
     async buscarPorId(idDonatario) {
@@ -242,11 +242,26 @@ class DonatarioController {
                             attributes: ['idGrauParentesco', 'grauParentesco']
                         }
                     ]
+                },
+                {
+                    model: NacionalidadeModel,
+                    as: 'nacionalidade',
+                    attributes: ['idNacionalidade', 'nacionalidade']
+                },
+                {
+                    model: PessoaModel,
+                    as: 'responsavel',
+                    attributes: ['idPessoa', 'nome']
+                },
+                {
+                    model: PessoaModel,
+                    as: 'secretaria',
+                    attributes: ['idPessoa', 'nome']
                 }
             ]
         });
 
-        return donatarios.map(d => {
+        const donatariosValue = donatarios.map(d => {
             const json = d.toJSON();
             return {
                 ...json,
@@ -261,6 +276,8 @@ class DonatarioController {
                 pessoa: formatarPessoa(json.pessoa)
             };
         })
+
+        return donatariosValue
     }
 }
 

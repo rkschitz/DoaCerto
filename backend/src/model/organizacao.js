@@ -32,6 +32,7 @@ class Organizacao {
             },
             ieSituacao: {
                 type: database.db.Sequelize.STRING,
+                defaultValue: 'A'
             },
             idSecretaria: {
                 type: database.db.Sequelize.INTEGER,

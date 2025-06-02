@@ -56,7 +56,7 @@ export default function Donatario() {
   };
 
   const handleAddNew = () => {
-    setSelectedDonatario({});
+    setSelectedDonatario(null);
     setOpenModal(true);
   };
 
@@ -114,7 +114,7 @@ export default function Donatario() {
                       dataMovimentacao: formatarDataBR(new Date()),
                     });; setAbrirModalMovimentacao(true)
                   }}>Registrar entrega de cesta</button>}
-                  {donatario.situacaoCadastral === "P" &&
+                  {(donatario.situacaoCadastral === "P" || donatario.situacaoCadastral === "R") &&
                     <button
                       onClick={() => {
                         setSelectedDonatario(donatario); setAbrirModalAprovacao(true)
@@ -170,6 +170,10 @@ export default function Donatario() {
                       {donatario.pessoa.sexo === "M"
                         ? "Masculino"
                         : "Feminino"}
+                    </p>
+                    <p>
+                      <strong>Nacionalidade:</strong>{" "}
+                      {donatario.nacionalidade}
                     </p>
                   </div>
 
@@ -272,19 +276,21 @@ export default function Donatario() {
           setShow={setOpenModal}
           donatarioSelecionado={selectedDonatario}
           onSubmit={() => { listar(filtros?.situacaoCadastral); setSelectedDonatario(null) }}
-          onCancel={() => { setSelectedDonatario({}); }}
+          onCancel={() => setSelectedDonatario(null)}
         />
         <ModalAprovacaoDonatario
           show={abrirModalAprovacao}
           setShow={setAbrirModalAprovacao}
           donatarioSelecionado={selectedDonatario}
-          onDonatarioAprovado={() => listar(filtros?.situacaoCadastral)}
+          onSubmit={() => listar(filtros?.situacaoCadastral)}
+          onCancel={() => setSelectedDonatario(null)}
         />
         <ModalReprovacaoDonatario
           show={abrirModalReprovacao}
           setShow={setAbrirModalReprovacao}
           donatarioSelecionado={selectedDonatario}
-          onDonatarioAprovado={() => listar(filtros?.situacaoCadastral)}
+          onSubmit={() => listar(filtros?.situacaoCadastral)}
+          onCancel={() => setSelectedDonatario(null)}
         />
         <MovimentacaoModal
           show={abrirModalMovimentacao}

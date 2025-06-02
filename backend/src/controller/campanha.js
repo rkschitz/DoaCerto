@@ -23,8 +23,6 @@ class CampanhaController {
             throw new Error('Erro ao criar campanha');
         }
 
-        console.log(typeof metas)
-
         if (metas.length > 0) {
             for (const meta of metas) {
                 await MetaController.criar(

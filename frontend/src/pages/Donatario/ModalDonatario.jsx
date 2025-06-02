@@ -12,6 +12,7 @@ import { criarDonatario, editarDonatario } from "../../api/donatario";
 import calcularIdade from "../../utils/calcularIdade";
 import { toast } from "react-toastify";
 import { Button } from "react-bootstrap";
+import SelectNacionalidade from "../../components/Selects/SelectNacionalidade/SelectNacionalidade";
 
 const defaultState = {
     idPessoa: null,
@@ -30,52 +31,37 @@ export default function ModalDonatario({
     onCancel
 }) {
     const [donatario, setDonatario] = useState(defaultState)
-    const [isEditMode, setIsEditMode] = useState(false);
 
     useEffect(() => {
-        if (donatarioSelecionado?.idDonatario) {
-            setDonatario(donatarioSelecionado);
-            setIsEditMode(true);
-        } else {
-            setDonatario(defaultState);
-            setIsEditMode(false);
+        console.log(donatarioSelecionado)
+        if (show) {
+            if (donatarioSelecionado?.idDonatario) {
+                setDonatario(donatarioSelecionado);
+            } else {
+                setDonatario(defaultState);
+            }
         }
     }, [show, donatarioSelecionado]);
 
-    const handleSubmit = async () => {
+    const salvar = async () => {
         const donatarioFinal = {
             ...donatario,
             idPessoa: donatario.pessoa?.idPessoa,
         }
-        if (!isEditMode) {
-            try {
-                const response = await criarDonatario(donatarioFinal);
-                if (response.status === 200) {
-                    toast("Donatário cadastrado com sucesso!");
-                } else {
-                    toast.error("Erro ao cadastrar donatário.");
-                }
-            } catch (error) {
-                toast("Erro ao cadastrar donatário." + error);
-            }
-        } else {
-            try {
-                const response = await editarDonatario(donatarioFinal);
-                if (response.status === 200) {
-                    toast("Donatário editado com sucesso!");
-                } else {
-                    toast.error("Erro ao editar donatário.");
-                }
-            } catch (e) {
-                toast.error("Erro ao editar donatário." + e);
-            }
+
+        try {
+            const response = donatarioSelecionado ? await editarDonatario(donatarioFinal) : await criarDonatario(donatarioFinal);
+            toast(response.data.message);
+            onSubmit?.(response.data);
+        } catch (e) {
+            toast.error(e.response.data.message);
         }
-        handleReset()
+        handleClose()
     };
 
-    function handleReset() {
-        setDonatario(defaultState);
+    function handleClose() {
         setShow(false);
+        setDonatario(defaultState);
         onCancel?.();
     }
 
@@ -99,13 +85,13 @@ export default function ModalDonatario({
 
     return (
         <CustomModal
-            title={isEditMode ? "Editar Pessoa" : "Cadastrar Pessoa"}
-            submit={handleSubmit}
-            reset={handleReset}
-            submitText={isEditMode ? "Salvar Alterações" : "Cadastrar"}
-            resetText="Cancelar"
             show={show}
             setShow={setShow}
+            title={donatarioSelecionado ? "Editar Pessoa" : "Cadastrar Pessoa"}
+            submitText={donatarioSelecionado ? "Salvar Alterações" : "Cadastrar"}
+            resetText="Cancelar"
+            handleSubmit={salvar}
+            handleClose={handleClose}
         >
             <Form>
                 <Row>
@@ -124,9 +110,7 @@ export default function ModalDonatario({
                             <Form.Control
                                 type="text"
                                 placeholder="CPF"
-                                value={
-                                    donatario.pessoa?.cpf || donatario.cpf || ""
-                                }
+                                value={donatario.pessoa?.cpf || donatario.cpf || ""}
                                 disabled
                             />
                         </FloatingLabel>
@@ -156,18 +140,10 @@ export default function ModalDonatario({
                     </Col>
 
                     <Col md={6} className="mb-3">
-                        <FloatingLabel controlId="inputNacionalidade" label="Nacionalidade">
-                            <Form.Control
-                                type="text"
-                                value={donatario.nacionalidade || ""}
-                                onChange={(e) =>
-                                    setDonatario({
-                                        ...donatario,
-                                        nacionalidade: e.target.value,
-                                    })
-                                }
-                            />
-                        </FloatingLabel>
+                        <SelectNacionalidade
+                            onChange={(nacionalidade) => { setDonatario({ ...donatario, idNacionalidade: nacionalidade }) }}
+                            value={donatario.idNacionalidade}
+                        />
                     </Col>
                 </Row>
 
@@ -338,7 +314,16 @@ export default function ModalDonatario({
                 </Row>
                 <Row>
                     <Col md={14} className="mb-3">
-                        <SelectPessoa onChange={(secretaria) => setDonatario({ ...donatario, secretariaCadastro: secretaria.idPessoa })} />
+                        <SelectPessoa
+                            label={"Secretária responsável pelo cadastro"}
+                            onChange={(secretaria) => setDonatario({ ...donatario, secretaria })}
+                            value={donatario.secretaria?.nome || donatario.secretaria}
+                        />
+                        {/* <SelectPessoa
+                            label={'Nome'}
+                            value={donatario.pessoa?.nome || donatario.nome}
+                            onChange={(pessoa) => { setDonatario({ ...donatario, pessoa }); }}
+                        /> */}
                     </Col>
                 </Row>
 

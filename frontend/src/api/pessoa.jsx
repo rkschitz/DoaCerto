@@ -6,7 +6,7 @@ export const buscarPessoaPorNome = async (nome, cpf) => {
     return response;
 }
 
-export const criar = async (pessoa) => {
+export const criarPessoa = async (pessoa) => {
     const response = await api.post('/api/v1/pessoa', pessoa);
     return response;
 }

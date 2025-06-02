@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import OrganizacaoModal from "./ModalOrganizacao";
-import { buscarOrganizacoes } from "../../api/organizacao";
+import { buscarOrganizacoes, deletarOrganização } from "../../api/organizacao";
+import { toast } from "react-toastify";
 export default function Organizacao() {
 
     const [organizacoes, setOrganizacoes] = useState([]);
@@ -16,19 +17,22 @@ export default function Organizacao() {
         listarOrganizacoes();
     }, []);
 
+    const handleDelete = async (idOrganizacao) => {
+        try {
+            const response = await deletarOrganização(idOrganizacao);
+            toast(response.data.message)
+            listarOrganizacoes();
+        } catch (e) {
+            toast.error(e.response.data.error);
+        }
+    }
+
     return (
         <div className="conteudo">
             <button onClick={() => {
                 setAbrirModal(true);
                 setOrganizacaoSelecionada(null);
             }} >Adicionar organização</button>
-            <OrganizacaoModal
-                show={abrirModal}
-                organizacaoSelecionada={organizacaoSelecionada}
-                setShow={setAbrirModal}
-                onOrganizacaoCriada={listarOrganizacoes}
-                onOrganizacaoAtualizada={listarOrganizacoes}
-            />
             <div className="lista">
                 {organizacoes.map((organizacao) => (
                     <div key={organizacao.idOrganizacao} className="card">
@@ -37,6 +41,9 @@ export default function Organizacao() {
                             setOrganizacaoSelecionada(organizacao);
                             setAbrirModal(true);
                         }}>Editar</button>
+                        <button onClick={() => {
+                            handleDelete(organizacao.idOrganizacao)
+                        }}>Deletar</button>
                         <p>CNPJ: {organizacao.cnpj}</p>
                         <p>Telefone: {organizacao.telefone}</p>
                         <p>Email: {organizacao.email}</p>
@@ -47,6 +54,13 @@ export default function Organizacao() {
                     </div>
                 ))}
             </div>
+            <OrganizacaoModal
+                show={abrirModal}
+                organizacaoSelecionada={organizacaoSelecionada}
+                setShow={setAbrirModal}
+                onSubmit={listarOrganizacoes}
+                onCancel={() => setOrganizacaoSelecionada(null)}
+            />
         </div>
     )
 }

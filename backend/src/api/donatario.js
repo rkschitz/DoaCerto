@@ -15,7 +15,7 @@ class DonatarioApi {
             responsavelVisita,
             observacao,
             dependentes,
-            nacionalidade,
+            idNacionalidade,
             secretariaCadastro } = req.body;
 
         const { idOrganizacao } = req.session
@@ -37,15 +37,10 @@ class DonatarioApi {
                 responsavelVisita,
                 observacao,
                 dependentes,
-                nacionalidade,
+                idNacionalidade,
                 secretariaCadastro
             )
-
-            if (!donatarioValue.sucesso) {
-                return res.status(200).send(donatarioValue.mensagem)
-            } else {
-                return res.status(200).send(donatarioValue);
-            }
+            return res.status(200).send(donatarioValue);
         } catch (e) {
             return res.status(400).send({ error: e.message });
         }
@@ -69,6 +64,7 @@ class DonatarioApi {
             dataVisita,
             situacaoCadastral,
             observacao,
+            idNacionalidade,
             dependentes } = req.body;
 
         try {
@@ -85,17 +81,13 @@ class DonatarioApi {
                 situacaoEnfermo,
                 dataCadastro,
                 responsavelVisita,
-                dataVisita,
-                situacaoCadastral,
                 observacao,
-                dependentes
+                dependentes,
+                idNacionalidade,
+                dataVisita,
+                situacaoCadastral
             )
-
-            if (!donatarioValue.sucesso) {
-                return res.status(200).send(donatarioValue.mensagem)
-            } else {
-                return res.status(200).send(donatarioValue);
-            }
+            return res.status(200).send(donatarioValue)
         } catch (e) {
             return res.status(400).send({ error: e.message });
         }

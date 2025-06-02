@@ -7,7 +7,7 @@ import './styles.css'
 export default function Layout() {
     return (
         <div className="estrutura">
-            <Header   />
+            <Header />
             <div className='content'>
                 <PrivateRoute />
             </div>

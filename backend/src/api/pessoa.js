@@ -4,9 +4,6 @@ class PessoaApi {
     async criar(req, res) {
         const { nome, cpf, telefone, email, dtNascimento, sexo, endereco } = req.body
 
-        if (!nome || !cpf || !telefone || !dtNascimento || !email || !sexo || !endereco) {
-            return res.status(400).send("Nome, cpf, telefone, data de nascimento, email, sexo e endereço são obrigatórios")
-        }
         try {
             const response = await PessoaController.criar(nome, cpf, telefone, email, dtNascimento, sexo, endereco)
             return res.status(200).send(response)
