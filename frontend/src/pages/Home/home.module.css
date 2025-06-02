@@ -1,5 +1,4 @@
 /* Header daqui para baixo*/
-@media (min-width: 1024px) {
 
   .header {
     padding: 1rem 5% 1rem 3.5%;
@@ -13,7 +12,6 @@
     background-color: #ffffff;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
   }
-}
 
 .logo {
   width: 50px;
@@ -324,9 +322,6 @@ button:hover {
 .footer a{
   margin-top: -12px;
 }
- 
-
-
 
 .metasInfo {
   display: flex;
@@ -355,4 +350,174 @@ button:hover {
   font-size: 14px;
   font-weight: 600;
   color: #8e7db2;
+}
+
+
+/* Responsividade */
+
+@media (max-width: 1023px) {
+.header {
+    padding: 1rem 3%;
+  }
+  
+  .logo {
+    width: 45px;
+    height: 45px;
+  }
+  
+  .authButtons {
+    gap: 0.8rem;
+  }
+  
+  .loginBtn, .logoutBtn {
+    padding: 8px 16px;
+    font-size: 15px;
+  }
+  
+  .dropdownOptions {
+    width: 120%;
+  }
+  
+  .authButtons {
+    width: 100%;
+    justify-content: end;
+  }
+
+  .infosTop {
+    padding: 4rem 2rem 0rem 2rem;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .sobre {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .textos {
+    max-width: 100%;
+  }
+
+  .textos h1 {
+    font-size: 2rem;
+  }
+
+  .textos h6 {
+    font-size: 0.95rem;
+  }
+
+  .image {
+    margin-top: 2rem;
+  }
+
+  .logo2 {
+    width: 200px;
+  }
+
+  .center {
+    margin: 4vh 1rem;
+    text-align: center;
+    font-size: medium;
+  }
+
+  .container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .campanha {
+    max-width: 90%;
+    width: 100%;
+  }
+
+  .metasInfo {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .footer {
+    padding: 5vh 2rem;
+    font-size: medium;
+    text-align: center;
+  }
+
+  .footer button {
+    width: 120%;
+    padding: 10px;
+  }
+
+  .logo2{
+    display: none;
+  }
+  
+}
+
+@media (max-width: 600px) {
+  .header {
+    padding: 0.8rem 2%;
+  }
+  
+  .logo {
+    width: 40px;
+    height: 40px;
+  }
+
+  .logo2{
+    display: none;
+  }
+  
+  .authButtons {
+    gap: 0.5rem;
+  }
+  
+  .loginBtn, .logoutBtn {
+    padding: 6px 12px;
+    font-size: 14px;
+  }
+  
+  .dropdownOptions {
+    width: 140%;
+    font-size: 13px;
+  }
+  
+  .btnAuth {
+    padding: 8px;
+    font-size: 13px;
+  }
+  
+  .authButtons button {
+    padding: 0.4rem 0.8rem;
+    font-size: 14px;
+  }
+  
+  .textos h1 {
+    font-size: 1.6rem;
+  }
+
+  .textos h6 {
+    font-size: 0.85rem;
+  }
+
+  .loginBtn, .btnAuth {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+
+  .card {
+    min-width: unset;
+    width: 100%;
+  }
+
+  .cardTitulo, .cardValor {
+    font-size: 13px;
+  }
+
+  .footer h1 {
+    font-size: 1.3rem;
+  }
+
+  .footer p, .footer a {
+    font-size: 0.9rem;
+  }
 }
