@@ -1,54 +1,55 @@
 const database = require("../config/database");
 
 class Organizacao {
-    constructor(){
+    constructor() {
         this.model = database.db.define("organizacao", {
-            idOrganizacao:{
+            idOrganizacao: {
                 type: database.db.Sequelize.INTEGER,
                 primaryKey: true,
                 autoIncrement: true,
             },
-            organizacao:{
+            organizacao: {
                 type: database.db.Sequelize.STRING,
                 allowNull: false
             },
-            cnpj:{
+            cnpj: {
                 type: database.db.Sequelize.STRING,
             },
-            telefone:{
+            telefone: {
                 type: database.db.Sequelize.STRING,
             },
-            email:{
+            email: {
                 type: database.db.Sequelize.STRING,
                 allowNull: false,
                 unique: true,
             },
-            senha:{
+            senha: {
                 type: database.db.Sequelize.STRING,
             },
-            role:{
+            role: {
                 type: database.db.Sequelize.STRING,
                 defaultValue: 'O'
             },
-            ieSituacao:{
+            ieSituacao: {
                 type: database.db.Sequelize.STRING,
+                defaultValue: 'A'
             },
-            idSecretaria:{
+            idSecretaria: {
                 type: database.db.Sequelize.INTEGER,
                 references: {
                     model: "pessoa",
                     key: "idPessoa"
                 }
             },
-            idEndereco:{
+            idEndereco: {
                 type: database.db.Sequelize.INTEGER,
                 references: {
                     model: 'endereco',
                     key: 'idEndereco'
                 }
             }
-            
-        },{
+
+        }, {
             freezeTableName: true
         });
     }

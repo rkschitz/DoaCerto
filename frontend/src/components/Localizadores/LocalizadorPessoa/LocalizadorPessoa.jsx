@@ -22,7 +22,7 @@ export default function PessoaLocalizador({ onSelect, show, setShow }) {
             nome: item.nome,
             cpf: item.cpf,
             dtNascimento: formatarDataBR(item.dtNascimento),
-            sexo: item.sexo, 
+            sexo: item.sexo,
             idade: calcularIdade(item.dtNascimento),
             email: item.email,
             telefone: item.telefone,
@@ -50,10 +50,13 @@ export default function PessoaLocalizador({ onSelect, show, setShow }) {
             conteudoLista={conteudoLista}
             show={show}
             setShow={setShow}
+            submitText={"Selecionar"}
             onSelectItem={(pessoaSelecionada) => {
                 const pessoaCompleta = pessoas.find(p => p.idPessoa === pessoaSelecionada.idPessoa);
                 onSelect?.(pessoaCompleta);
+                setConteudoLista(null)
             }}
+            handleClose={() => { setConteudoLista(null); setShow(false) }}
         >
             <Form>
                 <Row className="mb-3">
@@ -93,7 +96,7 @@ export default function PessoaLocalizador({ onSelect, show, setShow }) {
             <PessoaModal
                 show={abrirModalPessoa}
                 setShow={setAbrirModalPessoa}
-                pessoaCriada={(pessoa) => atualizarLista(pessoa.nome, pessoa.cpf)}
+                onSubmit={(pessoa) => atualizarLista(pessoa.nome, pessoa.cpf)}
             />
         </Localizador>
     );

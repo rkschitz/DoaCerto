@@ -1,4 +1,4 @@
-const pessoaModel = require('../model/pessoa');
+const PessoaModel = require('../model/pessoa');
 const enderecoController = require('./endereco');
 const enderecoModel = require('../model/endereco');
 const ruaModel = require('../model/rua');
@@ -65,7 +65,8 @@ function formatarPessoa(p) {
             bairro: b?.bairro,
             cidade: c?.cidade,
             estado: est?.estado,
-            pais: pais?.pais
+            pais: pais?.pais,
+            enderecoCompleto: e.rua ? `${r?.rua}, ${e?.numero} ${e?.complemento ? `, ${e?.complemento}` : ''} - ${b?.bairro}, ${c?.cidade} - ${est?.estado}` : null,
         } : null
     };
 }
@@ -74,25 +75,32 @@ function formatarPessoa(p) {
 
 class PessoaController {
     async criar(nome, cpf, telefone, email, dtNascimento, sexo, endereco) {
-        try {
-
-            const enderecoValue = await enderecoController.criar(endereco);
-
-            const pessoaValue = await pessoaModel.create({
-                nome,
-                cpf,
-                telefone,
-                email,
-                dtNascimento,
-                sexo,
-                idEndereco: !enderecoValue.mensagem ? enderecoValue.dataValues.idEndereco : null
-            })
-
-            return pessoaValue;
-
-        } catch (e) {
-            return { mensagem: e.message };
+        var enderecoValue;
+        if (endereco) {
+            enderecoValue = await enderecoController.criar(endereco);
         }
+
+        const cpfExistente = await PessoaModel.findOne({ where: { cpf } });
+        if (cpfExistente) {
+            throw new Error("CPF já cadastrado.");
+        }
+
+        const emailExistente = await PessoaModel.findOne({ where: { email } });
+        if (emailExistente && emailExistente.dataValues.idPessoa !== Number(idPessoa)) {
+            throw new Error("Email já cadastrado.");
+        }
+
+        const pessoaValue = await PessoaModel.create({
+            nome,
+            cpf,
+            telefone,
+            email,
+            dtNascimento,
+            sexo,
+            idEndereco: enderecoValue ? enderecoValue.dataValues.idEndereco : null
+        })
+
+        return { data: pessoaValue, message: "Pessoa criada com sucesso" };
     }
 
     async editar(
@@ -105,14 +113,19 @@ class PessoaController {
         sexo,
         endereco
     ) {
-        const pessoa = await pessoaModel.findByPk(idPessoa);
+        const pessoa = await PessoaModel.findByPk(idPessoa);
         if (!pessoa) {
             throw new Error("Pessoa não encontrada.");
         }
 
-        const existente = await pessoaModel.findOne({ where: { cpf } });
-        if (existente && existente.dataValues.idPessoa !== Number(idPessoa)) {
+        const cpfExistente = await PessoaModel.findOne({ where: { cpf } });
+        if (cpfExistente && cpfExistente.dataValues.idPessoa !== Number(idPessoa)) {
             throw new Error("CPF já cadastrado.");
+        }
+
+        const emailExistente = await PessoaModel.findOne({ where: { email } });
+        if (emailExistente && emailExistente.dataValues.idPessoa !== Number(idPessoa)) {
+            throw new Error("Email já cadastrado.");
         }
 
         const updates = { cpf };
@@ -149,7 +162,7 @@ class PessoaController {
     async deletar(idPessoa) {
 
         try {
-            const personValue = await pessoaModel.findOne({ where: { idPessoa } });
+            const personValue = await PessoaModel.findOne({ where: { idPessoa } });
             await personValue.destroy();
             return { mensagem: "Pessoa excluída com sucesso." };
         } catch (e) {
@@ -160,7 +173,7 @@ class PessoaController {
 
 
     async buscarTodos() {
-        const pessoas = await pessoaModel.findAll({
+        const pessoas = await PessoaModel.findAll({
             include: includeEnderecoCompleto
         });
 
@@ -188,7 +201,8 @@ class PessoaController {
                     bairro: b?.bairro,
                     cidade: c?.cidade,
                     estado: est?.estado,
-                    pais: pais?.pais
+                    pais: pais?.pais,
+                    enderecoCompleto: e.rua ? `${r?.rua}, ${e?.numero} ${e?.complemento ? `, ${e?.complemento}` : ''} - ${b?.bairro}, ${c?.cidade} - ${est?.estado}` : null,
                 } : null
             };
         });
@@ -207,7 +221,7 @@ class PessoaController {
             where.cpf = { [Op.like]: `%${cpf}%` };
         }
 
-        const response = await pessoaModel.findAll({
+        const response = await PessoaModel.findAll({
             where,
             include: includeEnderecoCompleto
         });

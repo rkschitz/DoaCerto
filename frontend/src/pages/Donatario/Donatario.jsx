@@ -1,127 +1,47 @@
 import { useEffect, useState } from "react";
-import {
-  criarDonatario,
-  editarDonatario,
-  excluirDonatario,
-  buscarDonatariosAtivos,
-} from "../../api/donatario";
-import CustomModal from "../../components/Modal/Modal";
-import { Form, FloatingLabel, Row, Col } from "react-bootstrap";
+import { criarDonatario, excluirDonatario, buscarDonatarios, } from "../../api/donatario";
 import PessoaLocalizador from "../../components/Localizadores/LocalizadorPessoa/LocalizadorPessoa";
-import SituacaoProfissionalSelect from "../../components/Selects/SelectSituacaoProfissional/SelectSituacaoProfissional"
-import SexoSelect from "../../components/Selects/SelectSexo/SelectSexo";
-import SituacaoHabitacionalSelect from "../../components/Selects/SelectSituacaoHabitacional/SelectSituacaoHabitacional";
-import RadioGroup from "../../components/RadioButton/RadioButton";
 import calcularIdade from "../../utils/calcularIdade";
-import GrauParentescoSelect from "../../components/Selects/SelectGrauParentesco/SelectGrauParentesco";
 import formatarDataBR from "../../utils/formatarDataBR";
 import styles from "./donatario.module.css";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { FaRegTrashAlt, FaRegEdit } from "react-icons/fa";
 import ModalDonatario from "./ModalDonatario";
+import ModalAprovacaoDonatario from "./ModalAprovacaoDonatario";
+import { toast } from "react-toastify";
+import SelectSituacaoDonatario from "../../components/Selects/SelectSituacaoDonatario/SelectSituacaoDonatario";
+import ModalReprovacaoDonatario from "./ModalReprovacaoDonatario";
+import MovimentacaoModal from "../Movimentacao/ModalMovimentacao";
+import ModalHistoricoDoacoes from "./ModalHistoricoDoacoes";
 
 export default function Donatario() {
   const [donatarios, setDonatarios] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [openLocalizadorPessoa, setOpenLocalizadorPessoa] = useState(false);
   const [selectedDonatario, setSelectedDonatario] = useState(null);
-  const [isEditMode, setIsEditMode] = useState(false);
-  const [dependentes, setDependentes] = useState([]);
-  const [localizadorPara, setLocalizadorPara] = useState("donatario");
   const [expandirDonatario, setExpandirDonatario] = useState(null);
+  const [abrirModalAprovacao, setAbrirModalAprovacao] = useState(false);
+  const [abrirModalReprovacao, setAbrirModalReprovacao] = useState(false);
+  const [filtros, setFiltros] = useState({ situacaoCadastral: "A" });
+  const [abrirModalMovimentacao, setAbrirModalMovimentacao] = useState(false);
+  const [movimentacao, setMovimentacao] = useState(null);
+  const [abrirModalHistoricoDoacoes, setAbrirModalHistoricoDoacoes] = useState(false);
 
   const toggleExpand = (index) => {
     setExpandirDonatario(expandirDonatario === index ? null : index);
   };
 
-  async function listar() {
+  async function listar(situacaoCadastral) {
     try {
-      const response = await buscarDonatariosAtivos();
+      const response = await buscarDonatarios({ situacaoCadastral });
       setDonatarios(response.data);
-      console.log(response)
     } catch (error) {
-      console.error("Erro ao buscar donatários:", error);
+      toast.error("Erro ao buscar donatários:", error);
     }
   }
   useEffect(() => {
-    listar();
+    listar(filtros?.situacaoCadastral);
   }, []);
-
-  const adicionarDependenteAut = async () => {
-    const novoDonatario = {
-      idPessoa: 2,
-      idSituacaoHabitacional: 1,
-      tempoResidencia: "2 meses",
-      rendaFamiliar: 2000,
-      idSituacaoProfissional: 1,
-      cadastroCras: false,
-      outroLocal: null,
-      enfermoNaCasa: false,
-      situacaoEnfermo: null,
-      idOrganizacao: 2,
-      responsavelVisita: 1,
-      observacao: "observações",
-      dtEntregaCesta: "2023-10-01",
-      nacionalidade: "Brasileiro",
-      dependentes: [
-        {
-          idPessoa: 3,
-          idade: 10,
-          idGrauParentesco: 1,
-        },
-        {
-          idPessoa: 4,
-          idade: 5,
-          idGrauParentesco: 2,
-        },
-      ],
-    };
-
-    const response = await criarDonatario(novoDonatario);
-  };
-
-  const handleSubmit = async () => {
-    const donatarioFinal = { ...selectedDonatario, dependentes };
-
-    if (!isEditMode) {
-      try {
-        const response = await criarDonatario(donatarioFinal);
-        if (response.status === 200) {
-          alert("Donatário cadastrado com sucesso!");
-        } else {
-          alert("Erro ao cadastrar donatário.");
-        }
-      } catch (error) {
-        console.error("Erro ao cadastrar donatário:", error);
-        alert("Erro ao cadastrar donatário.");
-      }
-    } else {
-      try {
-        const response = await editarDonatario(donatarioFinal);
-        if (response.status === 200) {
-          alert("Donatário editado com sucesso!");
-        } else {
-          alert("Erro ao editar donatário.");
-        }
-        console.log(response);
-      } catch (e) {
-        console.error("Erro ao editar donatário:", e);
-        alert("Erro ao editar donatário.");
-      }
-    }
-    setOpenModal(false);
-    setSelectedDonatario(null);
-    setIsEditMode(false);
-    setDependentes([]);
-    listar();
-  };
-
-  const handleReset = () => {
-    setOpenModal(false);
-    setSelectedDonatario(null);
-    setIsEditMode(false);
-    setDependentes([]);
-  };
 
   const handleDelete = async (idDonatario) => {
     if (window.confirm("Você tem certeza que deseja excluir esse donatário?")) {
@@ -131,50 +51,13 @@ export default function Donatario() {
       } else {
         alert("Erro ao excluir donatário.");
       }
-      listar();
+      listar(filtros?.situacaoCadastral);
     }
   };
 
-  const handleEdit = (person) => {
-    setSelectedDonatario(person);
-    setDependentes(
-      person.dependentes.map((dependente) => ({
-        idDependente: dependente.idDependente,
-        idPessoa: dependente.pessoa.idPessoa,
-        nome: dependente.pessoa.nome,
-        idGrauParentesco: dependente.grauParentesco.idGrauParentesco,
-      }))
-    );
-    setIsEditMode(true);
-    setOpenModal(true);
-  };
-
-  const limparFormulario = () => {
-    setSelectedDonatario({
-      idPessoa: "",
-      nome: "",
-      CPF: "",
-      dtNascimento: "",
-      idSituacaoHabitacional: "",
-      tempoResidencia: "",
-      rendaFamiliar: "",
-      idSituacaoProfissional: "",
-      cadastroCras: false,
-      outroLocal: "",
-      enfermoNaCasa: false,
-      situacaoEnfermo: "",
-      responsavelVisita: 1,
-      observacao: "",
-      dtEntregaCesta: "",
-      dependentes: [],
-    });
-  };
-
   const handleAddNew = () => {
-    limparFormulario();
-    setIsEditMode(false);
+    setSelectedDonatario(null);
     setOpenModal(true);
-    setDependentes([]);
   };
 
   const cpfMask = (value) => {
@@ -199,28 +82,53 @@ export default function Donatario() {
     <div className={styles.containerDonatarios}>
       <div className={styles.header}>
         <div className={styles.titulo}>Donatários</div>
+        <SelectSituacaoDonatario
+          onChange={(e) => { setFiltros({ ...filtros, situacaoCadastral: e }); listar(e) }}
+          value={filtros?.situacaoCadastral}
+        />
         <div>
           <button className={styles.buttonAdicionar} onClick={handleAddNew}>
             Adicionar novo donatário
-          </button>
-          <button
-            className={styles.buttonAdicionar}
-            onClick={adicionarDependenteAut}
-          >
-            Adicionar automático
           </button>
         </div>
       </div>
 
       <div className={styles.conteudo}>
-        {/* {donatarios.map((donatario, index) => ( */}
         <div className={styles.conteudo}>
           {donatarios.map((donatario, index) => (
             <div key={index} className={styles.cardDonatario}>
               <div className={styles.cardHeader}>
                 <h2>{donatario?.pessoa?.nome}</h2>
-
                 <div className={styles.actions}>
+                  {donatario.situacaoCadastral === "A" && <button onClick={() => {
+                    setMovimentacao({
+                      ieMovimentacao: 'S',
+                      idDonatario: donatario.idDonatario,
+                      idCampanha: null,
+                      idDoador: null,
+                      alimentos: [{
+                        idAlimento: 1,
+                        quantidade: 1,
+                        idUnidadeMedida: 1,
+                      }],
+                      dataMovimentacao: formatarDataBR(new Date()),
+                    });; setAbrirModalMovimentacao(true)
+                  }}>Registrar entrega de cesta</button>}
+                  {(donatario.situacaoCadastral === "P" || donatario.situacaoCadastral === "R") &&
+                    <button
+                      onClick={() => {
+                        setSelectedDonatario(donatario); setAbrirModalAprovacao(true)
+                      }}
+                    >
+                      Aprovar cadastro
+                    </button>}
+                  {donatario.situacaoCadastral === "P" &&
+                    <button
+                      onClick={() => { setSelectedDonatario(donatario); setAbrirModalReprovacao(true) }}
+                    >
+                      Reprovar cadastro
+                    </button>}
+
                   <button
                     className={styles.actionExcluir}
                     onClick={() => handleDelete(donatario.idDonatario)}
@@ -263,6 +171,10 @@ export default function Donatario() {
                         ? "Masculino"
                         : "Feminino"}
                     </p>
+                    <p>
+                      <strong>Nacionalidade:</strong>{" "}
+                      {donatario.nacionalidade}
+                    </p>
                   </div>
 
                   <div className={styles.section}>
@@ -272,7 +184,8 @@ export default function Donatario() {
                       {foneMask(donatario.pessoa.telefone)}
                     </p>
                     <p>
-                      <strong>Endereço:</strong> Rua {donatario.pessoa?.endereco?.rua} {donatario.pessoa?.endereco?.numero}, {donatario.pessoa?.endereco?.bairro}, {donatario.pessoa?.endereco?.cidade} - {donatario.pessoa?.endereco?.estado}
+                      <strong>Endereço:</strong>
+                      {donatario.pessoa?.endereco?.enderecoCompleto}
                     </p>
                   </div>
 
@@ -333,40 +246,28 @@ export default function Donatario() {
                       <strong>Observações:</strong> {donatario?.observacao}
                     </p>
                     <p>
-                      <strong>Entrega da Cesta:</strong>{" "}
-                      {donatario?.dtEntregaCesta}
+                      <strong>Data da visita:</strong>{" "}
+                      {formatarDataBR(donatario?.dataVisita)}
                     </p>
                   </div>
+                  <button onClick={() => { setSelectedDonatario(donatario); setAbrirModalHistoricoDoacoes(true) }}>Histórico de doações</button>
                 </div>
               )}
             </div>
           ))}
         </div>
-        {/* ))} */}
 
         <PessoaLocalizador
-          onSelect={(pessoa) => {
-            if (localizadorPara === "donatario") {
-              setSelectedDonatario({
-                ...selectedDonatario,
-                idPessoa: pessoa.idPessoa,
-                nome: pessoa.nome,
-                CPF: pessoa.cpf,
-                dtNascimento: pessoa.dtNascimento,
-                email: pessoa.email,
-                sexo: pessoa.sexo,
-                telefone: pessoa.telefone,
-              });
-            } else {
-              const novoDependente = {
-                idPessoa: pessoa.idPessoa,
-                nome: pessoa.nome,
-                idade: pessoa.idade,
-                grauParentesco: pessoa.grauParentesco || "",
-              };
-              setDependentes((prev) => [...prev, novoDependente]);
-            }
-          }}
+          onSelect={(pessoa) => setSelectedDonatario({
+            ...selectedDonatario,
+            idPessoa: pessoa.idPessoa,
+            nome: pessoa.nome,
+            CPF: pessoa.cpf,
+            dtNascimento: pessoa.dtNascimento,
+            email: pessoa.email,
+            sexo: pessoa.sexo,
+            telefone: pessoa.telefone,
+          })}
           show={openLocalizadorPessoa}
           setShow={setOpenLocalizadorPessoa}
         />
@@ -374,7 +275,32 @@ export default function Donatario() {
           show={openModal}
           setShow={setOpenModal}
           donatarioSelecionado={selectedDonatario}
-          onSubmit={listar}
+          onSubmit={() => { listar(filtros?.situacaoCadastral); setSelectedDonatario(null) }}
+          onCancel={() => setSelectedDonatario(null)}
+        />
+        <ModalAprovacaoDonatario
+          show={abrirModalAprovacao}
+          setShow={setAbrirModalAprovacao}
+          donatarioSelecionado={selectedDonatario}
+          onSubmit={() => listar(filtros?.situacaoCadastral)}
+          onCancel={() => setSelectedDonatario(null)}
+        />
+        <ModalReprovacaoDonatario
+          show={abrirModalReprovacao}
+          setShow={setAbrirModalReprovacao}
+          donatarioSelecionado={selectedDonatario}
+          onSubmit={() => listar(filtros?.situacaoCadastral)}
+          onCancel={() => setSelectedDonatario(null)}
+        />
+        <MovimentacaoModal
+          show={abrirModalMovimentacao}
+          setShow={setAbrirModalMovimentacao}
+          movimentacaoSelecionada={movimentacao}
+        />
+        <ModalHistoricoDoacoes
+          show={abrirModalHistoricoDoacoes}
+          setShow={setAbrirModalHistoricoDoacoes}
+          donatarioSelecionado={selectedDonatario}
         />
       </div>
     </div>

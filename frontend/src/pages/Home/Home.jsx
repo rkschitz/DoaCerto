@@ -8,12 +8,11 @@ import { Link } from "react-router-dom"
 export default function Home() {
   const [campanhas, setCampanhas] = useState([]);
   const carregou = useRef(false);
-
   const navigate = useNavigate();
   const location = useLocation();
 
   async function buscar() {
-    const response = await buscarCampanhas(null, true);
+    const response = await buscarCampanhas({ativos: true});
     setCampanhas(response.data);
   }
 
@@ -56,7 +55,6 @@ export default function Home() {
 
       <div className={styles.body}>
         <div className={styles.infosTop}>
-
           <div className={styles.sobre}>
             <div className={styles.textos}>
               <h1>Ajude quem precisa com doações de alimentos</h1>
@@ -123,6 +121,7 @@ export default function Home() {
           <a>pode transformar vidas e trazer esperança.</a>
           <a href="/login"><button>Doar Agora</button></a>
         </div>
+
       </div>
     </div>
   );

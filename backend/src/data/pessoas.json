@@ -100,14 +100,6 @@
     "email": "joao@email.com"
   },
   {
-    "nome": "Maria",
-    "cpf": "20202020202",
-    "telefone": "47922222222",
-    "dtNascimento": "2005-04-07",
-    "sexo": "F",
-    "email": "maria@email.com"
-  },
-  {
     "nome": "Ana",
     "cpf": "30303030303",
     "telefone": "47911111111",
@@ -162,77 +154,5 @@
     "dtNascimento": "2005-04-07",
     "sexo": "F",
     "email": "fernanda@email.com"
-  },
-  {
-    "nome": "Juliana",
-    "cpf": "10101010101",
-    "telefone": "47844444444",
-    "dtNascimento": "2005-04-07",
-    "sexo": "F",
-    "email": "juliana@email.com"
-  },
-  {
-    "nome": "Thiago",
-    "cpf": "20202020202",
-    "telefone": "47833333333",
-    "dtNascimento": "2005-04-07",
-    "sexo": "M",
-    "email": "thiago@email.com"
-  },
-  {
-    "nome": "Mariana",
-    "cpf": "30303030303",
-    "telefone": "47822222222",
-    "dtNascimento": "2005-04-07",
-    "sexo": "F",
-    "email": "mariana@email.com"
-  },
-  {
-    "nome": "Eduardo",
-    "cpf": "40404040404",
-    "telefone": "47811111111",
-    "dtNascimento": "2005-04-07",
-    "sexo": "M",
-    "email": "eduardo@email.com"
-  },
-  {
-    "nome": "Larissa",
-    "cpf": "50505050505",
-    "telefone": "47800000000",
-    "dtNascimento": "2005-04-07",
-    "sexo": "F",
-    "email": "larissa@email.com"
-  },
-  {
-    "nome": "André",
-    "cpf": "60606060606",
-    "telefone": "47799999999",
-    "dtNascimento": "2005-04-07",
-    "sexo": "M",
-    "email": "andre@email.com"
-  },
-  {
-    "nome": "Tatiane",
-    "cpf": "70707070707",
-    "telefone": "47788888888",
-    "dtNascimento": "2005-04-07",
-    "sexo": "F",
-    "email": "tatiane@email.com"
-  },
-  {
-    "nome": "Roberto",
-    "cpf": "80808080808",
-    "telefone": "47777777777",
-    "dtNascimento": "2005-04-07",
-    "sexo": "M",
-    "email": "roberto@email.com"
-  },
-  {
-    "nome": "Patrícia",
-    "cpf": "90909090909",
-    "telefone": "47766666666",
-    "dtNascimento": "2005-04-07",
-    "sexo": "F",
-    "email": "patricia@email.com"
   }
 ]

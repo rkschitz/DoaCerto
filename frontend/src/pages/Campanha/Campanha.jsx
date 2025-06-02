@@ -16,7 +16,7 @@ export default function Campanha() {
     const carregou = useRef(false);
 
     async function buscar() {
-        const response = await buscarCampanhas(id, buscarAtivas);
+        const response = await buscarCampanhas({ idOrganizacao: id, ativos: buscarAtivas });
         setCampanhas(response.data);
     }
 

@@ -1,7 +1,9 @@
 import api from './api';
 
-export const buscarMovimentacoes = async () => {
-    const response = await api.get('/api/v1/movimentacao')
+export const buscarMovimentacoes = async (param) => {
+    const response = await api.get('/api/v1/movimentacao', {
+        params: param
+    })
     return response;
 };
 
@@ -17,5 +19,10 @@ export const editarMovimentacao = async (movimentacao) => {
 
 export const excluirMovimentacao = async (idMovimentacao) => {
     const response = await api.delete(`/api/v1/movimentacao/${idMovimentacao}`);
+    return response;
+}
+
+export const excluirMovimentacaoAlimento = async (idMovimentacaoAlimento) => {
+    const response = await api.delete(`/api/v1/movimentacao/excluir_alimento/${idMovimentacaoAlimento}`);
     return response;
 }

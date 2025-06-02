@@ -20,10 +20,10 @@ class CampanhaApi {
     }
 
     async listarTodas(req, res) {
-        const { idOrganizacao, ativos } = req.query;
+        const param = req.query;
 
         try {
-            const campanhas = await CampanhaController.listarTodas(idOrganizacao, ativos);
+            const campanhas = await CampanhaController.listarTodas(param);
             res.status(200).json(campanhas);
         } catch (err) {
             res.status(500).json({ message: err.message });

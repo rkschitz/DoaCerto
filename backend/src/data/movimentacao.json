@@ -2,16 +2,19 @@
   {
     "ieMovimentacao": "E",
     "idOrganizacao": 1,
+    "dataMovimentacao": "2023-10-01",
     "alimentos": [
       {
         "idAlimento": 1,
         "idUnidadeMedida": 1,
-        "quantidade": 5
+        "quantidade": 5,
+        "dataValidade": "2024-10-01"
       },
       {
         "idAlimento": 2,
         "idUnidadeMedida": 13,
-        "quantidade": 2
+        "quantidade": 2,
+        "dataValidade": "2024-10-01"
       }
     ]
   },
@@ -19,22 +22,27 @@
     "ieMovimentacao": "E",
     "idOrganizacao": 1,
     "idCampanha": 1,
+    "dataMovimentacao": "2023-10-01",
+    "dataValidade": "2024-10-01",
     "alimentos": [
       {
         "idAlimento": 1,
         "idUnidadeMedida": 1,
-        "quantidade": 5000
+        "quantidade": 5000,
+        "dataValidade": "2024-10-01"
       },
       {
         "idAlimento": 2,
         "idUnidadeMedida": 13,
-        "quantidade": 2
+        "quantidade": 2,
+        "dataValidade": "2024-10-01"
       }
     ]
   },
   {
     "ieMovimentacao": "S",
     "idOrganizacao": 1,
+    "dataMovimentacao": "2023-10-01",
     "alimentos": [
       {
         "idAlimento": 1,

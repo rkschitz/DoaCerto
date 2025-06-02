@@ -13,6 +13,7 @@ const Alimento = require("./src/model/alimento");
 const SituacaoHabitacional = require("./src/model/situacaoHabitacional");
 const SituacaoProfissional = require("./src/model/situacaoProfissional");
 const OrganizacaoApi = require("./src/api/organizacao");
+const NacionalidadeModel = require("./src/model/nacionalidade");
 
 const DonatarioRouter = require("./src/routes/donatario");
 const PessoaRouter = require("./src/routes/pessoa");
@@ -22,6 +23,7 @@ const CampanhaRouter = require("./src/routes/campanha");
 const UnidadeMedidaRouter = require("./src/routes/unidadeMedida")
 const SituacaoHabitacionalRouter = require("./src/routes/situacaoHabitacional");
 const SituacaoProfissionalRouter = require("./src/routes/situacaoProfissional");
+const NacionalidadeRouter = require("./src/routes/nacionalidade")
 
 const PessoaController = require("./src/controller/pessoa");
 const OrganizacaoController = require("./src/controller/organizacao");
@@ -60,6 +62,7 @@ app.use("/api/v1/campanha", CampanhaRouter)
 app.use("/api/v1/unidade_medida", UnidadeMedidaRouter)
 app.use("/api/v1/situacaoHabitacional", SituacaoHabitacionalRouter);
 app.use("/api/v1/situacaoProfissional", SituacaoProfissionalRouter);
+app.use("/api/v1/nacionalidade", NacionalidadeRouter)
 const Dependente = require("./src/model/dependente");
 
 const createTables = async () => {
@@ -135,6 +138,11 @@ const createTables = async () => {
       fs.readFileSync(metaPath, "utf-8")
     )
 
+    const nacionalidadePath = path.join(__dirname, "src/data/nacionalidade.json");
+    const nacionalidadeJson = JSON.parse(
+      fs.readFileSync(nacionalidadePath, "utf-8")
+    )
+
     // Cadastrar tipos de alimentos sem repetir
     const tiposCadastrados = {};
     for (const alimento of alimentos) {
@@ -199,38 +207,6 @@ const createTables = async () => {
 
     console.log("Grau de parentesco criado");
 
-    for (const donatario of donatariosJson) {
-      await DonatarioController.criar(
-        donatario.idPessoa,
-        donatario.idSituacaoHabitacional,
-        donatario.tempoResidencia,
-        donatario.rendaFamiliar,
-        donatario.idSituacaoProfissional,
-        donatario.cadastroCrass,
-        donatario.outroLocal,
-        donatario.enfermoEmCasa,
-        donatario.enfermoEmCasa,
-        donatario.dataCadastro,
-        donatario.idOrganizacao,
-        donatario.responsavelVisita,
-        donatario.observacao,
-        donatario.dtEntragaCesta,
-        donatario.dependentes
-      );
-    }
-
-    console.log("Donatários criados");
-
-    for (const dependente of dependentesJson) {
-      await DependenteController.criar(
-        dependente.idPessoa,
-        dependente.idProvedor,
-        dependente.idGrauParentesco
-      );
-    }
-
-    console.log("Dependentes criados");
-
     for (const unidadeMedida of unidadeMedidaJson) {
       await UnidadeMedidaController.criar(unidadeMedida.dsUnidadeMedida);
     }
@@ -257,11 +233,41 @@ const createTables = async () => {
         movimentacao.idDoador,
         movimentacao.idDonatario,
         movimentacao.idCampanha,
-        movimentacao.alimentos
+        movimentacao.alimentos,
+        movimentacao.dataMovimentacao,
       );
     }
 
     console.log("Movimentações criadas");
+
+    for (const nacionalidade of nacionalidadeJson) {
+      await NacionalidadeModel.create(nacionalidade)
+    }
+
+    console.log("Nascionalidades criadas");
+
+    for (const donatario of donatariosJson) {
+      await DonatarioController.criar(
+        donatario.idPessoa,
+        donatario.idSituacaoHabitacional,
+        donatario.tempoResidencia,
+        donatario.rendaFamiliar,
+        donatario.idSituacaoProfissional,
+        donatario.cadastroCras,
+        donatario.outroLocal,
+        donatario.enfermoNaCasa,
+        donatario.situacaoEnfermo,
+        donatario.dataCadastro,
+        donatario.idOrganizacao,
+        donatario.responsavelVisita,
+        donatario.observacao,
+        donatario.dependentes,
+        donatario.idNacionalidade,
+        donatario.secretariaCadastro
+      )
+    }
+
+    console.log("Donatários criados");
 
   } catch (error) {
     console.error(`Erro ao inicializar o banco de dados: ${error}`);
