@@ -1,6 +1,17 @@
 const DependenteModel = require('../model/dependente');
+const DonatarioModel = require('../model/donatario')
+const PessoaController = require('./pessoa')
+const PessoaModel = require('../model/pessoa')
 class DependenteController {
     async criar(idPessoa, idProvedor, idGrauParentesco) {
+
+        const pessoaValue = await PessoaController.buscarPessoa(idPessoa);
+        const isDependente = await this.buscarDonatarioPorDependente(idPessoa);
+
+        if (isDependente) {
+            throw new Error(`${pessoaValue?.dataValues?.nome} já está cadastro como dependente de ${isDependente?.dataValues?.pessoa?.nome}`)
+        }
+
         const dependenteValue = await DependenteModel.create({
             idPessoa,
             idProvedor,
@@ -21,9 +32,18 @@ class DependenteController {
         return dependenteValue;
     }
 
-    async buscarDependentesPorDonatario(idDonatario) {
-        const dependenteValue = await DependenteModel.findAll({
-            where: { idProvedor: idDonatario }
+    async buscarDonatarioPorDependente(idDependente) {
+        const dependenteValue = await DependenteModel.findOne({
+            where: { idPessoa: idDependente },
+            // include: {
+            //     model: DonatarioModel,
+            //     as: 'provedor',
+            //     include: {
+            //         model: PessoaModel,
+            //         attributes: ['nome']
+            //     }
+            // }
+            
         })
         return dependenteValue;
     }

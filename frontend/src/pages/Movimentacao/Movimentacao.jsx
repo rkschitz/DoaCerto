@@ -17,13 +17,9 @@ export default function Movimentacao() {
   async function listarMovimentacoes() {
     try {
       const response = await buscarMovimentacoes();
-      if (response.data.sucesso) {
-        setMovimentacoes(response.data.data);
-      } else {
-        toast.error(response.data.mensagem);
-      }
+      setMovimentacoes(response.data);
     } catch (e) {
-      toast.error(e);
+      toast.error(e.response.data.error);
     }
   }
 
@@ -35,11 +31,11 @@ export default function Movimentacao() {
       const response = await excluirMovimentacaoAlimento(movimentacao.idMovimentacaoAlimento);
       if (response.status === 200) {
         toast(response.data.message);
-        listarMovimentacoes();
       }
     } catch (e) {
-      toast.error(e.message);
+      toast.error(e.response.data.message);
     }
+    listarMovimentacoes();
   }
 
   useEffect(() => {
@@ -230,9 +226,8 @@ export default function Movimentacao() {
         show={show}
         setShow={setShow}
         movimentacaoSelecionada={movimentacaoSelecionada}
-        onCancel={(e) => setMovimentacaoSelecionada({})}
-        onMovimentacaoAtualizada={(e) => listarMovimentacoes()}
-        onMovimentacaoCriada={(e) => listarMovimentacoes()}
+        onCancel={(e) => setMovimentacaoSelecionada(null)}
+        onSubmit={(e) => {listarMovimentacoes(); setMovimentacaoSelecionada(null)}}
       />
     </div>
   );

@@ -6,6 +6,7 @@ const bairroModel = require('../model/bairro');
 const cidadeModel = require('../model/cidade');
 const estadoModel = require('../model/estado');
 const paisModel = require('../model/pais');
+const DependenteController = require('./dependente');
 
 const { Op } = require('sequelize');
 
@@ -86,7 +87,7 @@ class PessoaController {
         }
 
         const emailExistente = await PessoaModel.findOne({ where: { email } });
-        if (emailExistente && emailExistente.dataValues.idPessoa !== Number(idPessoa)) {
+        if (emailExistente) {
             throw new Error("Email já cadastrado.");
         }
 
@@ -160,14 +161,14 @@ class PessoaController {
 
 
     async deletar(idPessoa) {
-
-        try {
-            const personValue = await PessoaModel.findOne({ where: { idPessoa } });
-            await personValue.destroy();
-            return { mensagem: "Pessoa excluída com sucesso." };
-        } catch (e) {
-            return { mensagem: e.message }
+        const isDependente = await DependenteController.buscarDonatarioPorDependente(idPessoa);
+        if (isDependente) {
+            throw new Error(`Impossivel excluir essa pessoa, a mesma está cadastrada como dependente de ${isDependente?.dataValues?.pessoa?.nome}`)
         }
+
+        const personValue = await PessoaModel.findOne({ where: { idPessoa } });
+        await personValue.destroy();
+        return { mensagem: "Pessoa excluída com sucesso." };
     }
 
 
@@ -228,6 +229,11 @@ class PessoaController {
 
 
         return response.map(formatarPessoa)
+    }
+
+    async buscarPessoa(idPessoa) {
+        const pessoaValue = await PessoaModel.findOne({ where: idPessoa })
+        return pessoaValue;
     }
 }
 

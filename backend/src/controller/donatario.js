@@ -48,8 +48,6 @@ class DonatarioController {
                 secretariaCadastro
             })
 
-        console.log('aquiiii', donatarioValue)
-
         if (Array.isArray(dependentes) && dependentes.length > 0) {
             for (const dependente of dependentes) {
                 try {

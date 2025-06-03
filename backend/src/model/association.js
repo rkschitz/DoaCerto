@@ -78,11 +78,7 @@ SituacaoProfissional.hasMany(Donatario, {
 Donatario.hasMany(Dependente, { as: "dependentes", foreignKey: "idProvedor" });
 
 // Um Dependente pertence a um Donatario (o provedor)
-Dependente.belongsTo(Donatario, {
-  as: "provedor",
-  foreignKey: "idProvedor",
-  onDelete: "CASCADE",
-});
+Dependente.belongsTo(Donatario, {as: "provedor", foreignKey: "idProvedor", onDelete: "CASCADE",});
 
 // Um Dependente pertence a uma Pessoa (dados pessoais do dependente)
 Dependente.belongsTo(Pessoa, { as: "pessoa", foreignKey: "idPessoa" });
