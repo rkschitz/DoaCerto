@@ -24,9 +24,8 @@ export default function MovimentacaoModal({
     show,
     setShow,
     movimentacaoSelecionada,
+    onSubmit,
     onCancel,
-    onMovimentacaoCriada,
-    onMovimentacaoAtualizada
 }) {
     const [movimentacao, setMovimentacao] = useState(defaultState);
     const [isSubmitDisabled, setIsSubmitDisabled] = useState(false);
@@ -48,32 +47,20 @@ export default function MovimentacaoModal({
 
     const handleClose = () => {
         setMovimentacao(defaultState);
+        setShow(false);
         onCancel?.();
     };
 
     const salvar = async () => {
-        if (movimentacaoSelecionada?.idMovimentacao) {
-            try {
-                const response = await editarMovimentacao(movimentacao);
-                if (response.status === 200) {
-                    toast(response.data.message)
-                    onMovimentacaoAtualizada?.(response.data);
-                }
-            } catch (e) {
-                toast.error(e)
-            }
-        } else {
-            try {
-                const response = await criarMovimentacao(movimentacao);
-                if (response.status === 200) {
-                    toast('Movimentação registrada com sucesso')
-                    onMovimentacaoCriada?.(response.data);
-                }
-            } catch (e) {
-                toast.error(e.message)
-            }
+        try {
+            const response = movimentacaoSelecionada?.idMovimentacao ? await editarMovimentacao(movimentacao) : await criarMovimentacao(movimentacao);
+            toast(response.data.message)
+            handleClose();
+            onSubmit?.();
+        } catch (e) {
+            toast.error(e.response.data.message)
         }
-        handleClose();
+
     }
 
     const submitText = movimentacaoSelecionada ? "Salvar" : "Cadastrar";
@@ -127,11 +114,11 @@ export default function MovimentacaoModal({
             title={
                 movimentacaoSelecionada ? "Editar Movimentação" : "Adicionar Movimentação"
             }
-            submit={salvar}
+            handleSubmit={salvar}
+            handleClose={handleClose}
             submitText={submitText}
             resetText="Cancelar"
             submitDisable={isSubmitDisabled}
-            reset={handleClose}
         >
             <Row className="mb-3">
                 <SelectTipoMovimentacao
