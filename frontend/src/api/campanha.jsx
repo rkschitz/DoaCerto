@@ -8,15 +8,7 @@ export const buscarCampanhas = async (param) => {
 }
 
 export const editarCampanha = async (campanha) => {
-    const body = {
-        idCampanha: campanha.idCampanha,
-        titulo: campanha.titulo,
-        descricao: campanha.descricao,
-        ieSituacao: campanha.ieSituacao,
-        metas: campanha.metas
-    }
-
-    const response = await api.put(`/api/v1/campanha/${campanha.idCampanha}`, body);
+    const response = await api.put(`/api/v1/campanha/${campanha.idCampanha}`, campanha);
     return response;
 }
 
