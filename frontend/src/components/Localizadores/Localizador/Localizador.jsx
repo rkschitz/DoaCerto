@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import CustomModal from "../../Modal/Modal";
 
-export default function Localizador({ children, show, setShow, submit, reset, conteudoLista, colunasLista, onSelectItem }) {
+export default function Localizador({ children, show, setShow, submit, submitText, conteudoLista, colunasLista, onSelectItem, handleClose }) {
     const [selecionado, setSelecionado] = useState(null);
 
     function handleOk() {
@@ -13,15 +13,17 @@ export default function Localizador({ children, show, setShow, submit, reset, co
     }
 
     return (
-        <CustomModal show={show} setShow={setShow}
-            submit={handleOk}
-            reset={() => setShow(false)}
+        <CustomModal
+            show={show}
+            setShow={setShow}
+            handleSubmit={handleOk}
+            handleClose={handleClose}
             disabled={!selecionado}
+            submitText={submitText}
         >
             <Form onSubmit={submit}>
                 {children}
             </Form>
-
             {
                 Array.isArray(colunasLista) && Array.isArray(conteudoLista) && (
                     <table className="table mt-3">

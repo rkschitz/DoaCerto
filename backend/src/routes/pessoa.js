@@ -6,8 +6,8 @@ const PessoaApi = require("../api/pessoa");
 
 router.get("/", authMiddleware(), PessoaApi.buscarTodos);
 router.post("/", authMiddleware(), PessoaApi.criar);
+router.get("/buscar", authMiddleware(['A', 'O']), PessoaApi.buscarPorNomeCpf);
 router.delete("/:idPessoa", authMiddleware(), PessoaApi.deletar);
 router.put("/:idPessoa", authMiddleware(), PessoaApi.editar)
-router.get("/buscar", authMiddleware(['A', 'O']), PessoaApi.buscarPorNomeCpf);
 
 module.exports = router;

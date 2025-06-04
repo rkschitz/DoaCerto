@@ -9,10 +9,12 @@
         "outroLocal": null,
         "enfermoNaCasa": false,
         "situacaoEnfermo": null,
+        "dataCadastro": null,
         "idOrganizacao": 2,
         "responsavelVisita": null,
         "observacao": null,
         "secretariaCadastro": 1,
+        "idNacionalidade":1,
         "dependentes": [
             {
                 "idPessoa": 3,

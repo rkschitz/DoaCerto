@@ -1,4 +1,150 @@
+/* Header daqui para baixo*/
 
+  .header {
+    padding: 1rem 5% 1rem 3.5%;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: medium;
+    background-color: #ffffff;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+  }
+
+.logo {
+  width: 50px;
+  height: 50px;
+}
+
+.authButtons {
+  display: flex;
+  gap: 1rem;
+}
+
+.authButtons .btn-login {
+  color: black;
+  text-decoration: none;
+}
+
+.authButtons button {
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btnAuth {
+  color: black;
+  background-color: #f0f0f0;
+  border: none;
+  box-shadow: none;
+}
+
+.loginBtn {
+  background: transparent;
+  border: 1px solid #333;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  color: black;
+}
+
+.loginBtn:hover {
+  background-color: #ddd;
+  border-radius: 5px;
+}
+
+.logoutBtn {
+  background: transparent;
+  border: 1px solid #333;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  color: black;
+}
+
+.registerBtn {
+  background: transparent;
+  border: none;
+}
+
+.dropdown {
+  display: inline-block;
+  position: relative;
+}
+
+button:hover {
+  transition: 0.6s;
+  background-color: #ddd;
+}
+
+.dropdownOptions {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #f0f0f0;
+  border-radius: 5px;
+  box-shadow: 0px 10px 10px 0px rgba(0, 0, 0, 0.4);
+  padding: 10px 0;
+  text-align: center;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  opacity: 0;
+  transform: translate(-50%, -10px);
+  visibility: hidden;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.dropdown:hover .dropdownOptions {
+  opacity: 1;
+  transform: translate(-50%, 0);
+  visibility: visible;
+}
+
+.dropdown:not(:hover) .dropdownOptions {
+  opacity: 0;
+  transform: translate(-50%, -10px);
+  transition: opacity 0.5s ease, transform 0.5s ease, visibility 0s linear 0.5s;
+  visibility: hidden;
+}
+
+.dropdownOptions a {
+  display: block;
+  color: #000000;
+  padding: 5px;
+  text-decoration: none;
+  padding: 10px 20px;
+}
+
+
+.dropdownOptions a:hover {
+  color: #0a0a23;
+  background-color: #ddd;
+  border-radius: 5px;
+}
+
+.btnAuth {
+  background: none;
+  border: none;
+  padding: 10px;
+  width: 100%;
+  text-align: center;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.btnAuth:hover {
+  background-color: #ddd;
+  border-radius: 5px;
+}
+/*Header termina aqui*/
 
 /*  COLOCAR ESSA COR DE FUNDO PARA O CARD*/
 /*.{
@@ -9,10 +155,6 @@
   padding: 0;
   margin: 0;
 }*/
-
-header {
-    background-color: aqua;
-}
 
 .infosTop {
   /*background-color: #9e8ec8;*/
@@ -74,17 +216,21 @@ header {
   align-items: center;
 }
 
-.logo {
+.logo2 {
   width: 30vh;
 }
 
 .center{
-    background-color: wheat;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin: 6vh 0 3vh 0;
+  font-size: large;
 }
 
 .center h1{
-    color: #6e59a5;
-
+  color: #6e59a5;
+  font-weight: 600;
 }
 
 .container {
@@ -92,7 +238,7 @@ header {
   flex-wrap: wrap;
   gap: 20px;
   justify-content: center;
-  padding: 20px;
+  padding: 18px;
 }
 
 .campanha {
@@ -148,4 +294,230 @@ header {
   margin-top: 10px;
 }
 
- 
+.footer{
+    background-color: #9d8bda;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin: 6vh 0 0vh 0;
+    font-size: large;
+    padding: 8vh 0 6vh 0vh;
+}
+
+.footer h1{
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.footer button {
+  background-color: #ffffff;
+  color: #8673aa;
+  padding: 10px 50px;
+  border: none;
+  border-radius: 20px;
+  margin-top: 35px;
+}
+
+.footer a{
+  margin-top: -12px;
+}
+
+.metasInfo {
+  display: flex;
+  gap: 20px;
+  margin-top: 10px;
+}
+
+.card {
+  background: rgba(128, 128, 255, 0.1);
+  padding: 12px;
+  border-radius: 12px;
+  min-width: 120px;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  flex: 1;
+}
+
+.cardTitulo {
+  font-weight: bold;
+  font-size: 14px;
+  color: #586170;
+  margin-bottom: 4px;
+}
+
+.cardValor {
+  font-size: 14px;
+  font-weight: 600;
+  color: #8e7db2;
+}
+
+
+/* Responsividade */
+
+@media (max-width: 1023px) {
+.header {
+    padding: 1rem 3%;
+  }
+  
+  .logo {
+    width: 45px;
+    height: 45px;
+  }
+  
+  .authButtons {
+    gap: 0.8rem;
+  }
+  
+  .loginBtn, .logoutBtn {
+    padding: 8px 16px;
+    font-size: 15px;
+  }
+  
+  .dropdownOptions {
+    width: 120%;
+  }
+  
+  .authButtons {
+    width: 100%;
+    justify-content: end;
+  }
+
+  .infosTop {
+    padding: 4rem 2rem 0rem 2rem;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .sobre {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .textos {
+    max-width: 100%;
+  }
+
+  .textos h1 {
+    font-size: 2rem;
+  }
+
+  .textos h6 {
+    font-size: 0.95rem;
+  }
+
+  .image {
+    margin-top: 2rem;
+  }
+
+  .logo2 {
+    width: 200px;
+  }
+
+  .center {
+    margin: 4vh 1rem;
+    text-align: center;
+    font-size: medium;
+  }
+
+  .container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .campanha {
+    max-width: 90%;
+    width: 100%;
+  }
+
+  .metasInfo {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .footer {
+    padding: 5vh 2rem;
+    font-size: medium;
+    text-align: center;
+  }
+
+  .footer button {
+    width: 120%;
+    padding: 10px;
+  }
+
+  .logo2{
+    display: none;
+  }
+  
+}
+
+@media (max-width: 600px) {
+  .header {
+    padding: 0.8rem 2%;
+  }
+  
+  .logo {
+    width: 40px;
+    height: 40px;
+  }
+
+  .logo2{
+    display: none;
+  }
+  
+  .authButtons {
+    gap: 0.5rem;
+  }
+  
+  .loginBtn, .logoutBtn {
+    padding: 6px 12px;
+    font-size: 14px;
+  }
+  
+  .dropdownOptions {
+    width: 140%;
+    font-size: 13px;
+  }
+  
+  .btnAuth {
+    padding: 8px;
+    font-size: 13px;
+  }
+  
+  .authButtons button {
+    padding: 0.4rem 0.8rem;
+    font-size: 14px;
+  }
+  
+  .textos h1 {
+    font-size: 1.6rem;
+  }
+
+  .textos h6 {
+    font-size: 0.85rem;
+  }
+
+  .loginBtn, .btnAuth {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+
+  .card {
+    min-width: unset;
+    width: 100%;
+  }
+
+  .cardTitulo, .cardValor {
+    font-size: 13px;
+  }
+
+  .footer h1 {
+    font-size: 1.3rem;
+  }
+
+  .footer p, .footer a {
+    font-size: 0.9rem;
+  }
+}

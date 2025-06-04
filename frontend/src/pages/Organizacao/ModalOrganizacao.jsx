@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Row, Form, FloatingLabel, Col } from "react-bootstrap";
 import CustomModal from "../../components/Modal/Modal";
 import { criarOrganizacao, editarOrganizacao, validarDadoOrganizacao } from "../../api/organizacao";
@@ -7,6 +7,8 @@ import InputTelefone from "../../components/Inputs/InputTelefone/InputTelefone";
 import InputEmail from "../../components/Inputs/InputEmail/InputEmail";
 import SelectPessoa from "../../components/Selects/SelectPessoa/SelectPessoa";
 import { toast } from "react-toastify";
+import { AuthContext } from "../../auth/Context";
+
 
 const defaultState = {
     organizacao: "",
@@ -29,14 +31,14 @@ export default function OrganizacaoModal({
     show,
     setShow,
     organizacaoSelecionada,
-    onCancel,
-    onOrganizacaoCriada,
-    onOrganizacaoAtualizada,
+    onSubmit,
+    onCancel
 }) {
     const [organizacao, setOrganizacao] = useState(defaultState);
     const [emailDisponivel, setEmailDisponivel] = useState(true);
 
     useEffect(() => {
+        console.log(organizacaoSelecionada)
         if (show) {
             if (organizacaoSelecionada) {
                 setOrganizacao({
@@ -45,7 +47,8 @@ export default function OrganizacaoModal({
                     cnpj: organizacaoSelecionada.cnpj || "",
                     telefone: organizacaoSelecionada.telefone || "",
                     email: organizacaoSelecionada.email || "",
-                    secretaria: organizacaoSelecionada.secretaria.nome || "",
+                    nomeSecretaria: organizacaoSelecionada.nomeSecretaria || "",
+                    secretaria: organizacaoSelecionada.idSecretaria || "",
                     endereco: {
                         cep: organizacaoSelecionada.endereco?.cep || "",
                         rua: organizacaoSelecionada.endereco?.rua || "",
@@ -64,7 +67,7 @@ export default function OrganizacaoModal({
 
     }, [show, organizacaoSelecionada]);
 
-    async function validarDado(param) {
+    const validarDado = async (param) => {
         const response = await validarDadoOrganizacao(param);
         if (response.data.disponivel) {
             setEmailDisponivel(true)
@@ -100,36 +103,27 @@ export default function OrganizacaoModal({
     const handleClose = () => {
         setShow(false);
         setOrganizacao(defaultState);
-        onCancel?.();
         setEmailDisponivel(true)
+        onCancel?.()
     };
 
     const salvar = async () => {
-        setOrganizacao({ ...organizacao, cnpj: organizacao.cnpj.replace(/\D/g, "") });
+        const organizacaoParaSalvar = {
+            ...organizacao,
+            cnpj: organizacao.cnpj.replace(/\D/g, ""),
+            telefone: organizacao.telefone.replace(/\D/g, ""),
+        };
+
         try {
-            let response;
-            if (organizacaoSelecionada?.idOrganizacao) {
-                response = await editarOrganizacao(organizacao);
-                if (response.data.sucesso) {
-                    toast(response.data);
-                    onOrganizacaoAtualizada?.(response.data.data);
-                } else {
-                    toast.error(response.data.mensagem)
-                }
-            } else {
-                response = await criarOrganizacao(organizacao);
-                if (response.data.sucesso) {
-                    toast(response.data.mensagem);
-                    onOrganizacaoCriada?.(response.data.data);
-                } else {
-                    toast.error(response.data.mensagem);
-                }
-            }
+            const response = organizacaoSelecionada?.idOrganizacao ? await editarOrganizacao(organizacaoParaSalvar) : await criarOrganizacao(organizacaoParaSalvar)
+            toast(response.data.message);
+            onSubmit?.(response.data);
             handleClose();
-        } catch (err) {
-            toast.error("Erro ao salvar organização:", err);
+        } catch (e) {
+            toast.error(e.response.data.error)
         }
     };
+
 
     const submitText = organizacaoSelecionada ? "Salvar" : "Cadastrar";
     const isSubmitDisabled =
@@ -140,6 +134,7 @@ export default function OrganizacaoModal({
         !organizacao.secretaria ||
         !organizacao.endereco.cep ||
         !organizacao.endereco.numero ||
+        !organizacao.endereco.complemento ||
         !emailDisponivel;
 
     return (
@@ -149,11 +144,11 @@ export default function OrganizacaoModal({
             title={
                 organizacaoSelecionada ? "Editar Organização" : "Adicionar Organização"
             }
-            submit={salvar}
             submitText={submitText}
-            resetText="Cancelar"
             submitDisable={isSubmitDisabled}
-            reset={handleClose}
+            resetText="Cancelar"
+            handleSubmit={salvar}
+            handleClose={handleClose}
         >
             <Row className="mb-3">
                 <FloatingLabel controlId="floatingInputOrganizacao" label="Organização">
@@ -203,7 +198,7 @@ export default function OrganizacaoModal({
             </Row>
             <Row className="mb-3">
                 <SelectPessoa
-                    value={organizacao.secretaria}
+                    value={organizacao.nomeSecretaria}
                     onChange={(value) => setOrganizacao({ ...organizacao, secretaria: value.idPessoa })}
                     label="Secretaria"
                 />
@@ -290,6 +285,16 @@ export default function OrganizacaoModal({
                             value={organizacao.endereco?.estado}
                             onChange={(e) => setOrganizacao({ ...organizacao, endereco: { ...organizacao.endereco, estado: e.target.value } })}
                             disabled
+                        />
+                    </FloatingLabel>
+                </Col>
+                <Col md={6}>
+                    <FloatingLabel controlId="floatingInputPais" label="Complemento">
+                        <Form.Control
+                            type="text"
+                            placeholder="Complemento"
+                            value={organizacao.endereco?.complemento}
+                            onChange={(e) => setOrganizacao({ ...organizacao, endereco: { ...organizacao.endereco, complemento: e.target.value } })}
                         />
                     </FloatingLabel>
                 </Col>

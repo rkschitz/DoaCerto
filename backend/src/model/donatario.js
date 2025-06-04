@@ -74,7 +74,7 @@ class Donatario {
                 type: database.db.Sequelize.INTEGER,
                 references: {
                     model: 'pessoa',
-                    as: 'secretariaCadastro',
+                    as: 'secretaria',
                     key: 'idPessoa'
                 }
             },
@@ -92,8 +92,12 @@ class Donatario {
             // dtEntregaCesta: {
             //     type: database.db.Sequelize.DATE,
             // },
-            nacionalidade: {
-                type: database.db.Sequelize.STRING,
+            idNacionalidade: {
+                type: database.db.Sequelize.INTEGER,
+                references: {
+                    model: 'nacionalidade',
+                    key: 'idNacionalidade'
+                }
             }
         }, {
             freezeTableName: true

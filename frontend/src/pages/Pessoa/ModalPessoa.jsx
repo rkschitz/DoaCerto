@@ -1,78 +1,65 @@
 import { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import CustomModal from "../../components/Modal/Modal";
-import { criar, editarPessoa } from "../../api/pessoa";
+import { criarPessoa, editarPessoa } from "../../api/pessoa";
 import { Form, FloatingLabel } from "react-bootstrap";
+import { toast } from "react-toastify";
+
+const defaultState = {
+  nome: "",
+  cpf: "",
+  telefone: "",
+  email: "",
+  dtNascimento: "",
+  sexo: "",
+  endereco: {
+    cep: "",
+    rua: "",
+    complemento: "",
+    numero: "",
+    bairro: "",
+    cidade: "",
+    estado: "",
+    pais: ""
+  }
+}
 
 export default function PessoaModal({
   show,
   setShow,
   pessoaSelecionada,
-  onPessoaCriada,
-  onPessoaAtualizada,
+  onSubmit,
   onCancel
 }) {
-  const [pessoa, setPessoa] = useState({
-    nome: "",
-    cpf: "",
-    telefone: "",
-    email: "",
-    dtNascimento: "",
-    sexo: "",
-    endereco: {
-      cep: "",
-      rua: "",
-      complemento: "",
-      numero: "",
-      bairro: "",
-      cidade: "",
-      estado: "",
-      pais: ""
-    }
-  });
+  const [pessoa, setPessoa] = useState(defaultState);
 
   useEffect(() => {
-    if (pessoaSelecionada) {
-      setPessoa({
-        nome: pessoaSelecionada.nome || "",
-        cpf: pessoaSelecionada.cpf || "",
-        telefone: pessoaSelecionada.telefone || "",
-        email: pessoaSelecionada.email || "",
-        dtNascimento: pessoaSelecionada.dtNascimento || "",
-        sexo: pessoaSelecionada.sexo || "",
-        idPessoa: pessoaSelecionada.idPessoa,
-        endereco: {
-          cep: pessoaSelecionada.endereco?.cep || "",
-          rua: pessoaSelecionada.endereco?.rua || "",
-          complemento: pessoaSelecionada.endereco?.complemento || "",
-          numero: pessoaSelecionada.endereco?.numero || "",
-          bairro: pessoaSelecionada.endereco?.bairro || "",
-          cidade: pessoaSelecionada.endereco?.cidade || "",
-          estado: pessoaSelecionada.endereco?.estado || "",
-          pais: pessoaSelecionada.endereco?.pais || ""
-        }
-      });
-    } else {
-      setPessoa({
-        nome: "",
-        cpf: "",
-        telefone: "",
-        email: "",
-        dtNascimento: "",
-        sexo: "",
-        endereco: {
-          cep: "",
-          rua: "",
-          complemento: "",
-          numero: "",
-          bairro: "",
-          cidade: "",
-          estado: "",
-          pais: ""
-        }
-      });
+    if (show) {
+      if (pessoaSelecionada) {
+        setPessoa({
+          nome: pessoaSelecionada.nome || "",
+          cpf: pessoaSelecionada.cpf || "",
+          telefone: pessoaSelecionada.telefone || "",
+          email: pessoaSelecionada.email || "",
+          dtNascimento: pessoaSelecionada.dtNascimento || "",
+          sexo: pessoaSelecionada.sexo || "",
+          idPessoa: pessoaSelecionada.idPessoa,
+          endereco: {
+            cep: pessoaSelecionada.endereco?.cep || "",
+            rua: pessoaSelecionada.endereco?.rua || "",
+            complemento: pessoaSelecionada.endereco?.complemento || "",
+            numero: pessoaSelecionada.endereco?.numero || "",
+            bairro: pessoaSelecionada.endereco?.bairro || "",
+            cidade: pessoaSelecionada.endereco?.cidade || "",
+            estado: pessoaSelecionada.endereco?.estado || "",
+            pais: pessoaSelecionada.endereco?.pais || ""
+          }
+        });
+      } else {
+        setPessoa(defaultState);
+      }
     }
-  }, [pessoaSelecionada, show]);
+  }, [show, pessoaSelecionada]);
 
   const buscarEndereco = async (CEP) => {
     try {
@@ -98,46 +85,20 @@ export default function PessoaModal({
     }
   }
 
+  const handleClose = () => {
+    setShow(false);
+    setPessoa(defaultState);
+    onCancel?.();
+  };
+
   const salvar = async () => {
     try {
-      let response;
-      if (pessoaSelecionada) {
-        response = await editarPessoa(pessoa);
-        if (response.status === 200) {
-          onPessoaAtualizada?.(response.data);
-        }
-      } else {
-        response = await criar(pessoa);
-        if (response.status === 200) {
-          onPessoaCriada?.(response.data);
-        }
-      }
-      setShow(false);
-      setPessoa({
-        nome: "",
-        cpf: "",
-        telefone: "",
-        email: "",
-        dtNascimento: "",
-        sexo: "",
-        endereco: {
-          cep: "",
-          rua: "",
-          complemento: "",
-          numero: "",
-          bairro: "",
-          cidade: "",
-          estado: "",
-          pais: ""
-        }
-      });
-    } catch (err) {
-      console.error(err);
-      alert(
-        pessoaSelecionada
-          ? "Erro ao atualizar pessoa."
-          : "Erro ao cadastrar pessoa."
-      );
+      const response = pessoaSelecionada ? await editarPessoa(pessoa) : await criarPessoa(pessoa);
+      toast(response.data.message)
+      onSubmit?.(response.data)
+      handleClose();
+    } catch (e) {
+      toast.error(e.response.data.error);
     }
   };
 
@@ -147,21 +108,15 @@ export default function PessoaModal({
   const isSubmitDisabled =
     !pessoa.nome || !pessoa.cpf || !pessoa.dtNascimento || !pessoa.sexo;
 
-  const handleCancel = () => {
-    onCancel?.();
-    setShow(false);
-  };
-
   return (
     <CustomModal
       show={show}
-      setShow={setShow}
       title={title}
-      submit={salvar}
       submitText={submitText}
       resetText="Cancelar"
       submitDisable={isSubmitDisabled}
-      reset={handleCancel}
+      handleSubmit={salvar}
+      handleClose={handleClose}
     >
       <Row className="mb-3">
         <FloatingLabel controlId="floatingInputNome" label="Nome" className="mb-3">
@@ -312,12 +267,12 @@ export default function PessoaModal({
           </FloatingLabel>
         </Col>
         <Col md={6}>
-          <FloatingLabel controlId="floatingInputPais" label="País">
+          <FloatingLabel controlId="floatingInputPais" label="Complemento">
             <Form.Control
               type="text"
               placeholder="País"
-              value={pessoa.endereco?.pais}
-              onChange={(e) => setPessoa({ ...pessoa, endereco: { ...pessoa.endereco, pais: e.target.value } })}
+              value={pessoa.endereco?.complemento}
+              onChange={(e) => setPessoa({ ...pessoa, endereco: { ...pessoa.endereco, complemento: e.target.value } })}
               disabled
             />
           </FloatingLabel>
