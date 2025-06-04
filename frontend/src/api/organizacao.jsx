@@ -37,7 +37,7 @@ export const validarDadoOrganizacao = async (dado) => {
     return response;
 }
 
-export const deletarOrganização = async (idOrganizacao) => {
+export const deletarOrganizacao = async (idOrganizacao) => {
     const response = await api.delete(`/api/v1/organizacao/${idOrganizacao}`)
     return response;
 }

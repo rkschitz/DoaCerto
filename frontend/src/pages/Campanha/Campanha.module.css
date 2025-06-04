@@ -1,0 +1,85 @@
+.paginaCampanha {
+  padding: 40px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.tituloCampanha {
+  font-size: 2rem;
+  color: #6e59a5;
+  margin-bottom: 20px;
+}
+
+.filtroCampanha {
+  margin: 20px 0;
+}
+
+.descricaoPagina {
+  color: #444;
+  margin-bottom: 20px;
+}
+
+.listaCampanhas {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.cardCampanha {
+  background: linear-gradient(180deg, #f3e9ff, #e6dfff);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0px 4px 12px rgba(100, 100, 111, 0.2);
+}
+
+.cardCampanha h2 {
+  font-size: 1.5rem;
+  color: #4b2fa0;
+  margin-bottom: 10px;
+}
+
+.cardCampanha p {
+  font-size: 0.95rem;
+  margin-bottom: 6px;
+}
+
+.metasContainer {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.metaCard {
+  background-color: #ffffff;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
+}
+
+.metaCard p {
+  margin: 4px 0;
+}
+
+.btnSelecionar {
+  margin-top: 16px;
+  padding: 10px 16px;
+  background-color: #a88df0;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btnSelecionar:hover {
+  background-color: #8f78cc;
+}
+
+.btnSituacao {
+    background-color: #ef4444;
+}
+
+.btnSituacao:hover {
+    background-color: #d42121;
+}
