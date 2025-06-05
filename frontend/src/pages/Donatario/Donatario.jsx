@@ -13,6 +13,7 @@ import SelectSituacaoDonatario from "../../components/Selects/SelectSituacaoDona
 import ModalReprovacaoDonatario from "./ModalReprovacaoDonatario";
 import MovimentacaoModal from "../Movimentacao/ModalMovimentacao";
 import ModalHistoricoDoacoes from "./ModalHistoricoDoacoes";
+import { Button } from "react-bootstrap";
 
 export default function Donatario() {
   const [donatarios, setDonatarios] = useState([]);
@@ -31,16 +32,16 @@ export default function Donatario() {
     setExpandirDonatario(expandirDonatario === index ? null : index);
   };
 
-  async function listar(situacaoCadastral) {
+  async function listar(situacaoCadastral, nome) {
     try {
-      const response = await buscarDonatarios({ situacaoCadastral });
+      const response = await buscarDonatarios({ situacaoCadastral, nome });
       setDonatarios(response.data);
     } catch (error) {
       toast.error("Erro ao buscar donatários:", error);
     }
   }
   useEffect(() => {
-    listar(filtros?.situacaoCadastral);
+    listar(filtros?.situacaoCadastral, filtros?.nome);
   }, []);
 
   const handleDelete = async (idDonatario) => {
@@ -86,6 +87,8 @@ export default function Donatario() {
           onChange={(e) => { setFiltros({ ...filtros, situacaoCadastral: e }); listar(e) }}
           value={filtros?.situacaoCadastral}
         />
+        <input type="text" value={filtros?.nome} onChange={(e) => setFiltros({ ...filtros, nome: e.target.value })} />
+        <Button onClick={() => listar(filtros?.situacaoCadastral, filtros?.nome)}>Buscar</Button>
         <div>
           <button className={styles.buttonAdicionar} onClick={handleAddNew}>
             Adicionar novo donatário
@@ -173,7 +176,7 @@ export default function Donatario() {
                     </p>
                     <p>
                       <strong>Nacionalidade:</strong>{" "}
-                      {donatario.nacionalidade}
+                      {donatario.nacionalidade?.nacionalidade}
                     </p>
                   </div>
 
@@ -201,7 +204,7 @@ export default function Donatario() {
                     </p>
                     <p>
                       <strong>Situação Profissional:</strong>{" "}
-                      {donatario.situacaoProfissional.situacaoProfissional}
+                      {donatario.situacaoProfissional?.situacaoProfissional}
                     </p>
                   </div>
 

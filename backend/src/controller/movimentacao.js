@@ -17,31 +17,27 @@ class MovimentacaoController {
     alimentos = [],
     dataMovimentacao
   ) {
-    try {
-      const response = await MovimentacaoModel.create({
-        ieMovimentacao,
-        idOrganizacao,
-        idDoador,
-        idDonatario,
-        idCampanha,
-        dataMovimentacao
-      });
+    const movimentacaoValue = await MovimentacaoModel.create({
+      ieMovimentacao,
+      idOrganizacao,
+      idDoador,
+      idDonatario,
+      idCampanha,
+      dataMovimentacao
+    });
 
-      if (response.dataValues) {
-        for (const alimento of alimentos) {
-          await MovimentacaoAlimentoModel.create({
-            idMovimentacao: response.dataValues.idMovimentacao,
-            idAlimento: alimento.idAlimento,
-            idUnidadeMedida: alimento.idUnidadeMedida,
-            quantidade: alimento.quantidade,
-            dataValidade: alimento.dataValidade
-          });
-        }
+    if (movimentacaoValue.dataValues) {
+      for (const alimento of alimentos) {
+        await MovimentacaoAlimentoModel.create({
+          idMovimentacao: movimentacaoValue.dataValues.idMovimentacao,
+          idAlimento: alimento.idAlimento,
+          idUnidadeMedida: alimento.idUnidadeMedida,
+          quantidade: alimento.quantidade,
+          dataValidade: alimento.dataValidade
+        });
       }
-      return response;
-    } catch (e) {
-      return { mensagem: e };
     }
+    return { data: movimentacaoValue, message: "Movimentação registrada com sucesso" };
   }
 
   async listarMovimentacoes(idOrganizacao, filtros = {}) {
@@ -98,10 +94,10 @@ class MovimentacaoController {
     });
 
     if (!movimentacoes.length) {
-      return { sucesso: false, mensagem: "Nenhuma movimentação encontrada" };
+      throw new Error("Nenhuma movimentação encontrada");
     }
 
-    const response = movimentacoes.flatMap((movimentacao) => {
+    const movimentacaoValue = movimentacoes.flatMap((movimentacao) => {
       return movimentacao.alimentos.map((alimento) => ({
         idMovimentacao: movimentacao.idMovimentacao,
         ieMovimentacao: movimentacao.ieMovimentacao,
@@ -122,17 +118,14 @@ class MovimentacaoController {
       }));
     });
 
-    return { data: response, sucesso: true, mensagem: "Movimentações encontradas com sucesso" };
+    return movimentacaoValue;
   }
 
   async excluir(idMovimentacao) {
     const movimentacao = await MovimentacaoModel.findOne({ where: { idMovimentacao } });
 
     if (!movimentacao) {
-      return {
-        message: 'Movimentação não encontrada',
-        success: false,
-      };
+      throw new Error("Movimentação não encontrada")
     }
 
     await MovimentacaoModel.destroy({ where: { idMovimentacao } });
@@ -145,10 +138,7 @@ class MovimentacaoController {
     const oldMovimentacao = await MovimentacaoModel.findOne({ where: { idMovimentacao } });
 
     if (!oldMovimentacao) {
-      return {
-        message: 'Movimentação não encontrada',
-        success: false,
-      };
+      throw new Error('Movimentação não encontrada')
     }
 
     const movimentacaoAlterar = {
@@ -209,10 +199,7 @@ class MovimentacaoController {
     });
 
     if (!alimento) {
-      return {
-        message: 'Alimento não encontrado',
-        success: false,
-      };
+      throw new Error('Alimento não encontrado')
     }
 
     const idMovimentacao = alimento.idMovimentacao;
@@ -226,16 +213,13 @@ class MovimentacaoController {
       await MovimentacaoModel.destroy({ where: { idMovimentacao } });
 
       return {
-        message: 'Movimentação e alimento excluídos com sucesso (último alimento).',
-        sucesso: true
+        message: 'Movimentação e alimento excluídos com sucesso (último alimento).'
       };
     } else {
       await MovimentacaoAlimentoModel.destroy({ where: { idMovimentacaoAlimento } });
-
       return {
         message: 'Alimento excluído com sucesso.',
-        sucesso: true
-      };
+      }
     }
   }
 
