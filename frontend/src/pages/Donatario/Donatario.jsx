@@ -5,7 +5,7 @@ import calcularIdade from "../../utils/calcularIdade";
 import formatarDataBR from "../../utils/formatarDataBR";
 import styles from "./donatario.module.css";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
-import { FaRegTrashAlt, FaRegEdit } from "react-icons/fa";
+import { FaRegTrashAlt, FaRegEdit, FaCheck, FaTimes } from "react-icons/fa";
 import ModalDonatario from "./ModalDonatario";
 import ModalAprovacaoDonatario from "./ModalAprovacaoDonatario";
 import { toast } from "react-toastify";
@@ -118,18 +118,18 @@ export default function Donatario() {
                     });; setAbrirModalMovimentacao(true)
                   }}>Registrar entrega de cesta</button>}
                   {(donatario.situacaoCadastral === "P" || donatario.situacaoCadastral === "R") &&
-                    <button
+                    <button className={styles.btnAprovar}
                       onClick={() => {
                         setSelectedDonatario(donatario); setAbrirModalAprovacao(true)
                       }}
                     >
-                      Aprovar cadastro
+                      <FaCheck /> Aprovar cadastro
                     </button>}
                   {donatario.situacaoCadastral === "P" &&
-                    <button
+                    <button className={styles.btnReprovar}
                       onClick={() => { setSelectedDonatario(donatario); setAbrirModalReprovacao(true) }}
                     >
-                      Reprovar cadastro
+                    <FaTimes /> Reprovar cadastro
                     </button>}
 
                   <button
