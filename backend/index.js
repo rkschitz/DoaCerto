@@ -271,7 +271,9 @@ const createTables = async () => {
 
   } catch (error) {
     console.error(`Erro ao inicializar o banco de dados: ${error}`);
+    console.trace(error); // <-- Isso mostra onde exatamente estourou o erro
   }
+
 };
 
 createTables().then(() => {
