@@ -8,19 +8,18 @@
 }
 
 .conteudo button {
-  background: linear-gradient(to right, #a88df0, #caaeff);
   color: white;
   font-weight: bold;
   padding: 12px 30px;
   border: none;
-  border-radius: 25px;
+  border-radius: 6px;
   font-size: 1rem;
   cursor: pointer;
   margin-bottom: 2rem;
   transition: all 0.3s ease;
 }
 
-.conteudo button:hover {
+.btnAdicionar {
   background: linear-gradient(to right, #987ae6, #bfa2f3);
   box-shadow: 0 4px 10px rgba(170, 144, 219, 0.4);
 }
@@ -37,7 +36,7 @@
 .card {
   background: #ffffff;
   border-radius: 12px;
-  padding: 20px;
+  padding: 2rem;
   box-shadow: 0px 4px 12px rgba(100, 100, 111, 0.1);
   width: 100%;
   max-width: 300px;
@@ -53,23 +52,6 @@
   margin-bottom: 12px;
 }
 
-.card button {
-  align-self: flex-start;
-  background-color: #8e7db2;
-  color: white;
-  border: none;
-  border-radius: 20px;
-  padding: 6px 14px;
-  font-size: 0.9rem;
-  cursor: pointer;
-  margin-bottom: 10px;
-  transition: background-color 0.3s;
-}
-
-.card button:hover {
-  background-color: #7765a3;
-}
-
 .card p {
   font-size: 0.9rem;
   margin: 4px 0;
@@ -77,4 +59,43 @@
 
 .card p span {
   font-weight: bold;
+}
+
+.cabecalho {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.cabecalho h2 {
+  margin: 0;
+}
+
+.botoesAcoes {
+  display: flex;
+  gap: 8px;
+}
+
+
+.cabecalho button {
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  margin-bottom: 0;
+}
+
+.btnDeletar{
+  background-color: #ef4444;
+}
+
+.btnEditar{
+  background-color: #a88df0;
+}
+
+.cabecalho button:hover {
+  background-color: #7765a3;
 }
