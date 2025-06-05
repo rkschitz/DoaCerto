@@ -17,6 +17,10 @@ export default function SelectPessoa({ label, onChange, value, disabled }) {
                     onClick={() => {
                         setOpenLocalizadorPessoa(true);
                     }}
+                    onFocus={(e) => {
+                        setOpenLocalizadorPessoa(true);
+                        e.target.blur();
+                    }}
                     disabled={disabled}
                 />
             </FloatingLabel>
@@ -27,7 +31,8 @@ export default function SelectPessoa({ label, onChange, value, disabled }) {
                         idPessoa: pessoa.idPessoa,
                         nome: pessoa.nome
                     });
-                    onChange(pessoa);
+                    onChange(pessoa)
+                    setOpenLocalizadorPessoa(false);
                 }}
                 show={openLocalizadorPessoa}
                 setShow={setOpenLocalizadorPessoa}

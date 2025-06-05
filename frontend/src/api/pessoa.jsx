@@ -21,7 +21,7 @@ export const deletarPessoa = async (idPessoa) => {
     return response;
 }
 
-export const buscarTodasPessoas = async () => {
-    const response = await api.get('/api/v1/pessoa');
+export const buscarPessoas = async (params) => {
+    const response = await api.get('/api/v1/pessoa', {params});
     return response;
 }

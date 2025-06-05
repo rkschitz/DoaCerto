@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Row, Form, FloatingLabel, Col } from "react-bootstrap";
 import CustomModal from "../../components/Modal/Modal";
 import { criarOrganizacao, editarOrganizacao, validarDadoOrganizacao } from "../../api/organizacao";
@@ -7,8 +7,6 @@ import InputTelefone from "../../components/Inputs/InputTelefone/InputTelefone";
 import InputEmail from "../../components/Inputs/InputEmail/InputEmail";
 import SelectPessoa from "../../components/Selects/SelectPessoa/SelectPessoa";
 import { toast } from "react-toastify";
-import { AuthContext } from "../../auth/Context";
-
 
 const defaultState = {
     organizacao: "",
