@@ -11,13 +11,12 @@ export default function Campanha() {
     const [campanhas, setCampanhas] = useState([]);
     const [campanhaSelecionada, setCampanhaSelecionada] = useState(null);
     const [show, setShow] = useState(false);
-    const [filtros, setFiltros] = useState({ativos: true})
+    const [filtros, setFiltros] = useState({})
 
-    const { id, role } = useContext(AuthContext);
-    const carregou = useRef(false);
+    const { id } = useContext(AuthContext);
 
-    async function buscar() {
-        const response = await buscarCampanhas({ idOrganizacao: id, ativos: filtros?.ativos, titulo: filtros?.titulo });
+    async function buscar(p_filtros) {
+        const response = await buscarCampanhas({ idOrganizacao: id, ativos: p_filtros?.ativos || true, titulo: p_filtros?.titulo });
         setCampanhas(response.data);
     }
 
@@ -32,31 +31,16 @@ export default function Campanha() {
     }
 
     useEffect(() => {
-        console.log(filtros)
-        if (!carregou.current) {
-            buscar();
-            carregou.current = true;
-        }
+        buscar();
     }, []);
 
     return (
         <div className={styles.paginaCampanha}>
             <h1 className={styles.tituloCampanha}>Campanha</h1>
-            {/* <div className={styles.filtroCampanha}>
-                <RadioGroup
-                    title="Filtro"
-                    options={[
-                        { value: true, label: "Ativa" },
-                        { value: false, label: "Inativa" }
-                    ]}
-                    selectedValue={buscarAtivas}
-                    onChange={(e) => setBuscarAtivas(e.target.value === "true")}
-                />
-            </div> */}
             <div className={styles.header}>
                 <div className={styles.titulo}>Donatários</div>
                 <SelectSituacaoCampanha
-                    onChange={(e) => { setFiltros({ ...filtros, ativos: e }); buscar() }}
+                    onChange={(e) => { const novoFiltro = { ...filtros, ativos: e }; setFiltros(novoFiltro); buscar(novoFiltro); }}
                     value={filtros?.ativos}
                 />
                 <input type="text" value={filtros?.titulo} onChange={(e) => setFiltros({ ...filtros, titulo: e.target.value })} />
