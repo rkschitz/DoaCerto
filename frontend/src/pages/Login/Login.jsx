@@ -26,7 +26,6 @@ export default function Login() {
         login(response.data.token);
         return navigate('/');
       }
-      return toast.error(response.data.message);
 
     } catch (e) {
       toast.error(e.response?.data?.message);
