@@ -51,6 +51,13 @@ class CampanhaController {
             idOrganizacao: idOrganizacao
         };
 
+        if (ativos === 'Todas') {
+            delete whereClause.ieSituacao;
+        }
+
+        console.log('whereClause', whereClause);
+
+
         if (titulo) {
             whereClause.titulo = { [Op.like]: `%${titulo}%` };
         }
