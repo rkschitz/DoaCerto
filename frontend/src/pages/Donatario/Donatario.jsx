@@ -46,11 +46,11 @@ export default function Donatario() {
 
   const handleDelete = async (idDonatario) => {
     if (window.confirm("Você tem certeza que deseja excluir esse donatário?")) {
-      const response = await excluirDonatario(idDonatario);
-      if (response.status === 200) {
-        alert("Donatário excluído com sucesso!");
-      } else {
-        alert("Erro ao excluir donatário.");
+      try {
+        const response = await excluirDonatario(idDonatario);
+        toast(response.data.message)
+      } catch (e) {
+        toast.error(e.response.data.error)
       }
       listar(filtros?.situacaoCadastral);
     }

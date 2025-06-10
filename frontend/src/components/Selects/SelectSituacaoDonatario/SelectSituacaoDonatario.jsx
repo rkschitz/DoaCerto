@@ -5,7 +5,10 @@ export default function SelectSituacaoDonatario({ value, onChange }) {
         <Select label={'Situação do donatário'}
             value={value}
             onChange={onChange}
-            options={[{ value: 'A', descricao: 'Aprovado' }, { value: 'P', descricao: 'Pendente' }, { value: 'R', descricao: 'Reprovado' }]}
+            options={[{ value: 'A', descricao: 'Aprovado' },
+            { value: 'P', descricao: 'Pendente' },
+            { value: 'R', descricao: 'Reprovado' },
+            { value: 'T', descricao: 'Todos' }]}
         />
     )
 }
