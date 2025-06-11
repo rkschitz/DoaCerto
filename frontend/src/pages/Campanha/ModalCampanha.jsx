@@ -4,6 +4,8 @@ import { Button, FloatingLabel, Form, Row } from "react-bootstrap";
 import SelectAlimento from "../../components/Selects/SelectAlimento/SelectAlimento";
 import SelectUnidadeMedida from "../../components/Selects/SelectUnidadeMedida/SelectUnidadeMedida";
 import { criarCampanha, editarCampanha } from "../../api/campanha";
+import { toast } from 'react-toastify';
+import formatarDataInput from "../../utils/formatarDataInput";
 
 const defaultState = {
     titulo: null,
@@ -14,37 +16,36 @@ const defaultState = {
     metas: []
 }
 
-export default function ModalCampanha({ show, setShow, campanhaSelecionada
-    , setCampanhaSelecionada, onCancel, onCampanhaCriada, onCampanhaAtualizada
-}) {
+export default function ModalCampanha({ show, setShow, campanhaSelecionada, onCancel, onSubmit }) {
     const [campanha, setCampanha] = useState(defaultState);
 
     useEffect(() => {
-        console.log(campanhaSelecionada)
         if (campanhaSelecionada) {
-            setCampanha(campanhaSelecionada);
+            setCampanha({
+                ...campanhaSelecionada,
+                dtInicio: formatarDataInput(campanhaSelecionada.dtInicio),
+                dtFinal: formatarDataInput(campanhaSelecionada.dtFinal)
+            });
         } else {
             setCampanha(defaultState);
         }
     }, [campanhaSelecionada]);
 
     async function handleSubmit() {
-        if (campanhaSelecionada) {
-            const response = await editarCampanha(campanha);
-            if (response.status === 200) {
-                onCampanhaAtualizada?.(response.data);
-            }
-        } else {
-            const response = await criarCampanha(campanha);
-            if (response.status === 201) {
-                onCampanhaCriada?.(response.data);
-            }
+        try {
+            const response = campanhaSelecionada ? await editarCampanha(campanha) : await criarCampanha(campanha)
+            toast(response.data.message)
+            onSubmit?.(response.data)
+            handleClose();
+        } catch (e) {
+            toast.error(e.response.data.error)
         }
     }
 
     function handleClose() {
         setCampanha(defaultState);
         setShow(false);
+        onCancel?.()
     }
 
     const isSubmitDisabled = !campanha.titulo || !campanha.descricao;
@@ -70,15 +71,14 @@ export default function ModalCampanha({ show, setShow, campanhaSelecionada
     return (
         <CustomModal
             show={show}
-            setShow={setShow}
             title={
                 campanhaSelecionada ? "Editar Campanha" : "Adicionar Campanha"
             }
-            submit={handleSubmit}
             submitText={campanhaSelecionada ? "Salvar" : "Adicionar"}
             resetText="Cancelar"
             submitDisable={isSubmitDisabled}
-            reset={handleClose}
+            handleSubmit={handleSubmit}
+            handleClose={handleClose}
         >
             <Row className="mb-3">
                 <FloatingLabel controlId="inputTitulo" label="Titulo">

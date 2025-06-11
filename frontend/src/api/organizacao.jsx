@@ -25,7 +25,19 @@ export const criarOrganizacao = async (organizacao) => {
 
 export const buscarAlimentosMovimentacao = async (ieMovimentacao) => {
     const response = await api.get('/api/v1/organizacao/alimentos_movimentacao', {
-        params:{ ieMovimentacao}
+        params: { ieMovimentacao }
     })
+    return response;
+}
+
+export const validarDadoOrganizacao = async (dado) => {
+    const response = await api.get('/api/v1/organizacao/validar_dados', {
+        params: dado
+    })
+    return response;
+}
+
+export const deletarOrganizacao = async (idOrganizacao) => {
+    const response = await api.delete(`/api/v1/organizacao/${idOrganizacao}`)
     return response;
 }

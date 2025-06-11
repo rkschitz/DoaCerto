@@ -1,22 +1,14 @@
 import api from './api';
 
-export const buscarCampanhas = async (idOrganizacao, ativos) => {
+export const buscarCampanhas = async (param) => {
     const response = await api.get('/api/v1/campanha', {
-        params: { idOrganizacao: idOrganizacao, ativos: ativos }
+        params: param
     })
     return response;
 }
 
 export const editarCampanha = async (campanha) => {
-    const body = {
-        idCampanha: campanha.idCampanha,
-        titulo: campanha.titulo,
-        descricao: campanha.descricao,
-        ieSituacao: campanha.ieSituacao,
-        metas: campanha.metas
-    }
-
-    const response = await api.put(`/api/v1/campanha/${campanha.idCampanha}`, body);
+    const response = await api.put(`/api/v1/campanha/${campanha.idCampanha}`, campanha);
     return response;
 }
 

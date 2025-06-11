@@ -1,51 +1,65 @@
 const DependenteModel = require('../model/dependente');
+const DonatarioModel = require('../model/donatario')
+const PessoaController = require('./pessoa')
+const PessoaModel = require('../model/pessoa')
 class DependenteController {
     async criar(idPessoa, idProvedor, idGrauParentesco) {
-        try {
-            const dependenteValue = await DependenteModel.create({
-                idPessoa,
-                idProvedor,
-                idGrauParentesco
-            })
-            return dependenteValue;
-        } catch (e) {
-            return { mensagem: e.message };
+
+        const pessoaValue = await PessoaController.buscarPessoa(idPessoa);
+        const isDependente = await this.buscarDonatarioPorDependente(idPessoa);
+
+        if (isDependente) {
+            throw new Error(`${pessoaValue?.dataValues?.nome} já está cadastro como dependente de ${isDependente?.dataValues?.pessoa?.nome}`)
         }
+
+        const dependenteValue = await DependenteModel.create({
+            idPessoa,
+            idProvedor,
+            idGrauParentesco
+        })
+
+        return dependenteValue;
+
     }
 
-    async editar(idDependente, idGrauParentesco) {
-        try {
-            const dependenteValue = await DependenteModel.update({
-                idGrauParentesco
-            }, {
-                where: { idDependente }
-            })
-            return dependenteValue;
-        } catch (e) {
-            return { mensagem: e.message };
-        }
+    async editar(idDependente, idGrauParentesco, idPessoa) {
+        const dependenteValue = await DependenteModel.update({
+            idGrauParentesco,
+            idPessoa
+        }, {
+            where: { idDependente }
+        })
+        return dependenteValue;
     }
 
-    async buscarDependentesPorDonatario(idDonatario) {
-        try {
-            const dependenteValue = await DependenteModel.findAll({
-                where: { idProvedor: idDonatario }
-            })
-            return dependenteValue;
-        } catch (e) {
-            return { mensagem: e.message };
-        }
+    async buscarDonatarioPorDependente(idDependente) {
+        const dependenteValue = await DependenteModel.findOne({
+            where: { idPessoa: idDependente },
+            // include: {
+            //     model: DonatarioModel,
+            //     as: 'provedor',
+            //     include: {
+            //         model: PessoaModel,
+            //         attributes: ['nome']
+            //     }
+            // }
+            
+        })
+        return dependenteValue;
     }
 
     async excluir(idDependente) {
-        try {
-            const dependenteValue = await DependenteModel.destroy({
-                where: { idDependente }
-            })
-            return dependenteValue;
-        } catch (e) {
-            return { mensagem: e.message };
-        }
+        const dependenteValue = await DependenteModel.destroy({
+            where: { idDependente }
+        })
+        return dependenteValue;
+    }
+
+    async excluirPorDonatario(idDonatario) {
+        const dependenteValue = await DependenteModel.destroy({
+            where: { idProvedor: idDonatario }
+        })
+        return dependenteValue;
     }
 }
 

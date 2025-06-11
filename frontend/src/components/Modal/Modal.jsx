@@ -6,23 +6,12 @@ export default function CustomModal({
   children,
   show,
   setShow,
-  submit,
-  reset,
   submitText = "Salvar Alterações",
   resetText = "Cancelar",
   submitDisable,
+  handleSubmit,
+  handleClose
 }) {
-
-  const handleClose = () => setShow(false);
-  const handleSubmit = () => {
-    if (submit) submit();
-    setShow(false);
-  };
-
-  const handleReset = () => {
-    if (reset) reset();
-    setShow(false);
-  };
 
   return (
     <Modal show={show} onHide={handleClose} centered>
@@ -31,7 +20,7 @@ export default function CustomModal({
       </Modal.Header>
       <Modal.Body>{children}</Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={handleReset} className={styles.modalButton}>
+        <Button variant="secondary" onClick={handleClose} className={styles.modalButton}>
           {resetText}
         </Button>
         <Button variant="primary" onClick={handleSubmit} disabled={submitDisable}>

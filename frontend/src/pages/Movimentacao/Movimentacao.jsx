@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { buscarMovimentacoes, excluirMovimentacao } from "../../api/movimentacao";
+import { buscarMovimentacoes, excluirMovimentacaoAlimento } from "../../api/movimentacao";
 import formatarDataBRCHora from "../../utils/formatarDataBRCHora";
 import MovimentacaoModal from "./ModalMovimentacao";
 import { toast } from "react-toastify";
@@ -7,19 +7,19 @@ import { useTable, useSortBy, usePagination } from 'react-table';
 import { Button } from "react-bootstrap";
 import styles from "./movimentacao.module.css";
 import React from "react";
+import formatarDataBR from "../../utils/formatarDataBR";
 
 export default function Movimentacao() {
   const [movimentacoes, setMovimentacoes] = useState([]);
   const [show, setShow] = useState(false);
-  const [movimentacaoSelecionada, setMovimentacaoSelecionada] = useState(null);
+  const [movimentacaoSelecionada, setMovimentacaoSelecionada] = useState({});
 
   async function listarMovimentacoes() {
     try {
       const response = await buscarMovimentacoes();
-      console.log(response.data);
       setMovimentacoes(response.data);
     } catch (e) {
-      console.error(e);
+      toast.error(e.response.data.error);
     }
   }
 
@@ -28,14 +28,14 @@ export default function Movimentacao() {
       if (!window.confirm('Deseja realmente excluir a movimentação?')) {
         return;
       }
-      const response = await excluirMovimentacao(movimentacao.idMovimentacao);
+      const response = await excluirMovimentacaoAlimento(movimentacao.idMovimentacaoAlimento);
       if (response.status === 200) {
         toast(response.data.message);
-        listarMovimentacoes();
       }
     } catch (e) {
-      toast.error(e.message);
+      toast.error(e.response.data.message);
     }
+    listarMovimentacoes();
   }
 
   useEffect(() => {
@@ -50,8 +50,8 @@ export default function Movimentacao() {
       },
       {
         Header: "Data",
-        accessor: "dtMovimentacao",
-        Cell: ({ value }) => formatarDataBRCHora(value),
+        accessor: "dataMovimentacao",
+        Cell: ({ value }) => formatarDataBR(value),
       },
       {
         Header: "Campanha",
@@ -66,9 +66,26 @@ export default function Movimentacao() {
         accessor: "nomeDonatario",
       },
       {
+        Header: "Item",
+        accessor: "alimento",
+      },
+      {
+        Header: "Quantidade",
+        accessor: "quantidade",
+      },
+      {
+        Header: "Unidade",
+        accessor: "unidadeMedida",
+      },
+      {
+        Header: "Validade",
+        accessor: "dataValidade",
+        Cell: ({ value }) => formatarDataBR(value),
+      },
+      {
         Header: "Ações",
         accessor: "acoes",
-        Cell: ({ row }) => (
+        Cell: ({ row }) => (<>
           <Button
             variant="primary"
             onClick={() => {
@@ -78,6 +95,13 @@ export default function Movimentacao() {
           >
             Editar
           </Button>
+          <Button
+            variant="danger"
+            onClick={() => excluirMovimentacaoSelecionada(row.original)}
+          >
+            Excluir
+          </Button>
+        </>
         ),
       },
     ],
@@ -111,7 +135,7 @@ export default function Movimentacao() {
         <button
           className={styles.addButton}
           onClick={() => {
-            setShow(true); 
+            setShow(true);
             setMovimentacaoSelecionada(null);
           }}
         >
@@ -202,9 +226,8 @@ export default function Movimentacao() {
         show={show}
         setShow={setShow}
         movimentacaoSelecionada={movimentacaoSelecionada}
-        onCancel={(e) => setMovimentacaoSelecionada({})}
-        onMovimentacaoAtualizada={(e) => listarMovimentacoes()}
-        onMovimentacaoCriada={(e) => listarMovimentacoes()}
+        onCancel={(e) => setMovimentacaoSelecionada(null)}
+        onSubmit={(e) => {listarMovimentacoes(); setMovimentacaoSelecionada(null)}}
       />
     </div>
   );

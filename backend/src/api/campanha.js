@@ -6,25 +6,25 @@ class CampanhaApi {
         const { idOrganizacao } = req.session;
 
         try {
-            const campanha = await CampanhaController.criar(
+            const response = await CampanhaController.criar(
                 titulo,
                 descricao,
                 dtInicio,
                 dtFinal,
                 idOrganizacao,
                 metas);
-            res.status(201).json(campanha);
+            res.status(201).json(response);
         } catch (err) {
             res.status(500).json({ message: err.message });
         }
     }
 
     async listarTodas(req, res) {
-        const { idOrganizacao, ativos } = req.query;
+        const param = req.query;
 
         try {
-            const campanhas = await CampanhaController.listarTodas(idOrganizacao, ativos);
-            res.status(200).json(campanhas);
+            const response = await CampanhaController.listarTodas(param);
+            res.status(200).json(response);
         } catch (err) {
             res.status(500).json({ message: err.message });
         }
@@ -35,8 +35,8 @@ class CampanhaApi {
         const { titulo, descricao, dtInicio, dtFinal, ieSituacao, metas } = req.body;
 
         try {
-            const campanha = await CampanhaController.editar(idCampanha, titulo, descricao, dtInicio, dtFinal, ieSituacao, metas);
-            res.status(200).json({ campanha });
+            const response = await CampanhaController.editar(idCampanha, titulo, descricao, dtInicio, dtFinal, ieSituacao, metas);
+            res.status(200).json(response);
         } catch (err) {
             res.status(500).json({ message: err.message });
         }

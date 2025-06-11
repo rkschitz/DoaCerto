@@ -18,6 +18,7 @@ const Pais = require("./pais");
 const Endereco = require("./endereco");
 const Campanha = require("./campanha");
 const Meta = require("./meta");
+const Nacionalidade = require('./nacionalidade')
 
 // 🥦 Relacionamento entre TipoAlimento e Alimento
 TipoAlimento.hasMany(Alimento, { foreignKey: "idTipoAlimento" });
@@ -37,14 +38,11 @@ Donatario.belongsTo(Pessoa, { foreignKey: "idPessoa" });
 Pessoa.hasMany(Donatario, { foreignKey: "idPessoa" });
 
 // 👥 Relacionamento entre Donatario e Pessoa (Responsável pela Visita)
-Donatario.belongsTo(Pessoa, {
-  as: "responsavel",
-  foreignKey: "responsavelVisita",
-});
-Pessoa.hasMany(Donatario, {
-  as: "visitasResponsaveis",
-  foreignKey: "responsavelVisita",
-});
+Donatario.belongsTo(Pessoa, { as: "responsavel", foreignKey: "responsavelVisita", });
+Pessoa.hasMany(Donatario, { as: "visitasResponsaveis", foreignKey: "responsavelVisita", });
+
+Donatario.belongsTo(Pessoa, { as: "secretaria", foreignKey: "idPessoa" });
+Pessoa.hasMany(Donatario, { as: "secretarias", foreignKey: "idPessoa" });
 
 // 🏢 Relacionamento entre Donatario e Organizacao
 Donatario.belongsTo(Organizacao, {
@@ -80,11 +78,7 @@ SituacaoProfissional.hasMany(Donatario, {
 Donatario.hasMany(Dependente, { as: "dependentes", foreignKey: "idProvedor" });
 
 // Um Dependente pertence a um Donatario (o provedor)
-Dependente.belongsTo(Donatario, {
-  as: "provedor",
-  foreignKey: "idProvedor",
-  onDelete: "CASCADE",
-});
+Dependente.belongsTo(Donatario, {as: "provedor", foreignKey: "idProvedor", onDelete: "CASCADE",});
 
 // Um Dependente pertence a uma Pessoa (dados pessoais do dependente)
 Dependente.belongsTo(Pessoa, { as: "pessoa", foreignKey: "idPessoa" });
@@ -153,3 +147,6 @@ Alimento.hasMany(Meta, { foreignKey: 'idAlimento', as: 'metas' });
 
 Meta.belongsTo(UnidadeMedida, { foreignKey: 'idUnidadeMedida', as: 'unidade_medida' });
 UnidadeMedida.hasMany(Meta, { foreignKey: 'idUnidadeMedida', as: 'metas' });
+
+Donatario.belongsTo(Nacionalidade, { as: "nacionalidade", foreignKey: "idNacionalidade", });
+Nacionalidade.hasMany(Donatario, { as: "donatarios", foreignKey: "idNacionalidade", });

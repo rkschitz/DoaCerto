@@ -4,6 +4,7 @@ const AlimentoModel = require('../model/alimento');
 const UnidadeMedidaModel = require('../model/unidadeMedida');
 const MetaController = require('../controller/meta')
 const { buscarQuantidadeEntradaPorMeta } = require('./movimentacao');
+const { Op } = require('sequelize');
 
 class CampanhaController {
     async criar(titulo, descricao, dtInicio, dtFinal, idOrganizacao, metas = []) {
@@ -23,8 +24,6 @@ class CampanhaController {
             throw new Error('Erro ao criar campanha');
         }
 
-        console.log(typeof metas)
-
         if (metas.length > 0) {
             for (const meta of metas) {
                 await MetaController.criar(
@@ -36,26 +35,40 @@ class CampanhaController {
             }
         }
 
-        return campanha;
+        return { data: campanha, message: 'Campanha criada com sucesso!' };
 
     }
 
-    async listarTodas(idOrganizacao, ativos) {
+    async listarTodas(filtros = {}) {
+        const { idOrganizacao, ativos, titulo } = filtros;
+
         if (idOrganizacao && !ativos) {
             throw new Error('Parâmetro inválido');
         }
 
-        let parametros = { ieSituacao: null };
-        if (idOrganizacao === 1 || idOrganizacao === undefined) {
-            delete parametros.idOrganizacao
+        let whereClause = {
+            ieSituacao: ativos === 'true' ? 'A' : 'I',
+            idOrganizacao: idOrganizacao
+        };
+
+        if (ativos === 'Todas') {
+            delete whereClause.ieSituacao;
         }
 
-        ativos === 'true' ? parametros.ieSituacao = 'A' : parametros.ieSituacao = 'I';
+        console.log('whereClause', whereClause);
 
 
+        if (titulo) {
+            whereClause.titulo = { [Op.like]: `%${titulo}%` };
+        }
+
+
+        if (idOrganizacao === '1' || idOrganizacao === undefined) {
+            delete whereClause.idOrganizacao
+        }
 
         const response = await CampanhaModel.findAll({
-            where: parametros,
+            where: whereClause,
             order: [['titulo', 'ASC']],
             include: [
                 {
@@ -140,12 +153,10 @@ class CampanhaController {
 
         const metasAtuais = await MetaController.buscarMetaPorCampanha(idCampanha);
 
-        // Atualiza ou remove metas existentes
         for (const meta of metasAtuais) {
             const metaNova = metas.find(m => m.idMeta === meta.idMeta);
 
             if (metaNova) {
-                // Atualiza meta existente
                 await MetaController.editar(
                     meta.idMeta,
                     metaNova.meta,
@@ -154,12 +165,10 @@ class CampanhaController {
                     metaNova.idUnidadeMedida
                 );
             } else {
-                // Remove meta que não está mais na nova lista
                 await MetaModel.destroy({ where: { idMeta: meta.idMeta } });
             }
         }
 
-        // Cria novas metas (aquelas sem idMeta)
         for (const metaNova of metas) {
             if (!metaNova.idMeta) {
                 await MetaController.criar(
@@ -171,7 +180,7 @@ class CampanhaController {
             }
         }
 
-        return campanha;
+        return { data: campanha, message: 'Campanha editada com sucesso!' };
 
     }
 

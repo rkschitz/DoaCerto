@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { buscarTodasPessoas, criar, deletarPessoa } from "../../api/pessoa";
+import { buscarPessoas, deletarPessoa } from "../../api/pessoa";
 import formatarDataBR from "../../utils/formatarDataBR";
 import ModalPessoa from "./ModalPessoa";
 import styles from "./pessoa.module.css";
+import { toast } from "react-toastify";
 
 export default function Pessoa() {
   const [pessoas, setPessoas] = useState([]);
@@ -11,7 +12,7 @@ export default function Pessoa() {
 
   const listarPessoas = async () => {
     try {
-      const response = await buscarTodasPessoas();
+      const response = await buscarPessoas();
       const lista = response.data ?? response;
       setPessoas(Array.isArray(lista) ? lista : []);
     } catch (err) {
@@ -22,14 +23,10 @@ export default function Pessoa() {
   const handleDelete = async (idPessoa) => {
     try {
       const response = await deletarPessoa(idPessoa);
-      if (response.status === 200) {
-        setPessoas(pessoas.filter((pessoa) => pessoa.idPessoa !== idPessoa));
-        alert("Pessoa excluída com sucesso");
-      } else {
-        throw new Error(response.data.mensagem);
-      }
-    } catch (err) {
-      console.error("Erro ao excluir pessoa:", err);
+      setPessoas(pessoas.filter((pessoa) => pessoa.idPessoa !== idPessoa));
+      toast(response.data.message);
+    } catch (e) {
+      toast.error(e.response.data.error)
     }
   };
 
@@ -107,7 +104,7 @@ export default function Pessoa() {
                 {pessoa.sexo === "M" ? "Masculino" : "Feminino"}
               </p>
               <p> Rua: {pessoa.endereco?.rua} Número: {pessoa.endereco?.numero} Complemento: {pessoa.endereco?.complemento} </p><br />
-                <p> Bairro: {pessoa.endereco?.bairro} Estado: {pessoa.endereco?.estado} Pais: {pessoa.endereco?.pais} </p>
+              <p> Bairro: {pessoa.endereco?.bairro} Estado: {pessoa.endereco?.estado} Pais: {pessoa.endereco?.pais} </p>
             </div>
           </div>
         ))}
@@ -117,8 +114,8 @@ export default function Pessoa() {
         show={abrirModalPessoa}
         setShow={setAbrirModalPessoa}
         pessoaSelecionada={pessoaSelecionada}
-        onPessoaCriada={listarPessoas}
-        onPessoaAtualizada={listarPessoas}
+        onSubmit={listarPessoas}
+        onCancel={() => { listarPessoas(); setPessoaSelecionada(null) }}
       />
     </div >
   );

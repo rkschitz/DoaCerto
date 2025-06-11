@@ -19,14 +19,13 @@ class Pessoa {
             telefone: {
                 type: database.db.Sequelize.STRING,
             },
-            email:{
+            email: {
                 type: database.db.Sequelize.STRING,
                 allowNull: false,
                 unique: true,
             },
-            dtNascimento:{
+            dtNascimento: {
                 type: database.db.Sequelize.DATE,
-                mask: 'DD/MM/YYYY'
             },
             sexo: {
                 type: database.db.Sequelize.STRING,

@@ -1,4 +1,4 @@
-const pessoaModel = require('../model/pessoa');
+const PessoaModel = require('../model/pessoa');
 const enderecoController = require('./endereco');
 const enderecoModel = require('../model/endereco');
 const ruaModel = require('../model/rua');
@@ -6,6 +6,7 @@ const bairroModel = require('../model/bairro');
 const cidadeModel = require('../model/cidade');
 const estadoModel = require('../model/estado');
 const paisModel = require('../model/pais');
+const DependenteController = require('./dependente');
 
 const { Op } = require('sequelize');
 
@@ -65,7 +66,8 @@ function formatarPessoa(p) {
             bairro: b?.bairro,
             cidade: c?.cidade,
             estado: est?.estado,
-            pais: pais?.pais
+            pais: pais?.pais,
+            enderecoCompleto: e.rua ? `${r?.rua}, ${e?.numero} ${e?.complemento ? `, ${e?.complemento}` : ''} - ${b?.bairro}, ${c?.cidade} - ${est?.estado}` : null,
         } : null
     };
 }
@@ -74,25 +76,32 @@ function formatarPessoa(p) {
 
 class PessoaController {
     async criar(nome, cpf, telefone, email, dtNascimento, sexo, endereco) {
-        try {
-
-            const enderecoValue = await enderecoController.criar(endereco);
-
-            const pessoaValue = await pessoaModel.create({
-                nome,
-                cpf,
-                telefone,
-                email,
-                dtNascimento,
-                sexo,
-                idEndereco: !enderecoValue.mensagem ? enderecoValue.dataValues.idEndereco : null
-            })
-
-            return pessoaValue;
-
-        } catch (e) {
-            return { mensagem: e.message };
+        var enderecoValue;
+        if (endereco) {
+            enderecoValue = await enderecoController.criar(endereco);
         }
+
+        const cpfExistente = await PessoaModel.findOne({ where: { cpf } });
+        if (cpfExistente) {
+            throw new Error("CPF já cadastrado.");
+        }
+
+        const emailExistente = await PessoaModel.findOne({ where: { email } });
+        if (emailExistente) {
+            throw new Error("Email já cadastrado.");
+        }
+
+        const pessoaValue = await PessoaModel.create({
+            nome,
+            cpf,
+            telefone,
+            email,
+            dtNascimento,
+            sexo,
+            idEndereco: enderecoValue ? enderecoValue.dataValues.idEndereco : null
+        })
+
+        return { data: pessoaValue, message: "Pessoa criada com sucesso" };
     }
 
     async editar(
@@ -105,14 +114,19 @@ class PessoaController {
         sexo,
         endereco
     ) {
-        const pessoa = await pessoaModel.findByPk(idPessoa);
+        const pessoa = await PessoaModel.findByPk(idPessoa);
         if (!pessoa) {
             throw new Error("Pessoa não encontrada.");
         }
 
-        const existente = await pessoaModel.findOne({ where: { cpf } });
-        if (existente && existente.dataValues.idPessoa !== Number(idPessoa)) {
+        const cpfExistente = await PessoaModel.findOne({ where: { cpf } });
+        if (cpfExistente && cpfExistente.dataValues.idPessoa !== Number(idPessoa)) {
             throw new Error("CPF já cadastrado.");
+        }
+
+        const emailExistente = await PessoaModel.findOne({ where: { email } });
+        if (emailExistente && emailExistente.dataValues.idPessoa !== Number(idPessoa)) {
+            throw new Error("Email já cadastrado.");
         }
 
         const updates = { cpf };
@@ -147,22 +161,38 @@ class PessoaController {
 
 
     async deletar(idPessoa) {
-
-        try {
-            const personValue = await pessoaModel.findOne({ where: { idPessoa } });
-            await personValue.destroy();
-            return { mensagem: "Pessoa excluída com sucesso." };
-        } catch (e) {
-            return { mensagem: e.message }
+        const isDependente = await DependenteController.buscarDonatarioPorDependente(idPessoa);
+        if (isDependente) {
+            throw new Error(`Impossivel excluir essa pessoa, a mesma está cadastrada como dependente de ${isDependente?.dataValues?.pessoa?.nome}`)
         }
+
+        const personValue = await PessoaModel.findOne({ where: { idPessoa } });
+        await personValue.destroy();
+        return { mensagem: "Pessoa excluída com sucesso." };
     }
 
 
 
-    async buscarTodos() {
-        const pessoas = await pessoaModel.findAll({
-            include: includeEnderecoCompleto
+    async buscarTodos(param = {}) {
+        const { nome, cpf } = param;
+
+        const where = {};
+
+        if (nome) {
+            where.nome = { [Op.like]: `%${nome}%` };
+        }
+        if (cpf) {
+            where.cpf = { [Op.like]: `%${cpf}%` };
+        }
+
+        const pessoas = await PessoaModel.findAll({
+            include: includeEnderecoCompleto,
+            where
         });
+
+        if (!pessoas.length) {
+            throw new Error("Nenhuma pessoa encontrada")
+        }
 
         return pessoas.map(p => {
             const e = p.endereco;
@@ -188,32 +218,17 @@ class PessoaController {
                     bairro: b?.bairro,
                     cidade: c?.cidade,
                     estado: est?.estado,
-                    pais: pais?.pais
+                    pais: pais?.pais,
+                    enderecoCompleto: e.rua ? `${r?.rua}, ${e?.numero} ${e?.complemento ? `, ${e?.complemento}` : ''} - ${b?.bairro}, ${c?.cidade} - ${est?.estado}` : null,
                 } : null
             };
         });
     }
 
-    async buscarPorNomeCpf(nome, cpf) {
-        if (!nome && !cpf) {
-            throw new Error("Nome ou CPF devem ser informados.");
-        }
 
-        const where = {};
-        if (nome) {
-            where.nome = { [Op.like]: `%${nome}%` };
-        }
-        if (cpf) {
-            where.cpf = { [Op.like]: `%${cpf}%` };
-        }
-
-        const response = await pessoaModel.findAll({
-            where,
-            include: includeEnderecoCompleto
-        });
-
-
-        return response.map(formatarPessoa)
+    async buscarPessoa(idPessoa) {
+        const pessoaValue = await PessoaModel.findOne({ where: idPessoa })
+        return pessoaValue;
     }
 }
 

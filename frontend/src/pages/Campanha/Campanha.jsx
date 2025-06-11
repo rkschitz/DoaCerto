@@ -4,18 +4,19 @@ import { AuthContext } from "../../auth/Context";
 import RadioGroup from "../../components/RadioButton/RadioButton";
 import { Button } from "react-bootstrap";
 import ModalCampanha from "./ModalCampanha";
+import styles from './Campanha.module.css';
+import SelectSituacaoCampanha from "../../components/Selects/SelectSituacaoCampanha/SelectSituacaoCampanha";
 
 export default function Campanha() {
     const [campanhas, setCampanhas] = useState([]);
     const [campanhaSelecionada, setCampanhaSelecionada] = useState(null);
-    const [buscarAtivas, setBuscarAtivas] = useState(true);
     const [show, setShow] = useState(false);
+    const [filtros, setFiltros] = useState({})
 
-    const { id, role } = useContext(AuthContext);
-    const carregou = useRef(false);
+    const { id } = useContext(AuthContext);
 
-    async function buscar() {
-        const response = await buscarCampanhas(id, buscarAtivas);
+    async function buscar(p_filtros) {
+        const response = await buscarCampanhas({ idOrganizacao: id, ativos: p_filtros?.ativos || true, titulo: p_filtros?.titulo });
         setCampanhas(response.data);
     }
 
@@ -30,55 +31,64 @@ export default function Campanha() {
     }
 
     useEffect(() => {
-        if (!carregou.current) {
-            buscar();
-            carregou.current = true;
-        }
-        console.log(role)
+        buscar();
     }, []);
 
-    useEffect(() => {
-        if (carregou.current) {
-            buscar();
-        }
-    }, [buscarAtivas]);
-
     return (
-        <div>
-            <h1>Campanha</h1>
-            <Button onClick={(e) => { setCampanhaSelecionada(null); setShow(true) }}>Adicionar campanha</Button>
-            <RadioGroup
-                title="Filtro"
-                options={[
-                    { value: true, label: "Ativa" },
-                    { value: false, label: "Inativa" }
-                ]}
-                selectedValue={buscarAtivas}
-                onChange={(e) => setBuscarAtivas(e.target.value === "true")}
-            />
-            <p>Essa é a página de campanha.</p>
-            {campanhas.map((campanha) => (
-                <div key={campanha.idCampanha}>
-                    <h2>{campanha.titulo}</h2>
-                    <p>{campanha.descricao}</p>
-                    <Button onClick={(e) => handleSituacao(campanha)}>{campanha.ieSituacao === 'A' ? 'Inativar' : 'Ativar'} campanha</Button>
-                    {campanha.metas?.map((meta, index) => (
-                        <div key={index}>
-                            <p>Meta: {meta.meta}</p>
-                            <p>Alimento: {meta.alimento} {meta.unidadeMedida}</p>
-                            <p>Quantidade doada {meta.quantidadeDoada}</p>
-                            <p>Quantidade faltante {meta.quantidadeFaltante}</p>
-                        </div>
-                    ))}
-                    <button onClick={(e) => { setCampanhaSelecionada(campanha); setShow(true) }}>Selecionar</button>
+        <div className={styles.paginaCampanha}>
+            <h1 className={styles.tituloCampanha}>Campanha</h1>
+            <div className={styles.header}>
+                <div className={styles.titulo}>Donatários</div>
+                <SelectSituacaoCampanha
+                    onChange={(e) => { const novoFiltro = { ...filtros, ativos: e }; setFiltros(novoFiltro); buscar(novoFiltro); }}
+                    value={filtros?.ativos}
+                />
+                <input type="text" value={filtros?.titulo} onChange={(e) => setFiltros({ ...filtros, titulo: e.target.value })} />
+                <Button onClick={() => buscar()}>Buscar</Button>
+                <div>
+                    <Button onClick={() => setShow(true)}>Adicionar campanha</Button>
                 </div>
-            ))}
+            </div>
+            <p className={styles.descricaoPagina}>Essa é a página de campanha.</p>
+            <div className={styles.listaCampanhas}>
+                {campanhas.map((campanha) => (
+                    <div key={campanha.idCampanha} className={styles.cardCampanha}>
+                        <h2>{campanha.titulo}</h2>
+                        <p>{campanha.descricao}</p>
+                        <Button className={styles.btnSituacao} onClick={() => handleSituacao(campanha)}>
+                            {campanha.ieSituacao === 'A' ? 'Inativar' : 'Ativar'} campanha
+                        </Button>
+
+                        <div className={styles.metasContainer}>
+                            {campanha.metas?.map((meta, index) => (
+                                <div key={index} className={styles.metaCard}>
+                                    <p><strong>Meta:</strong> {meta.meta}</p>
+                                    <p><strong>Alimento:</strong> {meta.alimento} {meta.unidadeMedida}</p>
+                                    <p><strong>Quantidade doada:</strong> {meta.quantidadeDoada}</p>
+                                    <p><strong>Quantidade faltante:</strong> {meta.quantidadeFaltante}</p>
+                                </div>
+                            ))}
+                        </div>
+
+                        <button
+                            className={styles.btnSelecionar}
+                            onClick={() => {
+                                setCampanhaSelecionada(campanha);
+                                setShow(true);
+                            }}
+                        >
+                            Editar campanha
+                        </button>
+                    </div>
+                ))}
+            </div>
+
             <ModalCampanha
                 show={show}
                 setShow={setShow}
                 campanhaSelecionada={campanhaSelecionada}
-                onCampanhaAtualizada={buscar}
-                onCampanhaCriada={buscar}
+                onSubmit={buscar}
+                onCancel={() => { buscar(); setCampanhaSelecionada(null) }}
             />
         </div>
     );

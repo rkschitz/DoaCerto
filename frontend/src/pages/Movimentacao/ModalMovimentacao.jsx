@@ -10,97 +10,88 @@ import SelectAlimento from "../../components/Selects/SelectAlimento/SelectAlimen
 import SelectUnidadeMedida from "../../components/Selects/SelectUnidadeMedida/SelectUnidadeMedida";
 import SelectDonatario from "../../components/Selects/SelectDonatario/SelectDonatario";
 import { toast } from 'react-toastify'
+import formatarDataInput from "../../utils/formatarDataInput";
 
 const defaultState = {
     ieMovimentacao: null,
     idCampanha: null,
     idDoador: null,
     idDonatario: null,
-    alimentos: [] // <- Adicione isso
+    alimentos: []
 };
 
 export default function MovimentacaoModal({
     show,
     setShow,
     movimentacaoSelecionada,
+    onSubmit,
     onCancel,
-    onMovimentacaoCriada,
-    onMovimentacaoAtualizada
 }) {
     const [movimentacao, setMovimentacao] = useState(defaultState);
     const [isSubmitDisabled, setIsSubmitDisabled] = useState(false);
 
     useEffect(() => {
-        console.log(movimentacaoSelecionada)
         if (show) {
-            if (movimentacaoSelecionada) {
-                console.log(movimentacaoSelecionada)
-                setMovimentacao(movimentacaoSelecionada);
+            if (movimentacaoSelecionada?.idMovimentacao) {
+                setMovimentacao({
+                    ...movimentacaoSelecionada,
+                    dataMovimentacao: formatarDataInput(movimentacaoSelecionada.dataMovimentacao),
+                    dataValidade: formatarDataInput(movimentacaoSelecionada.dataValidade)
+                });
             } else {
                 setMovimentacao(defaultState);
             }
         }
-
     }, [show, movimentacaoSelecionada]);
+
 
     const handleClose = () => {
         setMovimentacao(defaultState);
+        setShow(false);
         onCancel?.();
     };
 
     const salvar = async () => {
-        if (movimentacao?.alimentos.length === 0) {
-            toast.error('Adicione pelo menos um alimento')
-            return;
+        try {
+            const response = movimentacaoSelecionada?.idMovimentacao ? await editarMovimentacao(movimentacao) : await criarMovimentacao(movimentacao);
+            toast(response.data.message)
+            handleClose();
+            onSubmit?.();
+        } catch (e) {
+            toast.error(e.response.data.message)
         }
-        if (movimentacaoSelecionada) {
-            try {
-                const response = await editarMovimentacao(movimentacao);
-                if (response.status === 200) {
-                    toast(response.data.message)
-                    onMovimentacaoAtualizada?.(response.data);
-                }
-            } catch (e) {
-                toast.error(e)
-            }
-        } else {
-            try {
-                const response = await criarMovimentacao(movimentacao);
-                if (response.status === 200) {
-                    toast('Movimentação registrada com sucesso')
-                    onMovimentacaoCriada?.(response.data);
-                }
-            } catch (e) {
-                toast.error(e.message)
-            }
-        }
+
     }
 
     const submitText = movimentacaoSelecionada ? "Salvar" : "Cadastrar";
 
 
     useEffect(() => {
-        let disable = false;
+        if (!movimentacao?.idMovimentacaoAlimento) {
+            let disable = false;
 
-        if (movimentacao.alimentos.length === 0) {
-            disable = true;
-        } else {
-            for (const item of movimentacao.alimentos) {
-                const algumVazio = !item.idAlimento || !item.idUnidadeMedida || !item.quantidade;
+            if (movimentacao.alimentos.length === 0) {
+                disable = true;
+            } else {
+                for (const item of movimentacao.alimentos) {
+                    const algumVazio = !item.idAlimento || !item.idUnidadeMedida || !item.quantidade;
 
-                if (algumVazio) {
-                    disable = true;
-                    break;
+                    if (algumVazio) {
+                        disable = true;
+                        break;
+                    }
                 }
             }
-        }
 
-        setIsSubmitDisabled(disable);
+            setIsSubmitDisabled(disable);
+        } else {
+            setIsSubmitDisabled(false);
+        }
     }, [movimentacao]);
 
     const adicionarAlimento = () => {
         const alimentosAtuais = movimentacao.alimentos || [];
-        const novosAlimentos = [...alimentosAtuais, { idAlimento: "", idUnidadeMedida: "", quantidade: "" }];
+        const novosAlimentos = [...alimentosAtuais, { idAlimento: "", idUnidadeMedida: "", quantidade: "", dataValidade: "" }];
         setMovimentacao({ ...movimentacao, alimentos: novosAlimentos });
     };
 
@@ -123,17 +114,27 @@ export default function MovimentacaoModal({
             title={
                 movimentacaoSelecionada ? "Editar Movimentação" : "Adicionar Movimentação"
             }
-            submit={salvar}
+            handleSubmit={salvar}
+            handleClose={handleClose}
             submitText={submitText}
             resetText="Cancelar"
             submitDisable={isSubmitDisabled}
-            reset={handleClose}
         >
             <Row className="mb-3">
                 <SelectTipoMovimentacao
                     onChange={(ieMovimentacao) => setMovimentacao({ ...movimentacao, ieMovimentacao })}
                     value={movimentacao.ieMovimentacao}
+                    disabled={movimentacaoSelecionada?.idMovimentacao}
                 />
+            </Row>
+            <Row className="mb-3">
+                <FloatingLabel label="Data da movimentação">
+                    <Form.Control type="date"
+                        placeholder="Data da movimentação"
+                        value={movimentacao.dataMovimentacao}
+                        onChange={(e) => setMovimentacao({ ...movimentacao, dataMovimentacao: e.target.value })}
+                    />
+                </FloatingLabel>
             </Row>
             <Row className="mb-3">
                 <SelectCampanha
@@ -154,37 +155,85 @@ export default function MovimentacaoModal({
                     disabled={!movimentacao.ieMovimentacao || movimentacao.ieMovimentacao === 'E'}
                 />
             </Row>
-            <h5>Moradores na casa</h5>
-            {movimentacao.alimentos?.map((item, index) => (
-                <Row key={index} className="mb-3">
+            {!movimentacao?.idMovimentacaoAlimento ? (<>
+                <h5>Alimentos</h5>
+                {movimentacao.alimentos?.map((item, index) => (
+                    <Row key={index} className="mb-3">
+                        <SelectAlimento
+                            onChange={(alimento) => { atualizarAlimento(index, 'idAlimento', alimento); }}
+                            value={item.idAlimento}
+                            ieMovimentacao={movimentacao.ieMovimentacao}
+                            disabled={movimentacaoSelecionada?.idMovimentacao}
+                        />
+                        <Form.Group className="col">
+                            <SelectUnidadeMedida
+                                value={
+                                    item.idUnidadeMedida
+                                }
+                                onChange={(unidadeMedida) => atualizarAlimento(index, "idUnidadeMedida", unidadeMedida)}
+                            />
+                        </Form.Group>
+                        <Form.Group className="col">
+                            <Form.Control
+                                type="number"
+                                placeholder="Quantidade"
+                                value={item.quantidade}
+                                onChange={(e) => atualizarAlimento(index, "quantidade", e.target.value)}
+                            />
+                        </Form.Group>
+                        {movimentacao?.ieMovimentacao === 'E' &&
+                            <FloatingLabel label="Data de validade" className="col">
+                                <Form.Control
+                                    type="date"
+                                    placeholder="Data de validade"
+                                    value={item.dataValidade}
+                                    onChange={(e) => atualizarAlimento(index, "dataValidade", e.target.value)}
+                                />
+                            </FloatingLabel>
+                        }
+                        <Button onClick={(e) => removerAlimento(index)}>Remover Alimento</Button>
+                    </Row>
+                ))}
+
+                <Button onClick={adicionarAlimento}
+                    disabled={!movimentacao.ieMovimentacao}
+                >Adicionar alimento</Button>
+            </>) :
+                <Row className="mb-3">
                     <SelectAlimento
-                        onChange={(alimento) => { atualizarAlimento(index, 'idAlimento', alimento); }}
-                        value={item.idAlimento}
+                        onChange={(alimento) => setMovimentacao({ ...movimentacao, idAlimento: alimento })}
+                        value={movimentacao.idAlimento}
                         ieMovimentacao={movimentacao.ieMovimentacao}
+                        disabled={movimentacaoSelecionada?.idMovimentacao}
                     />
                     <Form.Group className="col">
                         <SelectUnidadeMedida
                             value={
-                                item.idUnidadeMedida
+                                movimentacao.idUnidadeMedida
                             }
-                            onChange={(unidadeMedida) => atualizarAlimento(index, "idUnidadeMedida", unidadeMedida)}
+                            onChange={(unidadeMedida) => setMovimentacao({ ...movimentacao, idUnidadeMedida: unidadeMedida })}
                         />
                     </Form.Group>
                     <Form.Group className="col">
                         <Form.Control
                             type="number"
                             placeholder="Quantidade"
-                            value={item.quantidade}
-                            onChange={(e) => atualizarAlimento(index, "quantidade", e.target.value)}
+                            value={movimentacao.quantidade}
+                            onChange={(e) => setMovimentacao({ ...movimentacao, quantidade: e.target.value })}
                         />
                     </Form.Group>
-                    <Button onClick={(e) => removerAlimento(index)}>Remover Alimento</Button>
+                    {movimentacao?.ieMovimentacao === 'E' &&
+                        <FloatingLabel label="Data de validade" className="col">
+                            <Form.Control
+                                type="date"
+                                placeholder="Data de validade"
+                                value={movimentacao.dataValidade}
+                                onChange={(e) => setMovimentacao({ ...movimentacao, dataValidade: e.target.value })}
+                            />
+                        </FloatingLabel>
+                    }
                 </Row>
-            ))}
-            <Button onClick={adicionarAlimento}
-                disabled={!movimentacao.ieMovimentacao}
-            >Adicionar alimento</Button>
-
+            }
         </CustomModal >
     );
 }

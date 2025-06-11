@@ -4,9 +4,6 @@ class PessoaApi {
     async criar(req, res) {
         const { nome, cpf, telefone, email, dtNascimento, sexo, endereco } = req.body
 
-        if (!nome || !cpf || !telefone || !dtNascimento || !email || !sexo || !endereco) {
-            return res.status(400).send("Nome, cpf, telefone, data de nascimento, email, sexo e endereço são obrigatórios")
-        }
         try {
             const response = await PessoaController.criar(nome, cpf, telefone, email, dtNascimento, sexo, endereco)
             return res.status(200).send(response)
@@ -37,18 +34,9 @@ class PessoaApi {
     }
 
     async buscarTodos(req, res) {
+        const param = req.query
         try {
-            const response = await PessoaController.buscarTodos()
-            return res.status(200).send(response)
-        } catch (e) {
-            return res.status(400).send({ error: e.message })
-        }
-    }
-
-    async buscarPorNomeCpf(req, res) {
-        const { nome, cpf } = req.query
-        try {
-            const response = await PessoaController.buscarPorNomeCpf(nome, cpf)
+            const response = await PessoaController.buscarTodos(param)
             return res.status(200).send(response)
         } catch (e) {
             return res.status(400).send({ error: e.message })

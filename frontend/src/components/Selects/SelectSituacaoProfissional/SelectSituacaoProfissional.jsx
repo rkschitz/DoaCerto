@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Select from "../Select/Select";
- import { buscarTodosSituacaoProfissional } from "../../../api/situacaoProfissional"
+import { buscarTodosSituacaoProfissional } from "../../../api/situacaoProfissional"
 
-export default function SelectSituacaoProfissional({onChange,value }) {
+export default function SelectSituacaoProfissional({ onChange, value }) {
     const [opcoes, setOpcoes] = useState([]);
 
     const buscarOpcoes = async () => {

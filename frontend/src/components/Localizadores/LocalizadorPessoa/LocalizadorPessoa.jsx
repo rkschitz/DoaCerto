@@ -1,10 +1,11 @@
 import { Row, Form, FloatingLabel, Col, Button } from "react-bootstrap";
 import Localizador from "../Localizador/Localizador";
-import { buscarPessoaPorNome } from "../../../api/pessoa";
+import { buscarPessoas } from "../../../api/pessoa";
 import { useState, useEffect } from "react";
 import PessoaModal from "../../../pages/Pessoa/ModalPessoa";
 import formatarDataBR from "../../../utils/formatarDataBR";
 import calcularIdade from "../../../utils/calcularIdade";
+import { toast } from "react-toastify";
 
 export default function PessoaLocalizador({ onSelect, show, setShow }) {
     const [pessoas, setPessoas] = useState([]);
@@ -16,24 +17,35 @@ export default function PessoaLocalizador({ onSelect, show, setShow }) {
     const [conteudoLista, setConteudoLista] = useState([])
 
     async function atualizarLista(nome, cpf) {
-        const response = await buscarPessoaPorNome(nome, cpf);
-        const responsePessoa = response.data.map((item) => ({
-            idPessoa: item.idPessoa,
-            nome: item.nome,
-            cpf: item.cpf,
-            dtNascimento: formatarDataBR(item.dtNascimento),
-            sexo: item.sexo, 
-            idade: calcularIdade(item.dtNascimento),
-            email: item.email,
-            telefone: item.telefone,
-        }));
-        setConteudoLista(responsePessoa)
-        setPessoas(response.data);
+        try {
+            const response = await buscarPessoas({ nome, cpf });
+            const responsePessoa = response.data.map((item) => ({
+                idPessoa: item.idPessoa,
+                nome: item.nome,
+                cpf: item.cpf,
+                dtNascimento: formatarDataBR(item.dtNascimento),
+                sexo: item.sexo,
+                idade: calcularIdade(item.dtNascimento),
+                email: item.email,
+                telefone: item.telefone,
+            }));
+            setConteudoLista(responsePessoa)
+            setPessoas(response.data);
+        } catch (e) {
+            toast.error(e.response.data.error)
+        }
     }
 
     async function buscarPessoa(e) {
         e.preventDefault();
-        await atualizarLista(nome, cpf);
+        await atualizarLista({ nome, cpf });
+    }
+
+    async function handleClose() {
+        setNome(null);
+        setCpf(null)
+        setConteudoLista(null);
+        setShow(false)
     }
 
     useEffect(() => {
@@ -50,10 +62,13 @@ export default function PessoaLocalizador({ onSelect, show, setShow }) {
             conteudoLista={conteudoLista}
             show={show}
             setShow={setShow}
+            submitText={"Selecionar"}
             onSelectItem={(pessoaSelecionada) => {
                 const pessoaCompleta = pessoas.find(p => p.idPessoa === pessoaSelecionada.idPessoa);
                 onSelect?.(pessoaCompleta);
+                setConteudoLista(null)
             }}
+            handleClose={handleClose}
         >
             <Form>
                 <Row className="mb-3">
@@ -93,7 +108,7 @@ export default function PessoaLocalizador({ onSelect, show, setShow }) {
             <PessoaModal
                 show={abrirModalPessoa}
                 setShow={setAbrirModalPessoa}
-                pessoaCriada={(pessoa) => atualizarLista(pessoa.nome, pessoa.cpf)}
+                onSubmit={(pessoa) => atualizarLista(pessoa.nome, pessoa.cpf)}
             />
         </Localizador>
     );
