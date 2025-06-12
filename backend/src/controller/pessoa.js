@@ -173,10 +173,26 @@ class PessoaController {
 
 
 
-    async buscarTodos() {
+    async buscarTodos(param = {}) {
+        const { nome, cpf } = param;
+
+        const where = {};
+
+        if (nome) {
+            where.nome = { [Op.like]: `%${nome}%` };
+        }
+        if (cpf) {
+            where.cpf = { [Op.like]: `%${cpf}%` };
+        }
+
         const pessoas = await PessoaModel.findAll({
-            include: includeEnderecoCompleto
+            include: includeEnderecoCompleto,
+            where
         });
+
+        if (!pessoas.length) {
+            throw new Error("Nenhuma pessoa encontrada")
+        }
 
         return pessoas.map(p => {
             const e = p.endereco;
@@ -209,27 +225,6 @@ class PessoaController {
         });
     }
 
-    async buscarPorNomeCpf(nome, cpf) {
-        if (!nome && !cpf) {
-            throw new Error("Nome ou CPF devem ser informados.");
-        }
-
-        const where = {};
-        if (nome) {
-            where.nome = { [Op.like]: `%${nome}%` };
-        }
-        if (cpf) {
-            where.cpf = { [Op.like]: `%${cpf}%` };
-        }
-
-        const response = await PessoaModel.findAll({
-            where,
-            include: includeEnderecoCompleto
-        });
-
-
-        return response.map(formatarPessoa)
-    }
 
     async buscarPessoa(idPessoa) {
         const pessoaValue = await PessoaModel.findOne({ where: idPessoa })

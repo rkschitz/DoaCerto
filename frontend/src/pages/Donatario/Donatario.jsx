@@ -23,7 +23,7 @@ export default function Donatario() {
   const [expandirDonatario, setExpandirDonatario] = useState(null);
   const [abrirModalAprovacao, setAbrirModalAprovacao] = useState(false);
   const [abrirModalReprovacao, setAbrirModalReprovacao] = useState(false);
-  const [filtros, setFiltros] = useState({ situacaoCadastral: "A" });
+  const [filtros, setFiltros] = useState({ situacaoCadastral: 'A', nome: null });
   const [abrirModalMovimentacao, setAbrirModalMovimentacao] = useState(false);
   const [movimentacao, setMovimentacao] = useState(null);
   const [abrirModalHistoricoDoacoes, setAbrirModalHistoricoDoacoes] = useState(false);
@@ -32,25 +32,29 @@ export default function Donatario() {
     setExpandirDonatario(expandirDonatario === index ? null : index);
   };
 
-  async function listar(situacaoCadastral, nome) {
+  async function listar() {
     try {
-      const response = await buscarDonatarios({ situacaoCadastral, nome });
+      const response = await buscarDonatarios({
+        situacaoCadastral: filtros?.situacaoCadastral,
+        nome: filtros?.nome
+      });
       setDonatarios(response.data);
     } catch (error) {
       toast.error("Erro ao buscar donatários:", error);
     }
   }
+
   useEffect(() => {
-    listar(filtros?.situacaoCadastral, filtros?.nome);
-  }, []);
+    listar();
+  }, [filtros]);
 
   const handleDelete = async (idDonatario) => {
     if (window.confirm("Você tem certeza que deseja excluir esse donatário?")) {
-      const response = await excluirDonatario(idDonatario);
-      if (response.status === 200) {
-        alert("Donatário excluído com sucesso!");
-      } else {
-        alert("Erro ao excluir donatário.");
+      try {
+        const response = await excluirDonatario(idDonatario);
+        toast(response.data.message)
+      } catch (e) {
+        toast.error(e.response.data.error)
       }
       listar(filtros?.situacaoCadastral);
     }
@@ -84,7 +88,7 @@ export default function Donatario() {
       <div className={styles.header}>
         <div className={styles.titulo}>Donatários</div>
         <SelectSituacaoDonatario
-          onChange={(e) => { setFiltros({ ...filtros, situacaoCadastral: e }); listar(e) }}
+          onChange={(e) => { setFiltros({ ...filtros, situacaoCadastral: e }) }}
           value={filtros?.situacaoCadastral}
         />
         <input type="text" value={filtros?.nome} onChange={(e) => setFiltros({ ...filtros, nome: e.target.value })} />
@@ -278,21 +282,21 @@ export default function Donatario() {
           show={openModal}
           setShow={setOpenModal}
           donatarioSelecionado={selectedDonatario}
-          onSubmit={() => { listar(filtros?.situacaoCadastral); setSelectedDonatario(null) }}
+          onSubmit={() => { listar(); setSelectedDonatario(null) }}
           onCancel={() => setSelectedDonatario(null)}
         />
         <ModalAprovacaoDonatario
           show={abrirModalAprovacao}
           setShow={setAbrirModalAprovacao}
           donatarioSelecionado={selectedDonatario}
-          onSubmit={() => listar(filtros?.situacaoCadastral)}
+          onSubmit={() => listar}
           onCancel={() => setSelectedDonatario(null)}
         />
         <ModalReprovacaoDonatario
           show={abrirModalReprovacao}
           setShow={setAbrirModalReprovacao}
           donatarioSelecionado={selectedDonatario}
-          onSubmit={() => listar(filtros?.situacaoCadastral)}
+          onSubmit={() => listar}
           onCancel={() => setSelectedDonatario(null)}
         />
         <MovimentacaoModal

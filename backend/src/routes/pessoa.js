@@ -4,9 +4,8 @@ const authMiddleware = require("../middleware/auth");
 const router = express.Router();
 const PessoaApi = require("../api/pessoa");
 
-router.get("/", authMiddleware(), PessoaApi.buscarTodos);
+router.get("/", authMiddleware(['A', 'O']), PessoaApi.buscarTodos);
 router.post("/", authMiddleware(), PessoaApi.criar);
-router.get("/buscar", authMiddleware(['A', 'O']), PessoaApi.buscarPorNomeCpf);
 router.delete("/:idPessoa", authMiddleware(), PessoaApi.deletar);
 router.put("/:idPessoa", authMiddleware(), PessoaApi.editar)
 

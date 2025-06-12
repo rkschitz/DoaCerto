@@ -4,6 +4,8 @@ import CustomModal from "../../components/Modal/Modal";
 import { criarPessoa, editarPessoa } from "../../api/pessoa";
 import { Form, FloatingLabel } from "react-bootstrap";
 import { toast } from "react-toastify";
+import InputMask from "react-input-mask";
+import InputTelefone from "../../components/Inputs/InputTelefone/InputTelefone";
 
 const defaultState = {
   nome: "",
@@ -81,7 +83,7 @@ export default function PessoaModal({
         })
       }
     } catch (e) {
-      console.log(e)
+      toast.error(e)
     }
   }
 
@@ -92,8 +94,14 @@ export default function PessoaModal({
   };
 
   const salvar = async () => {
+    const pessoaParaSalvar = {
+      ...pessoa,
+      cpf: pessoa.cpf.replace(/\D/g, ""),
+      telefone: pessoa.telefone.replace(/\D/g, ""),
+    };
+
     try {
-      const response = pessoaSelecionada ? await editarPessoa(pessoa) : await criarPessoa(pessoa);
+      const response = pessoaSelecionada ? await editarPessoa(pessoaParaSalvar) : await criarPessoa(pessoaParaSalvar);
       toast(response.data.message)
       onSubmit?.(response.data)
       handleClose();
@@ -119,7 +127,7 @@ export default function PessoaModal({
       handleClose={handleClose}
     >
       <Row className="mb-3">
-        <FloatingLabel controlId="floatingInputNome" label="Nome" className="mb-3">
+        <FloatingLabel controlId="floatingInputNome" label="Nome">
           <Form.Control
             type="text"
             placeholder="Nome"
@@ -130,23 +138,25 @@ export default function PessoaModal({
       </Row>
       <Row>
         <FloatingLabel controlId="floatingInputCpf" label="CPF" className="mb-3">
-          <Form.Control
-            type="text"
-            placeholder="CPF"
+          <InputMask mask="999.999.999-99"
             value={pessoa.cpf}
             onChange={(e) => setPessoa({ ...pessoa, cpf: e.target.value })}
-          />
+          >
+            {({ inputProps }) => (
+              <Form.Control
+                {...inputProps}
+                type="text"
+                placeholder="CNPJ"
+              />
+            )}
+          </InputMask>
         </FloatingLabel>
       </Row>
-      <Row>
-        <FloatingLabel controlId="floatingInputTelefone" label="Telefone" className="mb-3">
-          <Form.Control
-            type="text"
-            placeholder="Telefone"
-            value={pessoa.telefone}
-            onChange={(e) => setPessoa({ ...pessoa, telefone: e.target.value })}
-          />
-        </FloatingLabel>
+      <Row className="mb-3">
+        <InputTelefone
+          value={pessoa.telefone}
+          onChange={(e) => setPessoa({ ...pessoa, telefone: e })}
+        />
       </Row>
       <Row>
         <FloatingLabel controlId="floatingInputEmail" label="Email" className="mb-3">
@@ -273,7 +283,6 @@ export default function PessoaModal({
               placeholder="País"
               value={pessoa.endereco?.complemento}
               onChange={(e) => setPessoa({ ...pessoa, endereco: { ...pessoa.endereco, complemento: e.target.value } })}
-              disabled
             />
           </FloatingLabel>
         </Col>
