@@ -22,7 +22,6 @@ const Header = () => {
       </nav>
       <div className={styles.authButtons}>
         <div className={styles.dropdown}>
-          <button className={styles.loginBtn}>Registrar-se</button>
           <div className={styles.dropdownOptions}>
             <button
               className={styles.btnAuth}

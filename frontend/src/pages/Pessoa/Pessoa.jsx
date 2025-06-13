@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { buscarTodasPessoas, criar, deletarPessoa } from "../../api/pessoa";
+import { buscarPessoas, deletarPessoa } from "../../api/pessoa";
 import formatarDataBR from "../../utils/formatarDataBR";
 import ModalPessoa from "./ModalPessoa";
 import styles from "./pessoa.module.css";
@@ -12,7 +12,7 @@ export default function Pessoa() {
 
   const listarPessoas = async () => {
     try {
-      const response = await buscarTodasPessoas();
+      const response = await buscarPessoas();
       const lista = response.data ?? response;
       setPessoas(Array.isArray(lista) ? lista : []);
     } catch (err) {

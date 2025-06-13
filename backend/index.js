@@ -5,7 +5,6 @@ const cors = require("cors");
 const bcrypt = require("bcrypt");
 
 const database = require("./src/config/database");
-const AlimentRouter = require("./src/routes/aliment");
 const OrganizacaoRouter = require("./src/routes/organizacao");
 const Organizacao = require("./src/model/organizacao");
 const TipoAlimento = require("./src/model/tipoAlimento");
@@ -52,7 +51,6 @@ app.get("/", (req, res) => {
 
 app.use("/api/v1/login", OrganizacaoApi.login);
 
-app.use("/api/v1/aliment", AlimentRouter);
 app.use("/api/v1/organizacao", OrganizacaoRouter);
 app.use("/api/v1/donatario", DonatarioRouter);
 app.use("/api/v1/pessoa", PessoaRouter);

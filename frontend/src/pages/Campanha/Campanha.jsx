@@ -5,18 +5,18 @@ import RadioGroup from "../../components/RadioButton/RadioButton";
 import { Button } from "react-bootstrap";
 import ModalCampanha from "./ModalCampanha";
 import styles from './Campanha.module.css';
+import SelectSituacaoCampanha from "../../components/Selects/SelectSituacaoCampanha/SelectSituacaoCampanha";
 
 export default function Campanha() {
     const [campanhas, setCampanhas] = useState([]);
     const [campanhaSelecionada, setCampanhaSelecionada] = useState(null);
-    const [buscarAtivas, setBuscarAtivas] = useState(true);
     const [show, setShow] = useState(false);
+    const [filtros, setFiltros] = useState({})
 
-    const { id, role } = useContext(AuthContext);
-    const carregou = useRef(false);
+    const { id } = useContext(AuthContext);
 
-    async function buscar() {
-        const response = await buscarCampanhas({ idOrganizacao: id, ativos: buscarAtivas });
+    async function buscar(p_filtros) {
+        const response = await buscarCampanhas({ idOrganizacao: id, ativos: p_filtros?.ativos || true, titulo: p_filtros?.titulo });
         setCampanhas(response.data);
     }
 
@@ -31,34 +31,23 @@ export default function Campanha() {
     }
 
     useEffect(() => {
-        if (!carregou.current) {
-            buscar();
-            carregou.current = true;
-        }
-        console.log(role)
+        buscar();
     }, []);
-
-    useEffect(() => {
-        if (carregou.current) {
-            buscar();
-        }
-    }, [buscarAtivas]);
 
     return (
         <div className={styles.paginaCampanha}>
             <h1 className={styles.tituloCampanha}>Campanha</h1>
-            <Button onClick={() => { setCampanhaSelecionada(null); setShow(true) }}>Adicionar campanha</Button>
-
-            <div className={styles.filtroCampanha}>
-                <RadioGroup
-                    title="Filtro"
-                    options={[
-                        { value: true, label: "Ativa" },
-                        { value: false, label: "Inativa" }
-                    ]}
-                    selectedValue={buscarAtivas}
-                    onChange={(e) => setBuscarAtivas(e.target.value === "true")}
+            <div className={styles.header}>
+                <div className={styles.titulo}>Donatários</div>
+                <SelectSituacaoCampanha
+                    onChange={(e) => { const novoFiltro = { ...filtros, ativos: e }; setFiltros(novoFiltro); buscar(novoFiltro); }}
+                    value={filtros?.ativos}
                 />
+                <input type="text" value={filtros?.titulo} onChange={(e) => setFiltros({ ...filtros, titulo: e.target.value })} />
+                <Button onClick={() => buscar()}>Buscar</Button>
+                <div>
+                    <Button onClick={() => setShow(true)}>Adicionar campanha</Button>
+                </div>
             </div>
             <p className={styles.descricaoPagina}>Essa é a página de campanha.</p>
             <div className={styles.listaCampanhas}>
@@ -88,7 +77,7 @@ export default function Campanha() {
                                 setShow(true);
                             }}
                         >
-                            Selecionar
+                            Editar campanha
                         </button>
                     </div>
                 ))}
@@ -98,8 +87,8 @@ export default function Campanha() {
                 show={show}
                 setShow={setShow}
                 campanhaSelecionada={campanhaSelecionada}
-                onCampanhaAtualizada={buscar}
-                onCampanhaCriada={buscar}
+                onSubmit={buscar}
+                onCancel={() => { buscar(); setCampanhaSelecionada(null) }}
             />
         </div>
     );
