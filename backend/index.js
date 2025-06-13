@@ -65,7 +65,7 @@ const Dependente = require("./src/model/dependente");
 
 const createTables = async () => {
   try {
-    await database.db.sync({ force: false, logging: console.log });
+    await database.db.sync({ force: true, logging: console.log });
 
     const cypherSenha = await bcrypt.hash("admin", 10);
 
