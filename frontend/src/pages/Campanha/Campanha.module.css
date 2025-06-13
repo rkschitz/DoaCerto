@@ -13,19 +13,54 @@
   margin: 20px 0;
 }
 
-.descricaoPagina {
-  color: #444;
-  margin-bottom: 20px;
-}
-
 .listaCampanhas {
   display: flex;
   flex-direction: column;
   gap: 24px;
 }
 
+.header input {
+  padding: 6px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 300px;
+}
+
+.filtros{
+  margin: 20px 0
+}
+
+.header Button {
+  background-color: #a88df0;
+  margin-left: 10px;
+  border: none;
+}
+
+.header button:hover {
+  background-color: #8f78cc;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.cardInfo {
+  flex: 1;
+}
+
+.cardActions {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+}
+
 .cardCampanha {
-  background: linear-gradient(180deg, #f3e9ff, #e6dfff);
   border-radius: 12px;
   padding: 20px;
   box-shadow: 0px 4px 12px rgba(100, 100, 111, 0.2);
@@ -33,7 +68,6 @@
 
 .cardCampanha h2 {
   font-size: 1.5rem;
-  color: #4b2fa0;
   margin-bottom: 10px;
 }
 
@@ -62,13 +96,11 @@
 }
 
 .btnSelecionar {
-  margin-top: 16px;
-  padding: 10px 16px;
+  padding: 7px 16px;
   background-color: #a88df0;
   color: white;
   border: none;
   border-radius: 8px;
-  font-weight: bold;
   cursor: pointer;
 }
 
@@ -76,10 +108,29 @@
   background-color: #8f78cc;
 }
 
-.btnSituacao {
-    background-color: #ef4444;
+.btnInativar {
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 7px 16px;
 }
 
-.btnSituacao:hover {
-    background-color: #d42121;
+.btnInativar:hover {
+  background-color: #d42121;
+}
+
+
+.expandirButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: transparent;
+  color: #9B87F5;
+  border: 1px solid #9B87F5;
+  padding: 10px 16px;
+  margin: 8px 8px 8px 8px !important;
+  font-weight: 500;
+  border-radius: .75rem !important;
 }

@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { buscarCampanhas } from "../../api/campanha";
 import Logo from "../../img/logo-doa-certo.png";
 import styles from "./home.module.css";
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 
 export default function Home() {
   const [campanhas, setCampanhas] = useState([]);
@@ -12,7 +12,7 @@ export default function Home() {
   const location = useLocation();
 
   async function buscar() {
-    const response = await buscarCampanhas({ativos: true});
+    const response = await buscarCampanhas({ ativos: true });
     setCampanhas(response.data);
   }
 
@@ -24,9 +24,7 @@ export default function Home() {
   }, []);
 
   return (
-
     <div>
-
       <header className={styles.header}>
         <img src={Logo} alt="Logo" className={styles.logo} />
         <div className={styles.authButtons}>
@@ -47,7 +45,10 @@ export default function Home() {
               </button>
             </div>
           </div>
-          <button className={styles.loginBtn} onClick={() => navigate("/login")}>
+          <button
+            className={styles.loginBtn}
+            onClick={() => navigate("/login")}
+          >
             Login
           </button>
         </div>
@@ -62,7 +63,6 @@ export default function Home() {
                 Unindo comunidades e igrejas para combater a fome. Faça parte
                 desta missão e contribua com as campanhas ativas.
               </h6>
-              <a href="/login"><button>Doar Agora</button></a>
             </div>
 
             <div className={styles.image}>
@@ -74,8 +74,9 @@ export default function Home() {
         <div className={styles.center}>
           <h1>Campanhas em Andamento</h1>
           <p>
-            Conheça as campanhas de arrecadação de alimentos que estão acontecendo
-            agora e faça sua contribuição para ajudar quem mais precisa.
+            Conheça as campanhas de arrecadação de alimentos que estão
+            acontecendo agora e faça sua contribuição para ajudar quem mais
+            precisa.
           </p>
         </div>
 
@@ -96,32 +97,37 @@ export default function Home() {
                     <div className={styles.card}>
                       <div className={styles.cardTitulo}>Meta</div>
                       <div className={styles.cardValor}>
-                        {Number(meta.meta).toLocaleString("pt-BR", { minimumFractionDigits: 3 })} {meta.unidadeMedida}
+                        {Number(meta.meta).toLocaleString("pt-BR", {
+                          minimumFractionDigits: 3,
+                        })}{" "}
+                        {meta.unidadeMedida}
                       </div>
                     </div>
                     <div className={styles.card}>
                       <div className={styles.cardTitulo}>Faltando</div>
                       <div className={styles.cardValor}>
-                        {Number(meta.quantidadeFaltante).toLocaleString("pt-BR", { minimumFractionDigits: 3 })} {meta.unidadeMedida}
+                        {Number(meta.quantidadeFaltante).toLocaleString(
+                          "pt-BR",
+                          { minimumFractionDigits: 3 }
+                        )}{" "}
+                        {meta.unidadeMedida}
                       </div>
                     </div>
                   </div>
-
                 </div>
               ))}
 
               <p className={styles.contato}>Contato: (47) 90011-2233</p>
-              <button className={styles.botaoDoar}>Doar Agora</button>
             </div>
           ))}
         </div>
         <div className={styles.footer}>
           <h1>Faça a Diferença Hoje</h1>
-          <p>Junte-se a nós nesta missão de ajudar quem mais precisa. Sua doação</p>
+          <p>
+            Junte-se a nós nesta missão de ajudar quem mais precisa. Sua doação
+          </p>
           <a>pode transformar vidas e trazer esperança.</a>
-          <a href="/login"><button>Doar Agora</button></a>
         </div>
-
       </div>
     </div>
   );
