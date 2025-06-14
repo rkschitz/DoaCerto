@@ -9,7 +9,7 @@ class EnderecoController {
     async criar(endereco) {
             const cep = endereco?.cep;
 
-            let rua = await RuaModel.findOne({ where: { CEP: cep } });
+            let rua = await RuaModel.findOne({ where: { CEP: String(cep) } });
 
             if (!rua) {
                 const [pais] = await PaisModel.findOrCreate({

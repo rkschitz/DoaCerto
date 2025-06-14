@@ -67,6 +67,7 @@ export const AuthProvider = ({ children }) => {
     setRole(null);
     setId(null);
     localStorage.removeItem('token');
+    localStorage.removeItem('role');
     navigate('/login')
   };
 

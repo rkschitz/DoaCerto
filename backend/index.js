@@ -37,7 +37,7 @@ const MetaController = require("./src/controller/meta")
 require("./src/model/association");
 const app = express();
 const corsOptions = {
-  origin: "http://localhost:3001",
+  origin: "https://doacerto-1.onrender.com",
   methods: "GET,POST,PUT,DELETE",
   allowedHeaders: "Content-Type, Authorization",
 };
@@ -269,7 +269,9 @@ const createTables = async () => {
 
   } catch (error) {
     console.error(`Erro ao inicializar o banco de dados: ${error}`);
+    console.trace(error); // <-- Isso mostra onde exatamente estourou o erro
   }
+
 };
 
 createTables().then(() => {

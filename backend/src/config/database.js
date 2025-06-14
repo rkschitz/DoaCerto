@@ -1,24 +1,22 @@
-// src/config/database.js
 const { Sequelize } = require('sequelize');
 require('dotenv').config();
 
 class Database {
     constructor() {
-        this.db = new Sequelize({
-            database: "doacerto",
-            host: "localhost",
-            username: "root",
-            dialect: "mysql",
-            password: "",
+        this.Init();
+    }
+
+    Init() {
+        this.db = new Sequelize(process.env.DATABASE_URL, {
+            dialect: 'postgres',
+            dialectOptions: {
+                ssl: {
+                    require: true,
+                    rejectUnauthorized: false,
+                }
+            }
         });
     }
 }
 
-const database = new Database();
-
-// Exporta diretamente a instância de Sequelize
-module.exports = {
-    db: database.db,     // alias claro
-    sequelize: database.db, // alias para quem quiser chamar de 'sequelize'
-    Sequelize             // útil para importar DataTypes, etc.
-};
+module.exports = new Database();
