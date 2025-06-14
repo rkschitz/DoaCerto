@@ -20,6 +20,7 @@ export default function ModalReprovacaoDonatario({ show, setShow, donatarioSelec
             const response = await editarDonatario(donatario);
             toast(response.data.mensagem);
             onSubmit?.(response.data);
+            setShow(false)
         } catch (e) {
             toast.error(e.response.data.error);
         }

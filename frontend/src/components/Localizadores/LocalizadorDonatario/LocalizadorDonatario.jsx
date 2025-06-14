@@ -15,7 +15,7 @@ export default function LocalizadorDonatario({ onSelect, show, setShow }) {
 
     const colunasLista = ["Id", "Nome", "CPF", "Data de nascimento", "Sexo"];
 
-    async function atualizarLista({ nome, cpf }) {
+    async function atualizarLista(nome, cpf) {
         const response = await buscarDonatarios({ nome, cpf, situacaoCadastral: 'A' });
         const responseDonatario = response.data.map((item) => ({
             idPessoa: item.idPessoa,

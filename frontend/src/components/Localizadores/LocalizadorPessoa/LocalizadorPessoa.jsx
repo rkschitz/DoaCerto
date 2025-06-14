@@ -38,7 +38,7 @@ export default function PessoaLocalizador({ onSelect, show, setShow }) {
 
     async function buscarPessoa(e) {
         e.preventDefault();
-        await atualizarLista({ nome, cpf });
+        await atualizarLista(nome, cpf);
     }
 
     async function handleClose() {

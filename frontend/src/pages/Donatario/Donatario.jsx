@@ -289,14 +289,14 @@ export default function Donatario() {
           show={abrirModalAprovacao}
           setShow={setAbrirModalAprovacao}
           donatarioSelecionado={selectedDonatario}
-          onSubmit={() => listar}
+          onSubmit={() => listar()}
           onCancel={() => setSelectedDonatario(null)}
         />
         <ModalReprovacaoDonatario
           show={abrirModalReprovacao}
           setShow={setAbrirModalReprovacao}
           donatarioSelecionado={selectedDonatario}
-          onSubmit={() => listar}
+          onSubmit={() => listar()}
           onCancel={() => setSelectedDonatario(null)}
         />
         <MovimentacaoModal
