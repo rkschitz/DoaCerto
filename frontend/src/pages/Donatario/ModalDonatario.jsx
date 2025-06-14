@@ -52,11 +52,11 @@ export default function ModalDonatario({
         try {
             const response = donatarioSelecionado ? await editarDonatario(donatarioFinal) : await criarDonatario(donatarioFinal);
             toast(response.data.message);
+            handleClose()
             onSubmit?.(response.data);
         } catch (e) {
             toast.error(e.response.data.message);
         }
-        handleClose()
     };
 
     function handleClose() {
