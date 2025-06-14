@@ -67,24 +67,26 @@ export default function Pessoa() {
       <div className={styles.cardsGrid}>
         {pessoas.map((pessoa) => (
           <div key={pessoa.idPessoa} className={styles.card}>
-            <h2 className={styles.nome}>{pessoa.nome}</h2>
-            <div className={styles.cardAcoes}>
-              <button
-                className={styles.excluirButton}
-                onClick={() => handleDelete(pessoa.idPessoa)}
-              >
-                Excluir
-              </button>
-              <button
-                className={styles.editarButton}
-                onClick={() => {
-                  setPessoaSelecionada(pessoa);
-                  setAbrirModalPessoa(true);
-                }}
-              >
-                Editar
-              </button>
-            </div>
+              <div className={styles.cardAcoes}>
+                <h2 className={styles.nome}>{pessoa.nome}</h2>
+                <div className={styles.botoesAcoes}>
+                  <button
+                    className={styles.editarButton}
+                    onClick={() => {
+                      setPessoaSelecionada(pessoa);
+                      setAbrirModalPessoa(true);
+                    }}
+                  >
+                    Editar
+                  </button>
+                  <button
+                    className={styles.excluirButton}
+                    onClick={() => handleDelete(pessoa.idPessoa)}
+                  >
+                    Excluir
+                  </button>
+                </div>
+              </div>
             <div className={styles.info}>
               <p>
                 <strong>CPF:</strong> {cpfMask(pessoa.cpf)}
@@ -103,8 +105,8 @@ export default function Pessoa() {
                 <strong>Sexo:</strong>{" "}
                 {pessoa.sexo === "M" ? "Masculino" : "Feminino"}
               </p>
-              <p> Rua: {pessoa.endereco?.rua} Número: {pessoa.endereco?.numero} Complemento: {pessoa.endereco?.complemento} </p><br />
-              <p> Bairro: {pessoa.endereco?.bairro} Estado: {pessoa.endereco?.estado} Pais: {pessoa.endereco?.pais} </p>
+              <p> <strong>Rua:</strong> {pessoa.endereco?.rua} Número: {pessoa.endereco?.numero} Complemento: {pessoa.endereco?.complemento} </p><br />
+              <p> <strong>Bairro:</strong> {pessoa.endereco?.bairro} <strong>Estado:</strong> {pessoa.endereco?.estado} <strong>Pais:</strong> {pessoa.endereco?.pais} </p>
             </div>
           </div>
         ))}

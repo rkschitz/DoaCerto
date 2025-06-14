@@ -34,7 +34,7 @@ export default function Organizacao() {
 
     return (
         <div className={styles.conteudo}>
-            <button
+            <button className={styles.btnAdicionar}
                 onClick={() => {
                     setAbrirModal(true);
                     setOrganizacaoSelecionada(null);
@@ -46,21 +46,32 @@ export default function Organizacao() {
             <div className={styles.lista}>
                 {organizacoes.map((organizacao) => (
                      <div key={organizacao.idOrganizacao} className={styles.card}>
-                        <h2>{organizacao.organizacao}</h2>
-                        <button onClick={() => {
-                            setOrganizacaoSelecionada(organizacao);
-                            setAbrirModal(true);
-                        }}>Editar</button>
-                        <button onClick={() => {
-                            handleDelete(organizacao.idOrganizacao)
-                        }}>Deletar</button>
-                        <p>CNPJ: {organizacao.cnpj}</p>
-                        <p>Telefone: {organizacao.telefone}</p>
-                        <p>Email: {organizacao.email}</p>
-                        <p>IE: {organizacao.ieSituacao}</p>
-                        <p>Situação: {organizacao.ieSituacao}</p>
-                        <p>Secretária: {organizacao.secretaria?.nome}</p>
-                        <p> Rua: {organizacao.endereco?.rua} Número: {organizacao.endereco?.numero} Complemento: {organizacao.endereco?.complemento} </p><br />
+
+
+
+                        <div className={styles.cabecalho}>
+                            <h2>{organizacao.organizacao}</h2>
+                            <div className={styles.botoesAcoes}>
+                                <button className={styles.btnDeletar} onClick={() => {
+                                    handleDelete(organizacao.idOrganizacao)
+                                }}>Deletar</button>
+                                <button className={styles.btnEditar} onClick={() => {
+                                    setOrganizacaoSelecionada(organizacao);
+                                    setAbrirModal(true);
+                                }}>Editar</button>
+                            </div>
+                        </div>
+
+
+
+
+                        <p><strong>CNPJ:</strong> {organizacao.cnpj}</p>
+                        <p><strong>Telefone:</strong> {organizacao.telefone}</p>
+                        <p><strong>Email:</strong> {organizacao.email}</p>
+                        <p><strong>IE:</strong> {organizacao.ieSituacao}</p>
+                        <p><strong>Situação:</strong> {organizacao.ieSituacao}</p>
+                        <p><strong>Secretária:</strong> {organizacao.secretaria?.nome}</p>
+                        <p><strong>Rua:</strong> {organizacao.endereco?.rua} Número: {organizacao.endereco?.numero} Complemento: {organizacao.endereco?.complemento} </p><br />
                         <p><strong>Bairro:</strong> {organizacao.endereco?.bairro}</p>
                         <p><strong>Estado:</strong> {organizacao.endereco?.estado}</p>
                         <p><strong>País:</strong> {organizacao.endereco?.pais}</p>
@@ -81,3 +92,4 @@ export default function Organizacao() {
         </div>
     );
 }
+

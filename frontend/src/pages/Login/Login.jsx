@@ -3,76 +3,100 @@ import styles from "./login.module.css";
 import { AuthContext } from "../../auth/Context.jsx";
 import { loginOrganizacao } from "../../api/organizacao.jsx";
 import { useNavigate } from "react-router-dom";
-import { toast } from 'react-toastify'
+import { toast } from "react-toastify";
+import { FaEnvelope, FaLock } from "react-icons/fa";
+import { IoMdEyeOff, IoMdEye } from "react-icons/io";
+import Logo from "../../img/logo-doa-certo.png";
 
 export default function Login() {
-
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
+  const [mostrarSenha, setMostrarSenha] = useState(false);
+
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
 
   const submitLogin = async (e) => {
     e.preventDefault();
 
     if (!email || !senha) {
-      return alert('Informe o e-mail e a senha para continuar!');
+      return alert("Informe o e-mail e a senha para continuar!");
     }
 
     try {
       const response = await loginOrganizacao(email, senha);
       if (response.data.token) {
         login(response.data.token);
-        return navigate('/');
+        return navigate("/");
       }
-
     } catch (e) {
-      toast.error(e.response?.data?.message);
+      toast.error(e.response.data.error);
     }
-  }
+  };
 
   return (
-    <div>
-      <title>DoaCerto - Login</title>
-      <div className={styles.pageCentral}>
-        <div className={styles.backgroundHeader}>
-          <h1>
-            <b>Login</b>
-          </h1>
+    <div className={styles.fundoLogin}>
+      <div className={styles.cartaoLogin}>
+        <div className={styles.areaLogo}>
+          <img src={Logo} alt="Logo" className={styles.logo} />
+
+          <span className={styles.textoLogo}>Doa Certo</span>
         </div>
-        <div className={styles.form}>
-          <div className={styles.formContainer}>
-            <form>
-              <div className={styles.formGrid}>
-                <div className={styles.formGroup}>
-                  <label>Email</label>
-                  <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)}></input>
-                </div>
-                <div className={styles.formGroup}>
-                  <label>Senha</label>
-                  <input type="senha" placeholder="Senha" value={senha} onChange={(e) => setSenha(e.target.value)}></input>
-                </div>
-              </div>
-              <div className={styles.submitContainer}>
-                <button type="submit" className={styles.submitBtn} onClick={submitLogin}>
-                  Login
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  >
-                    <path d="M20 6L9 17l-5-5" />
-                  </svg>
-                </button>
-              </div>
-            </form>
+
+        <h2 className={styles.titulo}>Bem-vindo de volta</h2>
+        <p className={styles.subTitulo}>
+          Faça login em sua conta para continuar
+        </p>
+        <form className={styles.formularioLogin}>
+          <label className={styles.tipo}>Email</label>
+          <div className={styles.grupoInput}>
+            <FaEnvelope className={styles.icone} />
+            <input
+              type="email"
+              placeholder="seu@email.com"
+              className={styles.campoInput}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
           </div>
-        </div>
+          <label className={styles.tipo}>Senha</label>
+          <div className={styles.grupoInput}>
+            <FaLock className={styles.icone} />
+            <input
+              type={mostrarSenha ? "text" : "password"}
+              placeholder="********"
+              className={styles.campoInput}
+              value={senha}
+              onChange={(e) => setSenha(e.target.value)}
+            />
+            {mostrarSenha ? (
+              <IoMdEye
+                className={styles.iconeDireita}
+                onClick={() => setMostrarSenha(false)}
+              />
+            ) : (
+              <IoMdEyeOff
+                className={styles.iconeDireita}
+                onClick={() => setMostrarSenha(true)}
+              />
+            )}
+          </div>
+          <div className={styles.opcoes}>
+            <a href="#" className={styles.esqueciSenha}>
+              Esqueceu a senha?
+            </a>
+          </div>
+
+          <button
+            type="submit"
+            className={styles.botaoEntrar}
+            onClick={submitLogin}
+          >
+            Entrar
+          </button>
+        </form>
       </div>
     </div>
   );
-};
+}

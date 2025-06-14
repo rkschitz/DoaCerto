@@ -1,5 +1,6 @@
 .containerPessoa {
     padding: 2rem;
+    background-color: #f0ebfa;
   }
   
   .header {
@@ -10,13 +11,13 @@
   }
   
   .addButton {
-    background-color: #3498db;
+    background-color: #a88df0;
     color: white;
     padding: 0.7rem 1.5rem;
     border: none;
     border-radius: 8px;
-    font-size: 1rem;
-    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: bold;
   }
   
   .addButton:hover {
@@ -35,7 +36,6 @@
     padding: 2rem;
     min-height: 300px; 
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s, box-shadow 0.3s;
   }
   
   .card:hover {
@@ -44,41 +44,48 @@
   }
   
   .nome {
-    margin-bottom: 1.5rem;
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #333;
+    font-size: 1.2rem;
+    color: #4b2fa0;
+    margin: 0;
   }
   
   .cardAcoes {
+    display: flex;
     justify-content: space-between;
-    margin-bottom: 1.5rem;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+
+  .botoesAcoes {
+    display: flex;
+    gap: 8px;
   }
   
-  .excluirButton {
-    background-color: #e74c3c;
-    color: white;
-    border: none;
-    padding: 0.6rem 1.2rem;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    transition: background-color 0.3s;
-  }
+.excluirButton {
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
   
   .excluirButton:hover {
     background-color: #c0392b;
   }
   
   .editarButton {
-    background-color: #3498db;
+    background-color: #a88df0;
     color: white;
     border: none;
     padding: 0.6rem 1.2rem;
     border-radius: 6px;
     cursor: pointer;
     font-size: 0.9rem;
-    transition: background-color 0.3s;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
   }
   
   .editarButton:hover {

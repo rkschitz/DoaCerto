@@ -1,127 +1,119 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
-    
-}
-
-html{
-    background-color: #f0f0f0;
-}
-
-body {
-    background-color: #f0f0f0;
-}
-
-.pageCentral{
-    margin: 0;
-    background: #f0f0f0;
-    border-radius: 0 0 8px 8px;
-    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
-}
-
-.backgroundHeader {
-    width: 80%;
-    height: 20vh;
-    margin: 4% 4% 0 5%;
-    background: linear-gradient(90deg, rgba(182, 112, 240, 1) 35%, #f0f0f0 100%);
+.fundoLogin {
     display: flex;
+    justify-content: center;
     align-items: center;
+    height: 100vh;
+    background: linear-gradient(135deg, #f8f6fc, #eae2ff);
+}
+
+.cartaoLogin {
+    background-color: #ffffff;
+    padding: 3rem 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    max-width: 400px;
+    width: 100%;
     text-align: center;
 }
 
-.backgroundHeader h1 {
-    color: #f0f0f0;
-    font-size: 2rem;
-    line-height: 1.5;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-left: 4%;
-}
-
-.form{
-    width: 90%;
-    height: 22vh;
-    background: #f0f0f0;
-    box-shadow: 1px 0px 20px 1px rgba(0, 0, 0, 0.1);
-    margin: 0 4% 0 2%;
-}
-
-.formContainer {
-    background: #f0f0f0;
-    padding: 2rem;
-    border-radius: 0 0 8px 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.formGrid {
-    display: flex;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-    flex-direction: column;
-    align-items: center;
-}
-
-.formGroup input {
-    width: 40%;
-    padding: 0.8rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 1rem;
-    box-sizing: border-box;
-    background-color: #f0f0f0;
-}
-
-.formGroup {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.formGroup label {
-    color: #666;
-}
-
-.formGroup input {
-    padding: 0.8rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 1rem;
-    width: 90vh;
-}
-
-.timeGroup {
+.areaLogo {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    justify-content: center;
+    margin-bottom: 1.5rem;
 }
 
-.timeInput {
-    width: 100px;
+.logo {
+    width: 40px;
+    height: 40px;
 }
 
-.submitContainer {
+.textoLogo {
+    font-weight: 600;
+    font-size: 1.5rem;
+    color: #a88df0;
+    margin-left: 4px;
+}
+
+.titulo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.35rem;
+    margin-top: 0.50rem;
+}
+
+.subTitulo {
+    font-size: 0.95rem;
+    color: #555;
+    margin-bottom: 1.7rem;
+}
+
+.formularioLogin {
     display: flex;
-    justify-content: flex-end;
-    margin-top: 2rem;
+    flex-direction: column;
+    gap: 1rem;
+    text-align: left;
 }
 
-.submitBtn {
-    padding: 0.8rem 2rem;
-    background-color: rgb(165, 74, 240);
-    color: #f0f0f0;
+.tipo {
+    font-size: 14px;
+    font-weight: 500;
+    color: gray
+}
+
+.grupoInput {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background-color: #f7f7f7;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 0.5rem 0.75rem;
+}
+
+.icone {
+    color: #aaa;
+    margin-right: 0.5rem;
+}
+
+.iconeDireita {
+    color: #aaa;
+    margin-left: auto;
+}
+
+.campoInput {
     border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    outline: none;
+    background: transparent;
+    flex: 1;
+    font-size: 0.95rem;
 }
 
-.submitBtn:hover{
-    transition: 0.6s;
-    background-color: rgb(146, 24, 245);
+.opcoes {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+}
+
+.esqueciSenha {
+    color: #a88df0;
+    text-decoration: none;
+}
+
+.botaoEntrar {
+    background-color: #a88df0;
+    color: white;
+    border: none;
+    padding: 0.75rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.botaoEntrar:hover {
+    background-color: #9676ec;
 }

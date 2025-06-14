@@ -61,3 +61,14 @@
   cursor: not-allowed;
 }
 
+.btnEditar {
+  background-color: #a88df0;
+  margin-left: 12px;
+  border: none;
+}
+
+.btnExcluir {
+  background-color: #ef4444;
+  margin-left: 12px;
+  border: none;
+}
