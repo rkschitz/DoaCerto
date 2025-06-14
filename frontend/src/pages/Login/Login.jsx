@@ -30,15 +30,8 @@ export default function Login() {
         login(response.data.token);
         return navigate("/");
       }
-      return toast.error(response.data.mensagem);
-    } catch (error) {
-      if (error.response.status === 403) {
-        return alert("Sem permissão.");
-      }
-      if (error.response.status === 401 || error.response.status === 404) {
-        return alert("Email ou senha inválido, tente novamente!");
-      }
-      return alert("Erro inesperado, tente novamente mais tarde!");
+    } catch (e) {
+      toast.error(e.response.data.error);
     }
   };
 

@@ -38,7 +38,7 @@ const App = () => {
           {role && <Route path="/campanhas" element={<Campanha />} />}
           {role && <Route path="/" element={<div>Ola mundo</div>} />}
         </Route>
-        <Route path="/campanhas_ativas" element={<Home />} />
+        {!role && <Route path="/*" element={<Home />} />}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Routes>
