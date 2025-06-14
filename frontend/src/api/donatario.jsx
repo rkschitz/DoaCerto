@@ -1,14 +1,7 @@
 import api from './api';
 
-export const buscarDonatarios = async (paramBusca) => {
-    const parametros = {
-        nome: paramBusca.nome,
-        cpf: paramBusca.cpf,
-        situacaoCadastral: paramBusca.situacaoCadastral
-    }
-    const response = await api.get('/api/v1/donatario', {
-        params: parametros
-    })
+export const buscarDonatarios = async (params) => {
+    const response = await api.get('/api/v1/donatario', { params })
     return response;
 };
 
