@@ -9,7 +9,7 @@ export default function SelectAlimento({ onChange, value, disabled, ieMovimentac
     const [opcoes, setOpcoes] = useState([])
 
     const buscarOpcoes = async () => {
-        const response = await buscarAlimentosMovimentacao(ieMovimentacao);
+        const response = await buscarAlimentosMovimentacao({ ieMovimentacao });
         if (response.status === 200) {
             if (ieMovimentacao === 'E') {
                 setOpcoes(response.data.map(item => ({ value: item.idAlimento, descricao: item.alimento })))

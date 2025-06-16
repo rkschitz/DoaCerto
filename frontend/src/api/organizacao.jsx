@@ -23,10 +23,8 @@ export const criarOrganizacao = async (organizacao) => {
     return response;
 }
 
-export const buscarAlimentosMovimentacao = async (ieMovimentacao) => {
-    const response = await api.get('/api/v1/organizacao/alimentos_movimentacao', {
-        params: { ieMovimentacao }
-    })
+export const buscarAlimentosMovimentacao = async (params) => {
+    const response = await api.get('/api/v1/organizacao/alimentos_movimentacao', {params})
     return response;
 }
 
