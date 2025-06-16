@@ -1,4 +1,4 @@
-const { literal } = require("sequelize");
+const { literal, where } = require("sequelize");
 const DonatarioModel = require('../model/donatario');
 const DependenteController = require('../controller/dependente');
 const PessoaModel = require('../model/pessoa');
@@ -179,7 +179,7 @@ class DonatarioController {
         const whereDonatario = {};
         const wherePessoa = {};
         if (nome) {
-            wherePessoa.nome = { [Op.like]: `%${nome}%` };
+            wherePessoa.nome = { [Op.iLike]: `%${nome}%` };
         }
         if (cpf) {
             wherePessoa.cpf = cpf;

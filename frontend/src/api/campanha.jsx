@@ -1,9 +1,7 @@
 import api from './api';
 
-export const buscarCampanhas = async (param) => {
-    const response = await api.get('/api/v1/campanha', {
-        params: param
-    })
+export const buscarCampanhas = async (params) => {
+    const response = await api.get('/api/v1/campanha', { params })
     return response;
 }
 

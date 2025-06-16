@@ -91,6 +91,10 @@ class PessoaController {
             throw new Error("Email já cadastrado.");
         }
 
+        if (new Date(dtNascimento) > new Date()) {
+            throw new Error("Data de nascimento não pode ser no futuro.");
+        }
+
         const pessoaValue = await PessoaModel.create({
             nome,
             cpf,
@@ -179,15 +183,16 @@ class PessoaController {
         const where = {};
 
         if (nome) {
-            where.nome = { [Op.like]: `%${nome}%` };
+            where.nome = { [Op.iLike]: `%${nome}%` };
         }
         if (cpf) {
-            where.cpf = { [Op.like]: `%${cpf}%` };
+            where.cpf = { [Op.iLike]: `%${cpf}%` };
         }
 
         const pessoas = await PessoaModel.findAll({
             include: includeEnderecoCompleto,
-            where
+            where,
+            order: ['nome']
         });
 
         if (!pessoas.length) {

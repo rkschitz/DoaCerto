@@ -6,6 +6,8 @@ import { Form, FloatingLabel } from "react-bootstrap";
 import { toast } from "react-toastify";
 import InputMask from "react-input-mask";
 import InputTelefone from "../../components/Inputs/InputTelefone/InputTelefone";
+import { cpf as cpfValidator } from 'cpf-cnpj-validator';
+
 
 const defaultState = {
   nome: "",
@@ -99,6 +101,10 @@ export default function PessoaModal({
       cpf: pessoa.cpf.replace(/\D/g, ""),
       telefone: pessoa.telefone.replace(/\D/g, ""),
     };
+
+    if (!cpfValidator.isValid(pessoaParaSalvar.cpf)) {
+      return toast.error('CPF inválido.')
+    }
 
     try {
       const response = pessoaSelecionada ? await editarPessoa(pessoaParaSalvar) : await criarPessoa(pessoaParaSalvar);

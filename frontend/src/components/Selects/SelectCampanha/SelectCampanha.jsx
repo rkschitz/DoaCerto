@@ -10,7 +10,7 @@ export default function SelectCampanha({ onChange, value, disabled }) {
     const { id, token, role } = useContext(AuthContext);
 
     const buscarOpcoes = async () => {
-        const response = await buscarCampanhas(id, true);
+        const response = await buscarCampanhas({ idOrganizacao: id, ativos: true });
         if (response.status === 200) {
             setOpcoes(response.data.map(item => ({ value: item.idCampanha, descricao: item.titulo })))
         } else {

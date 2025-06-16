@@ -1,158 +1,19 @@
 [
-  {
-    "nome": "Ruhan",
-    "cpf": "1111111111",
-    "telefone": "47984192876",
-    "dtNascimento": "2005-04-07",
-    "sexo": "M",
-    "email": "ruhan@email.com",
-    "endereco": {
-      "cep": 89227610,
-      "rua": "Pasteur",
-      "numero": 626,
-      "complemento": "Apto 101",
-      "bairro": "Iríriu",
-      "cidade": "Joinville",
-      "estado": "Santa Catarina",
-      "pais": "Brasil"
-    }
-  },
-  {
-    "nome": "Guilherme",
-    "cpf": "22222222222",
-    "telefone": "47991790349",
-    "dtNascimento": "2005-04-07",
-    "sexo": "M",
-    "email": "guilherme@email.com",
-    "endereco": {
-      "cep": 89227610,
-      "rua": "Pasteur",
-      "numero": 626,
-      "complemento": "Apto 101",
-      "bairro": "Iríriu",
-      "cidade": "Joinville",
-      "estado": "Santa Catarina",
-      "pais": "Brasil"
-    }
-  },
-  {
-    "nome": "Renan",
-    "cpf": "33333333333",
-    "telefone": "47999333893",
-    "dtNascimento": "2004-08-15",
-    "sexo": "M",
-    "email": "renan@email.com"
-  },
-  {
-    "nome": "Duda",
-    "cpf": "44444444444",
-    "telefone": "47999999999",
-    "dtNascimento": "2005-04-07",
-    "sexo": "F",
-    "email": "duda@email.com"
-  },
-  {
-    "nome": "Lucas",
-    "cpf": "55555555555",
-    "telefone": "47988888888",
-    "dtNascimento": "2005-04-07",
-    "sexo": "M",
-    "email": "lucas@email.com"
-  },
-  {
-    "nome": "Gustavo",
-    "cpf": "66666666666",
-    "telefone": "47977777777",
-    "dtNascimento": "2005-04-07",
-    "sexo": "M",
-    "email": "gustavo@email.com"
-  },
-  {
-    "nome": "Gabriel",
-    "cpf": "77777777777",
-    "telefone": "47966666666",
-    "dtNascimento": "2005-04-07",
-    "sexo": "M",
-    "email": "gabriel@email.com"
-  },
-  {
-    "nome": "Matheus",
-    "cpf": "88888888888",
-    "telefone": "47955555555",
-    "dtNascimento": "2005-04-07",
-    "sexo": "M",
-    "email": "matheus@email.com"
-  },
-  {
-    "nome": "Felipe",
-    "cpf": "99999999999",
-    "telefone": "47944444444",
-    "dtNascimento": "2005-04-07",
-    "sexo": "M",
-    "email": "felipe@email.com"
-  },
-  {
-    "nome": "João",
-    "cpf": "10101010101",
-    "telefone": "47933333333",
-    "dtNascimento": "2005-04-07",
-    "sexo": "M",
-    "email": "joao@email.com"
-  },
-  {
-    "nome": "Ana",
-    "cpf": "30303030303",
-    "telefone": "47911111111",
-    "dtNascimento": "2005-04-07",
-    "sexo": "F",
-    "email": "ana@email.com"
-  },
-  {
-    "nome": "Pedro",
-    "cpf": "40404040404",
-    "telefone": "47900000000",
-    "dtNascimento": "2005-04-07",
-    "sexo": "M",
-    "email": "pedro@email.com"
-  },
-  {
-    "nome": "Luiza",
-    "cpf": "50505050505",
-    "telefone": "47899999999",
-    "dtNascimento": "2005-04-07",
-    "sexo": "M",
-    "email": "luiza@email.com"
-  },
-  {
-    "nome": "Rafael",
-    "cpf": "60606060606",
-    "telefone": "47888888888",
-    "dtNascimento": "2005-04-07",
-    "sexo": "M",
-    "email": "rafael@email.com"
-  },
-  {
-    "nome": "Bruno",
-    "cpf": "70707070707",
-    "telefone": "47877777777",
-    "dtNascimento": "2005-04-07",
-    "sexo": "M",
-    "email": "bruno@email.com"
-  },
-  {
-    "nome": "Carla",
-    "cpf": "80808080808",
-    "telefone": "47866666666",
-    "dtNascimento": "2005-04-07",
-    "sexo": "F",
-    "email": "carla@email.com"
-  },
-  {
-    "nome": "Fernanda",
-    "cpf": "90909090909",
-    "telefone": "47855555555",
-    "dtNascimento": "2005-04-07",
-    "sexo": "F",
-    "email": "fernanda@email.com"
-  }
+  { "nome": "Ruhan", "cpf": "11144477735", "telefone": "47984192876", "dtNascimento": "2005-04-07", "sexo": "M", "email": "ruhan@email.com", "endereco": { "cep": 89227610, "rua": "Pasteur", "numero": 626, "complemento": "Apto 101", "bairro": "Iríriu", "cidade": "Joinville", "estado": "Santa Catarina", "pais": "Brasil" } },
+  { "nome": "Guilherme", "cpf": "98765432100", "telefone": "47991790349", "dtNascimento": "2005-04-07", "sexo": "M", "email": "guilherme@email.com", "endereco": { "cep": 89227610, "rua": "Pasteur", "numero": 626, "complemento": "Apto 101", "bairro": "Iríriu", "cidade": "Joinville", "estado": "Santa Catarina", "pais": "Brasil" } },
+  { "nome": "Renan", "cpf": "12345678909", "telefone": "47999333893", "dtNascimento": "2004-08-15", "sexo": "M", "email": "renan@email.com" },
+  { "nome": "Duda", "cpf": "98765432199", "telefone": "47999999999", "dtNascimento": "2005-04-07", "sexo": "F", "email": "duda@email.com" },
+  { "nome": "Lucas", "cpf": "85274196300", "telefone": "47988888888", "dtNascimento": "2005-04-07", "sexo": "M", "email": "lucas@email.com" },
+  { "nome": "Gustavo", "cpf": "32165498700", "telefone": "47977777777", "dtNascimento": "2005-04-07", "sexo": "M", "email": "gustavo@email.com" },
+  { "nome": "Gabriel", "cpf": "65498732100", "telefone": "47966666666", "dtNascimento": "2005-04-07", "sexo": "M", "email": "gabriel@email.com" },
+  { "nome": "Matheus", "cpf": "45612378909", "telefone": "47955555555", "dtNascimento": "2005-04-07", "sexo": "M", "email": "matheus@email.com" },
+  { "nome": "Felipe", "cpf": "78945612300", "telefone": "47944444444", "dtNascimento": "2005-04-07", "sexo": "M", "email": "felipe@email.com" },
+  { "nome": "João", "cpf": "15975348600", "telefone": "47933333333", "dtNascimento": "2005-04-07", "sexo": "M", "email": "joao@email.com" },
+  { "nome": "Ana", "cpf": "75315948600", "telefone": "47911111111", "dtNascimento": "2005-04-07", "sexo": "F", "email": "ana@email.com" },
+  { "nome": "Pedro", "cpf": "95135748600", "telefone": "47900000000", "dtNascimento": "2005-04-07", "sexo": "M", "email": "pedro@email.com" },
+  { "nome": "Luiza", "cpf": "35795148600", "telefone": "47899999999", "dtNascimento": "2005-04-07", "sexo": "M", "email": "luiza@email.com" },
+  { "nome": "Rafael", "cpf": "25845678909", "telefone": "47888888888", "dtNascimento": "2005-04-07", "sexo": "M", "email": "rafael@email.com" },
+  { "nome": "Bruno", "cpf": "45625878909", "telefone": "47877777777", "dtNascimento": "2005-04-07", "sexo": "M", "email": "bruno@email.com" },
+  { "nome": "Carla", "cpf": "65412378900", "telefone": "47866666666", "dtNascimento": "2005-04-07", "sexo": "F", "email": "carla@email.com" },
+  { "nome": "Fernanda", "cpf": "32198765400", "telefone": "47855555555", "dtNascimento": "2005-04-07", "sexo": "F", "email": "fernanda@email.com" }
 ]

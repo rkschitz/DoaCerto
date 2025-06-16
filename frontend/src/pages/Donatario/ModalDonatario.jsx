@@ -33,7 +33,6 @@ export default function ModalDonatario({
     const [donatario, setDonatario] = useState(defaultState)
 
     useEffect(() => {
-        console.log(donatarioSelecionado)
         if (show) {
             if (donatarioSelecionado?.idDonatario) {
                 setDonatario(donatarioSelecionado);

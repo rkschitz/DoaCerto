@@ -53,6 +53,7 @@ export default function LocalizadorDonatario({ onSelect, show, setShow }) {
             onSelectItem={(donatario) => {
                 onSelect?.(donatario);
             }}
+            handleClose={() => setShow(false)}
         >
             <Form>
                 <Row className="mb-3">
