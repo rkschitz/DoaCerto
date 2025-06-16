@@ -7,6 +7,7 @@ import InputTelefone from "../../components/Inputs/InputTelefone/InputTelefone";
 import InputEmail from "../../components/Inputs/InputEmail/InputEmail";
 import SelectPessoa from "../../components/Selects/SelectPessoa/SelectPessoa";
 import { toast } from "react-toastify";
+import { cnpj } from 'cpf-cnpj-validator';
 
 const defaultState = {
     organizacao: "",
@@ -36,7 +37,6 @@ export default function OrganizacaoModal({
     const [emailDisponivel, setEmailDisponivel] = useState(true);
 
     useEffect(() => {
-        console.log(organizacaoSelecionada)
         if (show) {
             if (organizacaoSelecionada) {
                 setOrganizacao({
@@ -111,6 +111,10 @@ export default function OrganizacaoModal({
             cnpj: organizacao.cnpj.replace(/\D/g, ""),
             telefone: organizacao.telefone.replace(/\D/g, ""),
         };
+
+        if (!cnpj.isValid(organizacaoParaSalvar.cnpj)) {
+            return toast.error('CNPJ inválido')
+        }
 
         try {
             const response = organizacaoSelecionada?.idOrganizacao ? await editarOrganizacao(organizacaoParaSalvar) : await criarOrganizacao(organizacaoParaSalvar)
