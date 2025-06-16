@@ -74,9 +74,13 @@ export default function MovimentacaoModal({
                 disable = true;
             } else {
                 for (const item of movimentacao.alimentos) {
-                    const algumVazio = !item.idAlimento || !item.idUnidadeMedida || !item.quantidade;
+                    const algumVazioOuInvalido =
+                        !item.idAlimento ||
+                        !item.idUnidadeMedida ||
+                        !item.quantidade ||
+                        Number(item.quantidade) <= 0;
 
-                    if (algumVazio) {
+                    if (algumVazioOuInvalido) {
                         disable = true;
                         break;
                     }
@@ -85,9 +89,12 @@ export default function MovimentacaoModal({
 
             setIsSubmitDisabled(disable);
         } else {
-            setIsSubmitDisabled(false);
+            const quantidadeInvalida = !movimentacao.quantidade || Number(movimentacao.quantidade) <= 0;
+            setIsSubmitDisabled(quantidadeInvalida);
         }
     }, [movimentacao]);
+
+
 
     const adicionarAlimento = () => {
         const alimentosAtuais = movimentacao.alimentos || [];
