@@ -177,21 +177,21 @@ class OrganizacaoController {
     async listarAlimentosEmEstoque(idOrganizacao) {
         const alimentosValue = await sequelize.query(`
         SELECT c.alimento,
-               b.idAlimento,
-               d.idUnidadeMedida,
-               d.dsUnidadeMedida,
-               SUM(CASE WHEN a.ieMovimentacao = 'E' THEN b.quantidade ELSE 0 END) AS total_entradas,
-               SUM(CASE WHEN a.ieMovimentacao = 'S' THEN b.quantidade ELSE 0 END) AS total_saidas,
-               SUM(CASE WHEN a.ieMovimentacao = 'E' THEN b.quantidade ELSE 0 END) -
-               SUM(CASE WHEN a.ieMovimentacao = 'S' THEN b.quantidade ELSE 0 END) AS saldo
+               b."idAlimento",
+               d."idUnidadeMedida",
+               d."dsUnidadeMedida",
+               SUM(CASE WHEN a."ieMovimentacao" = 'E' THEN b."quantidade" ELSE 0 END) AS total_entradas,
+               SUM(CASE WHEN a."ieMovimentacao" = 'S' THEN b."quantidade" ELSE 0 END) AS total_saidas,
+               SUM(CASE WHEN a."ieMovimentacao" = 'E' THEN b."quantidade" ELSE 0 END) -
+               SUM(CASE WHEN a."ieMovimentacao" = 'S' THEN b."quantidade" ELSE 0 END) AS saldo
           FROM movimentacao a
-          JOIN movimentacao_alimento b ON b.idMovimentacao = a.idMovimentacao
-          JOIN alimento c ON c.idAlimento = b.idAlimento
-          JOIN unidade_medida d ON d.idUnidadeMedida = b.idUnidadeMedida
-         WHERE (:idOrganizacao = 1 or a.idOrganizacao = :idOrganizacao)
-      GROUP BY b.idAlimento, b.idUnidadeMedida, c.alimento, d.dsUnidadeMedida
-        HAVING SUM(CASE WHEN a.ieMovimentacao = 'E' THEN b.quantidade ELSE 0 END) -
-               SUM(CASE WHEN a.ieMovimentacao = 'S' THEN b.quantidade ELSE 0 END) > 0;`,
+          JOIN movimentacao_alimento b ON b."idMovimentacao" = a."idMovimentacao"
+          JOIN alimento c ON c."idAlimento" = b."idAlimento"
+          JOIN unidade_medida d ON d."idUnidadeMedida" = b."idUnidadeMedida"
+         WHERE (:idOrganizacao = 1 or a."idOrganizacao" = :idOrganizacao)
+      GROUP BY b."idAlimento", d."idUnidadeMedida", c."alimento", d."dsUnidadeMedida"
+        HAVING SUM(CASE WHEN a."ieMovimentacao" = 'E' THEN b."quantidade" ELSE 0 END) -
+               SUM(CASE WHEN a."ieMovimentacao" = 'S' THEN b."quantidade" ELSE 0 END) > 0;`,
             {
                 replacements: { idOrganizacao },
                 type: QueryTypes.SELECT
