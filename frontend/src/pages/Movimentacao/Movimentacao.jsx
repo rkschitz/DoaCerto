@@ -86,8 +86,7 @@ export default function Movimentacao() {
         Header: "Ações",
         accessor: "acoes",
         Cell: ({ row }) => (<>
-          <Button
-            variant="primary"
+          <button
             className={styles.btnEditar}
             onClick={() => {
               setMovimentacaoSelecionada(row.original);
@@ -95,7 +94,7 @@ export default function Movimentacao() {
             }}
           >
             Editar
-          </Button>
+          </button>
           <Button
             variant="danger"
             className={styles.btnExcluir}

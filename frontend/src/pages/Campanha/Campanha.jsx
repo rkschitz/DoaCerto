@@ -77,7 +77,7 @@ export default function Campanha() {
                 <p>{campanha.descricao}</p>
               </div>
               <div className={styles.cardActions}>
-                <Button
+                <button
                   className={
                     campanha.ieSituacao === "A"
                       ? styles.btnInativar
@@ -86,7 +86,7 @@ export default function Campanha() {
                   onClick={() => handleSituacao(campanha)}
                 >
                   {campanha.ieSituacao === "A" ? "Inativar" : "Ativar"} campanha
-                </Button>
+                </button>
                 <button
                   className={styles.btnSelecionar}
                   onClick={() => {
