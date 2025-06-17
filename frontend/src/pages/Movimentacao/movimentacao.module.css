@@ -71,6 +71,9 @@
   background: #9b87f5;
   margin-left: 12px;
   border: none;
+  padding: 7px 16px;
+  border-radius: 6px;
+  color: white;
 }
 
 .btnEditar:hover {
