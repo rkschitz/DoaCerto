@@ -92,7 +92,7 @@ export default function Donatario() {
           value={filtros?.situacaoCadastral}
         />
         <input type="text" value={filtros?.nome} onChange={(e) => setFiltros({ ...filtros, nome: e.target.value })} />
-        <Button onClick={() => listar(filtros?.situacaoCadastral, filtros?.nome)}>Buscar</Button>
+        <Button className={styles.btnBuscar} onClick={() => listar(filtros?.situacaoCadastral, filtros?.nome)}>Buscar</Button>
         <div>
           <button className={styles.buttonAdicionar} onClick={handleAddNew}>
             Adicionar novo donatário
@@ -107,7 +107,7 @@ export default function Donatario() {
               <div className={styles.cardHeader}>
                 <h2>{donatario?.pessoa?.nome}</h2>
                 <div className={styles.actions}>
-                  {donatario.situacaoCadastral === "A" && <button onClick={() => {
+                  {donatario.situacaoCadastral === "A" && <button className={styles.btnCesta} onClick={() => {
                     setMovimentacao({
                       ieMovimentacao: 'S',
                       idDonatario: donatario.idDonatario,
@@ -120,7 +120,7 @@ export default function Donatario() {
                       }],
                       dataMovimentacao: formatarDataBR(new Date()),
                     });; setAbrirModalMovimentacao(true)
-                  }}>Registrar entrega de cesta</button>}
+                  }}><FaCheck /> Registrar entrega de cesta</button>}
                   {(donatario.situacaoCadastral === "P" || donatario.situacaoCadastral === "R") &&
                     <button className={styles.btnAprovar}
                       onClick={() => {
@@ -137,16 +137,16 @@ export default function Donatario() {
                     </button>}
 
                   <button
-                    className={styles.actionExcluir}
-                    onClick={() => handleDelete(donatario.idDonatario)}
-                  >
-                    <FaRegTrashAlt /> Excluir
-                  </button>
-                  <button
                     className={styles.actionEditar}
                     onClick={() => { setSelectedDonatario(donatario); setOpenModal(true) }}
                   >
                     <FaRegEdit /> Editar
+                  </button>
+                  <button
+                    className={styles.actionExcluir}
+                    onClick={() => handleDelete(donatario.idDonatario)}
+                  >
+                    <FaRegTrashAlt /> Excluir
                   </button>
                   <button
                     className={styles.expandirButton}

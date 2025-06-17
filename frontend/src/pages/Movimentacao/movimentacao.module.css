@@ -61,10 +61,14 @@
   cursor: not-allowed;
 }
 
-.btnEditar {
-  background-color: #a88df0;
+.btnEditar { 
+  background: #9b87f5;
   margin-left: 12px;
   border: none;
+}
+
+.btnEditar:hover {
+  background: #7862d6;
 }
 
 .btnExcluir {
