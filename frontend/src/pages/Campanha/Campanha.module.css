@@ -120,6 +120,17 @@
   background-color: #d42121;
 }
 
+.btnAtivar {
+  background-color: #9b87f5;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 7px 16px;
+}
+
+.btnAtivar:hover {
+  background-color: #7862d6;
+}
 
 .expandirButton {
   display: inline-flex;

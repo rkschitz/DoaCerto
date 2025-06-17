@@ -21,7 +21,7 @@
   }
   
   .buttonAdicionar { 
-    background: linear-gradient(to right, #7E69AB, #9B87F5);
+    background: #9b87f5;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -31,12 +31,20 @@
   }
   
   .buttonAdicionar:hover {
-    background: linear-gradient(to right, #8573aa, #a897f1);
+    background: #7862d6;
   }
-  
   
   button{
     background-color: #dc3545;
+  }
+
+  .btnBuscar{
+    background-color: #9b87f5;
+    border: none;
+  }
+
+  .btnBuscar:hover{
+    background-color: #7862d6;
   }
   
   .conteudo {
@@ -148,6 +156,28 @@
     padding: 8px 16px;
     border-radius: 0.75rem;
     font-weight: bold;
+  }
+
+  .btnAprovar:hover {
+    background-color: #7862d6;
+  }
+
+  .btnCesta{
+    background-color: #16A34A;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-left: 8px;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 0.75rem;
+    font-weight: bold;
+  }
+
+  .btnCesta:hover {
+    background-color: #15803D;
   }
 
   .btnReprovar{
