@@ -51,7 +51,7 @@ export default function Login() {
           <span className={styles.textoLogo}>Doa Certo</span>
         </div>
 
-        <h2 className={styles.titulo}>Bem-vindo de volta</h2>
+        <h2 className={styles.titulo}>Bem-vindo</h2>
         <p className={styles.subTitulo}>
           Faça login em sua conta para continuar
         </p>

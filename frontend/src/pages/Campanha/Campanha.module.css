@@ -1,6 +1,9 @@
 .paginaCampanha {
   padding: 40px;
-  font-family: 'Segoe UI', sans-serif;
+  justify-content: space-between;
+  flex-direction: column;
+  background: linear-gradient(to bottom, #ffffff, #e9e2f8);
+  height: 95vh;
 }
 
 .tituloCampanha {
@@ -27,8 +30,8 @@
   max-width: 300px;
 }
 
-.filtros{
-  margin: 20px 0
+.filtros {
+  margin: 20px 0;
 }
 
 .header Button {
@@ -138,10 +141,10 @@
   justify-content: center;
   gap: 8px;
   background: transparent;
-  color: #9B87F5;
-  border: 1px solid #9B87F5;
+  color: #9b87f5;
+  border: 1px solid #9b87f5;
   padding: 10px 16px;
   margin: 8px 8px 8px 8px !important;
   font-weight: 500;
-  border-radius: .75rem !important;
+  border-radius: 0.75rem !important;
 }

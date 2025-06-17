@@ -1,66 +1,66 @@
 .containerPessoa {
-    padding: 2rem;
-    background-color: #f0ebfa;
-  }
-  
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-  }
-  
-  .addButton {
-    background-color: #a88df0;
-    color: white;
-    padding: 0.7rem 1.5rem;
-    border: none;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    font-weight: bold;
-  }
-  
-  .addButton:hover {
-    background-color: #2d81b9;
-  }
-  
-  .cardsGrid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 2rem;
-  }
-  
-  .card {
-    background: #fff;
-    border-radius: 16px;
-    padding: 2rem;
-    min-height: 300px; 
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  }
-  
-  .card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-  }
-  
-  .nome {
-    font-size: 1.2rem;
-    color: #4b2fa0;
-    margin: 0;
-  }
-  
-  .cardAcoes {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 12px;
-  }
+  padding: 2rem;
+  background: linear-gradient(to bottom, #ffffff, #e9e2f8);
+}
 
-  .botoesAcoes {
-    display: flex;
-    gap: 8px;
-  }
-  
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.addButton {
+  background-color: #a88df0;
+  color: white;
+  padding: 0.7rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.addButton:hover {
+  background-color: #2d81b9;
+}
+
+.cardsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+}
+
+.card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 2rem;
+  min-height: 300px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.nome {
+  font-size: 1.2rem;
+  color: #4b2fa0;
+  margin: 0;
+}
+
+.cardAcoes {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.botoesAcoes {
+  display: flex;
+  gap: 8px;
+}
+
 .excluirButton {
   background-color: #ef4444;
   color: white;
@@ -71,30 +71,29 @@
   font-weight: bold;
   margin-bottom: 0.5rem;
 }
-  
-  .excluirButton:hover {
-    background-color: #c0392b;
-  }
-  
-  .editarButton {
-    background-color: #a88df0;
-    color: white;
-    border: none;
-    padding: 0.6rem 1.2rem;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-  }
-  
-  .editarButton:hover {
-    background-color: #2980b9;
-  }
-  
-  .info p {
-    margin: 0.4rem 0;
-    font-size: 1rem;
-    color: #555;
-  }
-  
+
+.excluirButton:hover {
+  background-color: #c0392b;
+}
+
+.editarButton {
+  background-color: #a88df0;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.editarButton:hover {
+  background-color: #2980b9;
+}
+
+.info p {
+  margin: 0.4rem 0;
+  font-size: 1rem;
+  color: #555;
+}

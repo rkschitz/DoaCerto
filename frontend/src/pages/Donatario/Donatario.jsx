@@ -84,6 +84,7 @@ export default function Donatario() {
   };
 
   return (
+    <div className={styles.paginaDonatario}>
     <div className={styles.containerDonatarios}>
       <div className={styles.header}>
         <div className={styles.titulo}>Donatários</div>
@@ -310,6 +311,7 @@ export default function Donatario() {
           donatarioSelecionado={selectedDonatario}
         />
       </div>
+    </div>
     </div>
   );
 }

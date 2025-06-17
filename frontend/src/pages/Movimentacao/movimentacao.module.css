@@ -1,5 +1,10 @@
 .containerMovimentacao {
+  min-height: 95vh;
+  display: flex;
+  flex-direction: column;
   padding: 2rem;
+  background: linear-gradient(to bottom, #ffffff, #e9e2f8);
+  overflow: auto; /* Permite rolagem quando ultrapassa */
 }
 
 .header {
@@ -9,8 +14,8 @@
   margin-bottom: 2rem;
 }
 
-.addButton {
-  background-color: #3498db;
+.header button {
+  background-color: #9b87f5;
   color: white;
   padding: 0.7rem 1.5rem;
   border: none;
@@ -19,11 +24,12 @@
   cursor: pointer;
 }
 
-.addButton:hover {
-  background-color: #2d81b9;
+.header button:hover {
+  background-color: #7862d6;
 }
 
-.table th, .table td {
+.table th,
+.table td {
   text-align: center;
   vertical-align: middle;
 }
@@ -61,7 +67,7 @@
   cursor: not-allowed;
 }
 
-.btnEditar { 
+.btnEditar {
   background: #9b87f5;
   margin-left: 12px;
   border: none;
