@@ -81,7 +81,7 @@ const createTables = async () => {
 
     console.log("Todas as tabelas foram criadas com sucesso!");
 
-    /*const filePath = path.join(__dirname, "src/data/alimentos.json");
+    const filePath = path.join(__dirname, "src/data/alimentos.json");
     const alimentos = JSON.parse(fs.readFileSync(filePath, "utf-8"));
     const situacaoHabitacionalPath = path.join(
       __dirname,
@@ -97,6 +97,8 @@ const createTables = async () => {
     const situacaoProfissionaljson = JSON.parse(
       fs.readFileSync(situacaoProfissionalPath, "utf-8")
     );
+
+    /*
     const pessoasPath = path.join(__dirname, "src/data/pessoas.json");
     const pessoasJson = JSON.parse(fs.readFileSync(pessoasPath, "utf-8"));
     const organizacoesPath = path.join(__dirname, "src/data/organizacoes.json");
@@ -104,7 +106,7 @@ const createTables = async () => {
       fs.readFileSync(organizacoesPath, "utf-8")
     );
     const donatariosPath = path.join(__dirname, "src/data/donatarios.json");
-    const donatariosJson = JSON.parse(fs.readFileSync(donatariosPath, "utf-8"));
+    const donatariosJson = JSON.parse(fs.readFileSync(donatariosPath, "utf-8"));*/
     const grauParentescoPath = path.join(
       __dirname,
       "src/data/grauParentesco.json"
@@ -112,10 +114,12 @@ const createTables = async () => {
     const grauParentescoJson = JSON.parse(
       fs.readFileSync(grauParentescoPath, "utf-8")
     );
+    /*
     const dependentePath = path.join(__dirname, "src/data/dependentes.json");
     const dependentesJson = JSON.parse(
       fs.readFileSync(dependentePath, "utf-8")
     );
+    */
     const unidadeMedidaPath = path.join(
       __dirname,
       "src/data/unidadeMedida.json"
@@ -123,7 +127,7 @@ const createTables = async () => {
     const unidadeMedidaJson = JSON.parse(
       fs.readFileSync(unidadeMedidaPath, "utf-8")
     );
-
+/*
     const movimentacaoPath = path.join(__dirname, "src/data/movimentacao.json");
     const movimentacaoJson = JSON.parse(
       fs.readFileSync(movimentacaoPath, "utf-8")
@@ -138,6 +142,7 @@ const createTables = async () => {
     const metaJson = JSON.parse(
       fs.readFileSync(metaPath, "utf-8")
     )
+    */
 
     const nacionalidadePath = path.join(__dirname, "src/data/nacionalidade.json");
     const nacionalidadeJson = JSON.parse(
@@ -175,7 +180,7 @@ const createTables = async () => {
     }
 
     console.log("Situação profissional cadastrada com sucesso!");
-
+/*
     for (const pessoa of pessoasJson) {
       await PessoaController.criar(
         pessoa.nome,
@@ -201,7 +206,7 @@ const createTables = async () => {
     }
 
     console.log("Organizações criadas");
-
+*/
     for (const grauParentesco of grauParentescoJson) {
       await GrauParentesco.create(grauParentesco);
     }
@@ -213,7 +218,7 @@ const createTables = async () => {
     }
 
     console.log("Unidade de medidas criadas");
-
+/*
     for (const campanha of campanhaJson) {
       await CampanhaController.criar(
         campanha.titulo,
@@ -240,7 +245,7 @@ const createTables = async () => {
     }
 
     console.log("Movimentações criadas");
-
+*/
     for (const nacionalidade of nacionalidadeJson) {
       await NacionalidadeModel.create(nacionalidade)
     }
