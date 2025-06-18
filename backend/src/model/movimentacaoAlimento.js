@@ -33,7 +33,7 @@ class MovimentacaoAlimento {
                 }
             },
             quantidade: {
-                type: database.db.Sequelize.DECIMAL(10, 2),
+                type: database.db.Sequelize.INTEGER,
                 allowNull: false
             },
             dataValidade: {

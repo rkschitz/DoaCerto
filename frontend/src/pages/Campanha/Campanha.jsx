@@ -16,7 +16,7 @@ export default function Campanha() {
 
   const { id } = useContext(AuthContext);
 
-  async function buscar(p_filtros = filtros) {
+  const listar = async (p_filtros = filtros) => {
     const response = await buscarCampanhas({
       idOrganizacao: id,
       ativos: p_filtros?.ativos ?? true,
@@ -29,7 +29,7 @@ export default function Campanha() {
     setExpandirCampanha(expandirCampanha === index ? null : index);
   };
 
-  async function handleSituacao(campanha) {
+  const handleSituacao = async (campanha) => {
     campanha.ieSituacao = campanha.ieSituacao !== "I" ? "I" : "A";
     const response = await editarCampanha(campanha);
     if (response.status === 200) {
@@ -40,7 +40,7 @@ export default function Campanha() {
   }
 
   useEffect(() => {
-    buscar();
+    listar();
   }, []);
 
   return (
@@ -52,7 +52,7 @@ export default function Campanha() {
           onChange={(e) => {
             const novoFiltro = { ...filtros, ativos: e };
             setFiltros(novoFiltro);
-            buscar(novoFiltro);
+            listar(novoFiltro);
           }}
           value={filtros?.ativos}
         />
@@ -63,7 +63,7 @@ export default function Campanha() {
             value={filtros?.titulo || ""}
             onChange={(e) => setFiltros({ ...filtros, titulo: e.target.value })}
           />
-          <Button onClick={() => buscar()}>Buscar</Button>
+          <Button onClick={() => listar()}>Buscar</Button>
           <Button onClick={() => setShow(true)}>Adicionar campanha</Button>
         </div>
       </div>
@@ -139,9 +139,9 @@ export default function Campanha() {
         show={show}
         setShow={setShow}
         campanhaSelecionada={campanhaSelecionada}
-        onSubmit={buscar}
+        onSubmit={listar}
         onCancel={() => {
-          buscar();
+          listar();
           setCampanhaSelecionada(null);
         }}
       />

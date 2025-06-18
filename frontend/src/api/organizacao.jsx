@@ -28,6 +28,11 @@ export const buscarAlimentosMovimentacao = async (params) => {
     return response;
 }
 
+export const buscarAlimentosEmEstoque = async () => {
+    const response = await api.get('/api/v1/organizacao/alimentos_estoque')
+    return response;
+}
+
 export const validarDadoOrganizacao = async (dado) => {
     const response = await api.get('/api/v1/organizacao/validar_dados', {
         params: dado

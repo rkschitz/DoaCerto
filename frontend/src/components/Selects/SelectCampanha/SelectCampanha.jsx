@@ -7,7 +7,7 @@ import { AuthContext } from "../../../auth/Context"
 export default function SelectCampanha({ onChange, value, disabled }) {
 
     const [opcoes, setOpcoes] = useState([])
-    const { id, token, role } = useContext(AuthContext);
+    const { id } = useContext(AuthContext);
 
     const buscarOpcoes = async () => {
         const response = await buscarCampanhas({ idOrganizacao: id, ativos: true });

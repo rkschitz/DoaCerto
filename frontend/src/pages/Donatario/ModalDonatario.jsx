@@ -197,7 +197,7 @@ export default function ModalDonatario({
                         }
                     />
                 </Row>
-                {(donatario.cras != 0 || !donatario.cras) &&
+                {(donatario.cras !== 0 || !donatario.cras) &&
                     < Row className="mb-3">
                         < FloatingLabel controlId="inputCadastroCrasOUOutroLocal" label={donatario.cras === "1" ? 'Cadastro cras' : 'Outro local'}>
                             <Form.Control

@@ -9,6 +9,7 @@ const paisModel = require('../model/pais');
 const DependenteController = require('./dependente');
 
 const { Op } = require('sequelize');
+const dependente = require('../model/dependente');
 
 const includeEnderecoCompleto = {
     model: enderecoModel,
@@ -41,39 +42,6 @@ const includeEnderecoCompleto = {
         }
     }
 };
-
-function formatarPessoa(p) {
-    const e = p.endereco;
-    const r = e?.rua;
-    const b = r?.bairro;
-    const c = b?.cidade;
-    const est = c?.estado;
-    const pais = est?.pais; // corrigido: antes estava `est?.pai`
-
-    return {
-        idPessoa: p.idPessoa,
-        nome: p.nome,
-        cpf: p.cpf,
-        telefone: p.telefone,
-        email: p.email,
-        dtNascimento: p.dtNascimento,
-        sexo: p.sexo,
-        endereco: e ? {
-            cep: r?.CEP,
-            rua: r?.rua,
-            numero: e?.numero,
-            complemento: e?.complemento,
-            bairro: b?.bairro,
-            cidade: c?.cidade,
-            estado: est?.estado,
-            pais: pais?.pais,
-            enderecoCompleto: e.rua ? `${r?.rua}, ${e?.numero} ${e?.complemento ? `, ${e?.complemento}` : ''} - ${b?.bairro}, ${c?.cidade} - ${est?.estado}` : null,
-        } : null
-    };
-}
-
-
-
 class PessoaController {
     async criar(nome, cpf, telefone, email, dtNascimento, sexo, endereco) {
         var enderecoValue;
@@ -165,9 +133,11 @@ class PessoaController {
 
 
     async deletar(idPessoa) {
-        const isDependente = await DependenteController.buscarDonatarioPorDependente(idPessoa);
+        const isDependente = await dependente.findOne({
+            where: { idPessoa },
+        })
         if (isDependente) {
-            throw new Error(`Impossivel excluir essa pessoa, a mesma está cadastrada como dependente de ${isDependente?.dataValues?.pessoa?.nome}`)
+            throw new Error(`Impossivel excluir essa pessoa, a mesma está cadastrada como dependente`)
         }
 
         const personValue = await PessoaModel.findOne({ where: { idPessoa } });

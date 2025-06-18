@@ -1,8 +1,7 @@
-import { use, useEffect, useState } from "react";
-import { Row, Form, FloatingLabel, Button, Col } from "react-bootstrap";
+import {useEffect, useState } from "react";
+import { Row, Form, FloatingLabel, Button } from "react-bootstrap";
 import CustomModal from "../../components/Modal/Modal";
 import { criarMovimentacao, editarMovimentacao } from "../../api/movimentacao";
-import PessoaLocalizador from "../../components/Localizadores/LocalizadorPessoa/LocalizadorPessoa";
 import SelectCampanha from "../../components/Selects/SelectCampanha/SelectCampanha";
 import SelectTipoMovimentacao from "../../components/Selects/SelectTipoMovimentacao/SelectTipoMovimentacao";
 import SelectPessoa from "../../components/Selects/SelectPessoa/SelectPessoa";

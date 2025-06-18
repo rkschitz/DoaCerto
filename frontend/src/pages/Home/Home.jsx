@@ -1,15 +1,13 @@
 import { useEffect, useState, useRef } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { buscarCampanhas } from "../../api/campanha";
 import Logo from "../../img/logo-doa-certo.png";
 import styles from "./home.module.css";
-import { Link } from "react-router-dom";
 
 export default function Home() {
   const [campanhas, setCampanhas] = useState([]);
   const carregou = useRef(false);
   const navigate = useNavigate();
-  const location = useLocation();
 
   async function buscar() {
     const response = await buscarCampanhas({ ativos: true });
@@ -126,7 +124,7 @@ export default function Home() {
           <p>
             Junte-se a nós nesta missão de ajudar quem mais precisa. Sua doação
           </p>
-          <a>pode transformar vidas e trazer esperança.</a>
+          <p>pode transformar vidas e trazer esperança.</p>
         </div>
       </div>
     </div>

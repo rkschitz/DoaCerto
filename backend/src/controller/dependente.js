@@ -35,15 +35,6 @@ class DependenteController {
     async buscarDonatarioPorDependente(idDependente) {
         const dependenteValue = await DependenteModel.findOne({
             where: { idPessoa: idDependente },
-            // include: {
-            //     model: DonatarioModel,
-            //     as: 'provedor',
-            //     include: {
-            //         model: PessoaModel,
-            //         attributes: ['nome']
-            //     }
-            // }
-            
         })
         return dependenteValue;
     }

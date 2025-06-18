@@ -1,22 +1,18 @@
-// import Home from './pages/Home'
 import { Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./auth/Context";
-import React, { use, useEffect } from "react";
+import{ useEffect } from "react";
 import Layout from "./components/Layout/Layout";
-// import Profile from './pages/Profile';
-// import Favorites from './pages/Favorites';
-// import BreedFeed from './pages/Breeds';
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useState } from "react";
 import Donatario from "./pages/Donatario/Donatario.jsx";
 import Pessoa from "./pages/Pessoa/Pessoa.jsx";
 import Login from "./pages/Login/Login.jsx";
-import Register from "./pages/registro/RegisterPerson.jsx";
 import Organizacao from "./pages/Organizacao/Organizacao.jsx";
 import Movimentacao from "./pages/Movimentacao/Movimentacao.jsx";
 import Campanha from "./pages/Campanha/Campanha.jsx";
 import Home from "./pages/Home/Home.jsx";
+import Estoque from "./pages/Estoque/Estoque.jsx";
 
 const App = () => {
   const [role, setRole] = useState(null);
@@ -36,11 +32,10 @@ const App = () => {
           {role && <Route path="/pessoa" element={<Pessoa />} />}
           {role && <Route path="/movimentacoes" element={<Movimentacao />} />}
           {role && <Route path="/campanhas" element={<Campanha />} />}
-          {role && <Route path="/" element={<div>Ola mundo</div>} />}
+          {role && <Route path="/" element={<Estoque />} />}
         </Route>
         {!role && <Route path="/*" element={<Home />} />}
         <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
       </Routes>
       <ToastContainer
         position="bottom-center"

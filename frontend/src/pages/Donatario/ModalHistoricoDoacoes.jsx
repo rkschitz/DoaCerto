@@ -11,14 +11,13 @@ export default function ModalHistoricoDoacoes({ show, setShow, donatarioSelecion
     const handleClose = () => setShow(false);
     const title = "Histórico de Doações";
 
-    async function listar() {
+    const listar = async () => {
         try {
             const response = await buscarMovimentacoes({
                 idDonatario: donatarioSelecionado.idDonatario,
                 idOrganizacao: donatarioSelecionado.idOrganizacao,
                 ieMovimentacao: 'S'
             });
-            console.log(response.data.data)
             if (response.data.sucesso) {
                 return setHistorico(response.data.data);
             } else {
