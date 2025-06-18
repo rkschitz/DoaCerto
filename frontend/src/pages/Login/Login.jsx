@@ -84,9 +84,9 @@ export default function Login() {
             )}
           </div>
           <div className={styles.opcoes}>
-            <a href="#" className={styles.esqueciSenha}>
-              Esqueceu a senha?
-            </a>
+            <p href="#" className={styles.esqueciSenha}>
+              Esqueceu a senha? Entre em contato com o administrador.
+            </p>
           </div>
 
           <button

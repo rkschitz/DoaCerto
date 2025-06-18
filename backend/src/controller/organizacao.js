@@ -5,9 +5,14 @@ const PessoaModel = require("../model/pessoa");
 const enderecoController = require("./endereco");
 const AlimentoModel = require('../model/alimento')
 const { QueryTypes } = require("sequelize");
-const { sequelize } = require('../config/database')
 const { includeEnderecoCompleto } = require("../utils/formatadores");
-const { Op } = require("sequelize");
+const database = require('../config/database');
+const sequelize = database.db; // aqui você pega a instância real!
+
+const { Op, fn, col, literal } = require('sequelize');
+const MovimentacaoModel = require('../model/movimentacao')
+const MovimentacaoAlimentoModel = require('../model/movimentacaoAlimento')
+const UnidadeMedida = require('../model/unidadeMedida')
 
 const SECRET_KEY = "doacerto";
 const SALT_VALUE = 10;
@@ -200,12 +205,13 @@ class OrganizacaoController {
         return alimentosValue;
     }
 
+
     async listarAlimentosParaMovimentacao(idOrganizacao, ieMovimentacao) {
         if (ieMovimentacao === 'E') {
             const alimentos = await AlimentoModel.findAll();
             return alimentos;
         } else {
-            const organizacaoValue = this.listarAlimentosEmEstoque(idOrganizacao);
+            const organizacaoValue = await this.listarAlimentosEmEstoque(idOrganizacao);
             return organizacaoValue
         }
     }

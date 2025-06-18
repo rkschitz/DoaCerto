@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { buscarMovimentacoes, excluirMovimentacaoAlimento } from "../../api/movimentacao";
-import formatarDataBRCHora from "../../utils/formatarDataBRCHora";
 import MovimentacaoModal from "./ModalMovimentacao";
 import { toast } from "react-toastify";
 import { useTable, useSortBy, usePagination } from 'react-table';

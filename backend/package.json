@@ -4,8 +4,8 @@
   "description": "Backend de uma aplicação web",
   "main": "index.js",
   "scripts": {
-    "start": "node --watch index.js",
-    "test": "jest --coverage"
+    "dev": "cross-env NODE_ENV=development node --watch index.js",
+    "start": "cross-env NODE_ENV=production node index.js"
   },
   "author": "Renan Dias e Ruhan Schitz",
   "license": "ISC",
@@ -23,5 +23,8 @@
     "pg": "^8.13.1",
     "sequelize": "^6.37.7",
     "supertest": "^7.0.0"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
   }
 }
