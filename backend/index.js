@@ -274,7 +274,7 @@ const createTables = async () => {
     }
 
     console.log("Donatários criados");
-*/
+    
   } catch (error) {
     console.error(`Erro ao inicializar o banco de dados: ${error}`);
     console.trace(error); // <-- Isso mostra onde exatamente estourou o erro
