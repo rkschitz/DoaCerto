@@ -81,7 +81,7 @@ const createTables = async () => {
 
     console.log("Todas as tabelas foram criadas com sucesso!");
 
-    const filePath = path.join(__dirname, "src/data/alimentos.json");
+    /*const filePath = path.join(__dirname, "src/data/alimentos.json");
     const alimentos = JSON.parse(fs.readFileSync(filePath, "utf-8"));
     const situacaoHabitacionalPath = path.join(
       __dirname,
@@ -269,7 +269,7 @@ const createTables = async () => {
     }
 
     console.log("Donatários criados");
-
+*/
   } catch (error) {
     console.error(`Erro ao inicializar o banco de dados: ${error}`);
     console.trace(error); // <-- Isso mostra onde exatamente estourou o erro
