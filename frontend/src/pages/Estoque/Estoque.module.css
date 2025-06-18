@@ -1,0 +1,106 @@
+.estoqueContainer {
+  padding: 20px;
+  background-color: #f9f7fd;
+  min-height: 100vh;
+  font-family: "Poppins", sans-serif;
+}
+
+.estoqueTitle {
+  color: #8b5cf6;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.estoqueSubtitle {
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.searchFilter {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.searchInput {
+  flex: 1;
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.filterButton {
+  margin-left: 10px;
+  padding: 10px 20px;
+  background-color: #8b5cf6;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.alimentosContainer {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.alimentoCard {
+  background: #fff;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  flex: 1 1 300px;
+  display: flex;
+  flex-direction: column;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.alimentoNome {
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.statusBaixo {
+  background-color: #fee2e2;
+  color: #ef4444;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  font-size: 12px;
+}
+
+.cardInfoLabel {
+  margin: 10px 0;
+  font-size: 14px;
+}
+
+.progressBarContainer {
+  background-color: #f3f4f6;
+  border-radius: 9999px;
+  height: 6px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.progressBar {
+  height: 100%;
+  background-color: #8b5cf6;
+}
+
+.cardStats {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+.addItemSection {
+  margin-top: 30px;
+  text-align: center;
+  color: #999;
+}
