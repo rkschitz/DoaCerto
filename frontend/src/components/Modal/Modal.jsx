@@ -1,5 +1,5 @@
 import { Button, Modal } from 'react-bootstrap';
-import styles from "../../pages/Donatario/donatario.module.css";
+import styles from "./Modal.module.css";
 
 export default function CustomModal({
   title,
@@ -12,9 +12,13 @@ export default function CustomModal({
   handleSubmit,
   handleClose
 }) {
-
   return (
-    <Modal show={show} onHide={handleClose} centered>
+    <Modal
+      show={show}
+      onHide={handleClose}
+      centered
+      dialogClassName={styles.largeModal}
+    >
       <Modal.Header closeButton className={styles.modalHeader}>
         <Modal.Title>{title}</Modal.Title>
       </Modal.Header>

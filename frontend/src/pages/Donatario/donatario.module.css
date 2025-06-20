@@ -280,30 +280,3 @@ form .btnDanger {
   font-size: 14px;
   color: #555;
 }
-
-.modalHeader {
-  width: 96%;
-  height: 80px;
-  padding: 0 24px;
-  background: linear-gradient(90deg, rgba(182, 112, 240, 1) 35%, #f0f0f0 100%);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
-  margin: 10px;
-}
-
-.modalHeader h1 {
-  color: #ffffff;
-  font-size: 1.5rem;
-  margin: 0;
-  font-weight: bold;
-}
-
-.modalButton {
-  background-color: #dc3545 !important;
-  border: none;
-  color: #ffffff;
-  font-size: 1.5rem;
-}

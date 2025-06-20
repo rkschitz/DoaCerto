@@ -38,9 +38,7 @@ const MetaController = require("./src/controller/meta")
 require("./src/model/association");
 const app = express();
 const corsOptions = {
-  origin: process.env.NODE_ENV === 'production'
-    ? "https://doacerto-1.onrender.com"
-    : "http://localhost:3001",  
+  origin: "http://localhost:3001",
   methods: "GET,POST,PUT,DELETE",
   allowedHeaders: "Content-Type, Authorization",
 };
