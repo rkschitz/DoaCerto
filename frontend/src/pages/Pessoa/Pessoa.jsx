@@ -53,6 +53,7 @@ export default function Pessoa() {
   };
 
   return (
+    <div className={styles.background}>
     <div className={styles.containerPessoa}>
       <div className={styles.header}>
         <h1>Gerenciar Pessoas</h1>
@@ -110,6 +111,7 @@ export default function Pessoa() {
             </div>
           </div>
         ))}
+      </div>
       </div>
 
       <ModalPessoa

@@ -1,0 +1,30 @@
+.modalHeader {
+  background-color: #8b5cf6;
+  color: white;
+  border-bottom: none;
+}
+
+.modalButton {
+  background-color: #8b5cf6;
+  border: none;
+  transition: background 0.3s ease;
+}
+
+.modalButton:hover {
+  background-color: #7c3aed;
+}
+
+.dependenteButton {
+  background-color: #8b5cf6;
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  margin-bottom: 1rem;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+.largeModal {
+  max-width: 100vh !important;
+  width: 90%;
+}

@@ -1,6 +1,10 @@
+.background {
+  background: linear-gradient(to bottom, #ffffff, #e9e2f8);
+  min-height: 95vh;
+}
+
 .containerPessoa {
   padding: 2rem;
-  background: linear-gradient(to bottom, #ffffff, #e9e2f8);
 }
 
 .header {
