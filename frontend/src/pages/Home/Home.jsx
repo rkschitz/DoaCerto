@@ -26,23 +26,6 @@ export default function Home() {
       <header className={styles.header}>
         <img src={Logo} alt="Logo" className={styles.logo} />
         <div className={styles.authButtons}>
-          <div className={styles.dropdown}>
-            <button className={styles.loginBtn}>Registrar-se</button>
-            <div className={styles.dropdownOptions}>
-              <button
-                className={styles.btnAuth}
-                onClick={() => navigate("/registerDoador")}
-              >
-                Doador
-              </button>
-              <button
-                className={styles.btnAuth}
-                onClick={() => navigate("/registerPerson")}
-              >
-                Organização
-              </button>
-            </div>
-          </div>
           <button
             className={styles.loginBtn}
             onClick={() => navigate("/login")}
