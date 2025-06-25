@@ -6,6 +6,7 @@ import SelectUnidadeMedida from "../../components/Selects/SelectUnidadeMedida/Se
 import { criarCampanha, editarCampanha } from "../../api/campanha";
 import { toast } from 'react-toastify';
 import formatarDataInput from "../../utils/formatarDataInput";
+import styles from "./Campanha.module.css";
 
 const defaultState = {
     titulo: null,
@@ -142,9 +143,10 @@ export default function ModalCampanha({ show, setShow, campanhaSelecionada, onCa
                             placeholder="Quantidade"
                             value={item.meta}
                             onChange={(e) => atualizarAlimento(index, "meta", e.target.value)}
+                            className="mt-4"
                         />
                     </Form.Group>
-                    <Button onClick={(e) => removerAlimento(index)}>Remover Alimento</Button>
+                    <button onClick={(e) => removerAlimento(index)} className={styles.aaa}>Remover Alimento</button>
                 </Row>
             ))}
             <Button onClick={adicionarAlimento}

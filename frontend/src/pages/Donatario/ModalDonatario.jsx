@@ -94,7 +94,6 @@ export default function ModalDonatario({
         >
             <Form>
                 <Row>
-                    {/* Coluna da esquerda */}
                     <Col md={6}>
                         <div className="mb-3">
                             <SelectPessoa
@@ -144,7 +143,6 @@ export default function ModalDonatario({
 
                     </Col>
 
-                    {/* Coluna da direita */}
                     <Col md={6}>
                         <div className="mb-3">
                             <FloatingLabel controlId="inputCidade" label="Cidade">

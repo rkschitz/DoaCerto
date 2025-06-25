@@ -148,3 +148,13 @@
   font-weight: 500;
   border-radius: 0.75rem !important;
 }
+
+.aaa{
+    background-color: #0d6efd;
+    color: white;
+    border: none;
+    padding: 6px 0px;
+    margin: 16px 0px 8px 12px !important;
+    border-radius: 7px !important;
+    width: 97% !important;
+}
