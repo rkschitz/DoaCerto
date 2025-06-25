@@ -43,11 +43,18 @@ export default function Localizador({ children, show, setShow, submit, submitTex
                                         onClick={() => setSelecionado(item)}
                                         style={{
                                             cursor: "pointer",
-                                            backgroundColor: selecionadoRow ? "#e9ecef" : "transparent"
                                         }}
                                     >
                                         {colunasLista.map((_, i) => (
-                                            <td key={i}>{Object.values(item)[i]}</td>
+                                            <td
+                                                key={i}
+                                                style={{
+                                                    backgroundColor: selecionadoRow ? "#8b5cf6" : "transparent",
+                                                    color: selecionadoRow ? "#fff" : "inherit" // opcional: texto branco quando selecionado
+                                                }}
+                                            >
+                                                {Object.values(item)[i]}
+                                            </td>
                                         ))}
                                     </tr>
                                 );
