@@ -70,7 +70,7 @@ export default function Organizacao() {
                         <p><strong>Email:</strong> {organizacao.email}</p>
                         <p><strong>IE:</strong> {organizacao.ieSituacao}</p>
                         <p><strong>Situação:</strong> {organizacao.ieSituacao}</p>
-                        <p><strong>Secretária:</strong> {organizacao.secretaria?.nome}</p>
+                        {/* <p><strong>Secretária:</strong> {organizacao.secretaria?.nome}</p> */}
                         <p><strong>Rua:</strong> {organizacao.endereco?.rua} Número: {organizacao.endereco?.numero} Complemento: {organizacao.endereco?.complemento} </p><br />
                         <p><strong>Bairro:</strong> {organizacao.endereco?.bairro}</p>
                         <p><strong>Estado:</strong> {organizacao.endereco?.estado}</p>
