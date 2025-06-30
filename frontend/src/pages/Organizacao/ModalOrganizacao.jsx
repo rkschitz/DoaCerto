@@ -45,8 +45,8 @@ export default function OrganizacaoModal({
                     cnpj: organizacaoSelecionada.cnpj || "",
                     telefone: organizacaoSelecionada.telefone || "",
                     email: organizacaoSelecionada.email || "",
-                    nomeSecretaria: organizacaoSelecionada.nomeSecretaria || "",
-                    secretaria: organizacaoSelecionada.idSecretaria || "",
+                    // nomeSecretaria: organizacaoSelecionada.nomeSecretaria || "",
+                    // secretaria: organizacaoSelecionada.idSecretaria || "",
                     endereco: {
                         cep: organizacaoSelecionada.endereco?.cep || "",
                         rua: organizacaoSelecionada.endereco?.rua || "",
@@ -133,7 +133,7 @@ export default function OrganizacaoModal({
         !organizacao.cnpj ||
         !organizacao.telefone ||
         !organizacao.email ||
-        !organizacao.secretaria ||
+        // !organizacao.secretaria ||
         !organizacao.endereco.cep ||
         !organizacao.endereco.numero ||
         !organizacao.endereco.complemento ||
@@ -198,13 +198,13 @@ export default function OrganizacaoModal({
                 />
                 {emailDisponivel === false && <span className="text-danger">Email não disponivel</span>}
             </Row>
-            <Row className="mb-3">
+            {/* <Row className="mb-3">
                 <SelectPessoa
                     value={organizacao.nomeSecretaria}
                     onChange={(value) => setOrganizacao({ ...organizacao, secretaria: value.idPessoa })}
                     label="Secretaria"
                 />
-            </Row>
+            </Row> */}
             <Row className="mb-3">
                 <FloatingLabel controlId="floatingInputCep" label="CEP">
                     <Form.Control
