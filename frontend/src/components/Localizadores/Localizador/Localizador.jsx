@@ -20,6 +20,7 @@ export default function Localizador({ children, show, setShow, submit, submitTex
             handleClose={handleClose}
             disabled={!selecionado}
             submitText={submitText}
+            title={"Localizador"}
         >
             <Form onSubmit={submit}>
                 {children}
