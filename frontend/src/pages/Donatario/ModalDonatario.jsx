@@ -86,7 +86,7 @@ export default function ModalDonatario({
         <CustomModal
             show={show}
             setShow={setShow}
-            title={donatarioSelecionado ? "Editar Pessoa" : "Cadastrar Pessoa"}
+            title={donatarioSelecionado ? "Editar Donatário" : "Cadastrar Donatário"}
             submitText={donatarioSelecionado ? "Salvar Alterações" : "Cadastrar"}
             resetText="Cancelar"
             handleSubmit={salvar}
@@ -133,7 +133,7 @@ export default function ModalDonatario({
                         </div>
 
                         <Row>
-                            <Col md={8} className="mb-3">
+                            <Col className="mb-3">
                                 <SelectSituacaoProfissional
                                     value={donatario.idSituacaoProfissional || ""}
                                     onChange={(situacao) => setDonatario({ ...donatario, idSituacaoProfissional: situacao })}
@@ -184,7 +184,7 @@ export default function ModalDonatario({
                         </div>
 
                         <Row>
-                            <Col md={6} className="mb-3">
+                            <Col className="mb-3">
                                 <SelectSituacaoHabitacional
                                     value={donatario.idSituacaoHabitacional || ""}
                                     onChange={(situacao) => setDonatario({ ...donatario, idSituacaoHabitacional: situacao })}
